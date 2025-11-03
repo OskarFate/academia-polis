@@ -1,0 +1,842 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malla Curricular - Data Analysis & Python Mastery</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <h1><a href="../index.html">🎓 ACADEMIA DE LA POLIS</a></h1>
+                    <p class="academy-motto">"Saber para todos, poder para el pueblo."</p>
+                </div>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="../index.html#inicio">Inicio</a></li>
+                    <li><a href="../index.html#carreras">Carreras</a></li>
+                    <li><a href="../index.html#admision">Admisión</a></li>
+                    <li><a href="../index.html#nosotros">Nosotros</a></li>
+                    <li><a href="../index.html#contacto">Contacto</a></li>
+                </ul>
+                <button class="menu-toggle" id="menuToggle">☰</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Career Hero Minimal -->
+    <section class="curriculum-hero">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="../index.html">Inicio</a> / <a href="../index.html#carreras">Carreras</a> / <span>Data Analysis & Python Mastery</span>
+            </div>
+            
+            <div class="hero-header">
+                <div class="hero-left">
+                    <div class="badge-premium">� 100% GRATUITO</div>
+                    <h1 class="main-title">🐍 Data Analysis & Python Mastery</h1>
+                    <p class="main-subtitle">La malla curricular más intensiva y actualizada del mundo. 3 años de Python puro, Machine Learning y Big Data <strong>completamente GRATIS</strong>. Sostenido por donaciones de la comunidad.</p>
+                </div>
+                <div class="hero-right">
+                    <div class="quick-stats-card">
+                        <h3>📊 Resumen del Programa</h3>
+                        <div class="stat-row">
+                            <span class="stat-label">💰 Costo Total:</span>
+                            <span class="stat-value" style="color: var(--primary-color); font-weight: 800;">$0 USD</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Duración:</span>
+                            <span class="stat-value">3 años (6 semestres)</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Total Materias:</span>
+                            <span class="stat-value">42 materias elite</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Proyectos:</span>
+                            <span class="stat-value">200+ proyectos reales</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Horas Totales:</span>
+                            <span class="stat-value">1,512 horas de código</span>
+                        </div>
+                        <div class="stat-highlight" style="background: linear-gradient(135deg, var(--light-color), white); border: 2px solid var(--primary-color);">
+                            <span class="highlight-icon">💝</span>
+                            <span class="highlight-text"><strong>Sostenido por donaciones voluntarias</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navegación Interna de la Carrera -->
+            <nav class="career-nav">
+                <a href="data-analysis-curriculum.html" class="nav-item active">
+                    <span class="nav-icon">📚</span>
+                    <span>Malla Curricular</span>
+                </a>
+                <a href="data-analysis-salaries.html" class="nav-item">
+                    <span class="nav-icon">💰</span>
+                    <span>Salarios & Campo</span>
+                </a>
+                <a href="data-analysis-profile.html" class="nav-item">
+                    <span class="nav-icon">👤</span>
+                    <span>Perfil Profesional</span>
+                </a>
+                <a href="data-analysis-tools.html" class="nav-item">
+                    <span class="nav-icon">🛠️</span>
+                    <span>Stack Tecnológico</span>
+                </a>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Intensity Badge -->
+    <section class="intensity-info">
+        <div class="container">
+            <div class="intensity-badge">
+                <div class="intensity-icon">🎁</div>
+                <div class="intensity-content">
+                    <h3>100% Gratuito • Programa Ultra-Intensivo</h3>
+                    <p><strong>$0 de matrícula</strong> • <strong>$0 de mensualidades</strong> • <strong>3 horas diarias</strong> de estudio dedicado por materia • <strong>16 semanas</strong> por materia para dominio completo • <strong>💝 Apoya con donaciones voluntarias</strong> si te beneficia</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Curriculum Grid -->
+    <section class="curriculum-section">
+        <div class="container">
+            
+            <div class="curriculum-intro">
+                <h2>🎯 Plan de Estudios Completo</h2>
+                <p class="intro-text">Cada materia está diseñada para llevarte desde fundamentos hasta nivel avanzado en Python y Data Science. Sin relleno académico, solo habilidades que pagan $80K-$200K en el mercado internacional.</p>
+            </div>
+
+            <!-- Semester Filter -->
+            <div class="semester-filter">
+                <button class="filter-btn active" data-semester="all">📚 Todos los Semestres</button>
+                <button class="filter-btn" data-semester="1">Semestre 1</button>
+                <button class="filter-btn" data-semester="2">Semestre 2</button>
+                <button class="filter-btn" data-semester="3">Semestre 3</button>
+                <button class="filter-btn" data-semester="4">Semestre 4</button>
+                <button class="filter-btn" data-semester="5">Semestre 5</button>
+                <button class="filter-btn" data-semester="6">Semestre 6</button>
+            </div>
+
+            <!-- Semestre 1 -->
+            <div class="semester-block" data-semester="1">
+                <div class="semester-header">
+                    <h3><span class="semester-number">1</span> Primer Semestre - Python First & Data Foundations</h3>
+                    <p class="semester-desc">Programación desde DÍA 1. Python intensivo, Git, matemáticas aplicadas, SQL y primeros análisis reales.</p>
+                </div>
+                
+                <div class="subjects-grid">
+                    <div class="subject-card elite">
+                        <div class="subject-badge">START HERE</div>                        <h4>� Python Mastery - Zero to Production Code</h4>
+                        <p>Python desde cero hasta avanzado: sintaxis, tipos de datos, estructuras (lists, dicts, sets, tuples), control flow, functions, OOP profundo, decorators, generators, context managers, list comprehensions, *args/**kwargs, error handling, file I/O. PROYECTO: Analizador de CSV desde semana 1.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">Python Core</span>
+                            <span class="topic-tag">OOP Avanzado</span>
+                            <span class="topic-tag">Proyecto Real</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty medium">Intermedio</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">CORE</div>                        <h4>� Pandas & NumPy - Data Manipulation Bible</h4>
+                        <p>Pandas profesional: DataFrames, Series, indexing avanzado, groupby mastery, merge/join/concat, pivot tables, reshaping, method chaining. NumPy: arrays, broadcasting, vectorización. PROYECTO: ETL pipeline completo de datos reales (COVID-19, stocks, ventas).</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">Pandas Expert</span>
+                            <span class="topic-tag">NumPy</span>
+                            <span class="topic-tag">ETL Pipeline</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty medium">Intermedio</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">CORE</div>                        <h4>�️ SQL & Database Mastery (PostgreSQL)</h4>
+                        <p>SQL desde básico hasta ninja: SELECT, JOINs (inner, left, right, full), subqueries, CTEs, window functions (ROW_NUMBER, RANK, LAG, LEAD), aggregations, GROUP BY, HAVING, indexing, query optimization, transactions. PROYECTO: Database de e-commerce con queries complejos.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">PostgreSQL</span>
+                            <span class="topic-tag">Window Functions</span>
+                            <span class="topic-tag">Performance</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty medium">Intermedio</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card">                        <h4>� Estadística Aplicada & Probability</h4>
+                        <p>Estadística APLICADA (no teoría aburrida): mean, median, mode, std, variance, distributions (normal, binomial, Poisson), probability theory, sampling, central limit theorem, confidence intervals. Todo con Python (scipy.stats). PROYECTO: Análisis estadístico de dataset Kaggle.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">Statistics</span>
+                            <span class="topic-tag">Scipy</span>
+                            <span class="topic-tag">Probability</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty medium">Intermedio</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">VISUAL</div>                        <h4>📊 Data Visualization - Matplotlib & Seaborn</h4>
+                        <p>Visualización profesional: Matplotlib (line plots, bar charts, scatter, histograms, subplots), Seaborn (distplot, boxplot, heatmap, pairplot), customización total, colors, styles, annotations. Plotly intro. PROYECTO: Dashboard visual de análisis exploratorio completo.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">Matplotlib</span>
+                            <span class="topic-tag">Seaborn</span>
+                            <span class="topic-tag">Storytelling</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty easy">Básico</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card">                        <h4>🔧 Git & GitHub - Professional Workflow</h4>
+                        <p>Git desde cero: init, add, commit, push, pull, branches, merge, rebase, cherry-pick, stash. GitHub: repos, README profesionales, .gitignore, pull requests, issues, GitHub Actions básico. PROYECTO: Portfolio en GitHub desde semestre 1.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">Git</span>
+                            <span class="topic-tag">GitHub</span>
+                            <span class="topic-tag">Portfolio</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty easy">Básico</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card">                        <h4>� Math for Data Science - Linear Algebra & Calculus</h4>
+                        <p>Matemáticas SOLO lo necesario: álgebra lineal (vectores, matrices, dot product, multiplicación), cálculo (derivadas, gradientes, chain rule), optimización básica. Todo aplicado con NumPy. PROYECTO: Implementar gradient descent desde cero.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">Linear Algebra</span>
+                            <span class="topic-tag">Calculus</span>
+                            <span class="topic-tag">Optimization</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty hard">Avanzado</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Semestre 2 -->
+            <div class="semester-block" data-semester="2">
+                <div class="semester-header">
+                    <h3><span class="semester-number">2</span> Segundo Semestre - Advanced Data Manipulation & APIs</h3>
+                    <p class="semester-desc">Web scraping masivo, APIs REST, time series, feature engineering profesional, Plotly interactivo, datos sucios reales</p>
+                </div>
+                
+                <div class="subjects-grid">
+                    <div class="subject-card elite">
+                        <div class="subject-badge">SCRAPING</div>                        <h4>�️ Web Scraping & API Mastery</h4>
+                        <p>Web scraping profesional: BeautifulSoup (HTML parsing), Selenium (JavaScript rendering), Scrapy (production crawlers), requests avanzado. APIs REST: GET/POST, authentication (OAuth, API keys), rate limiting, pagination. PROYECTO: Scraper de 10K+ productos e-commerce + API de datos financieros.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">BeautifulSoup</span>
+                            <span class="topic-tag">Selenium</span>
+                            <span class="topic-tag">REST APIs</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty medium">Intermedio</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">INTERACTIVE</div>                        <h4>📊 Plotly & Interactive Dashboards</h4>
+                        <p>Visualización interactiva de nivel ejecutivo: Plotly Express (one-liners), Plotly Graph Objects (customización total), Dash (dashboards web), callbacks, animations, 3D plots, mapas geográficos. PROYECTO: Dashboard interactivo estilo Bloomberg terminal con datos en tiempo real.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">Plotly</span>
+                            <span class="topic-tag">Dash</span>
+                            <span class="topic-tag">Interactive Viz</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty medium">Intermedio</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">CORE</div>                        <h4>🧹 Data Cleaning - Dirty Data Mastery</h4>
+                        <p>Limpieza de datos del mundo real (80% del trabajo de un analista): missing values (dropna, fillna, interpolate), outliers detection (IQR, Z-score), duplicates, data types conversion, string cleaning (regex), datetime parsing, inconsistent data. PROYECTO: Limpiar dataset Kaggle ultra-sucio (1M+ rows).</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">Data Cleaning</span>
+                            <span class="topic-tag">Missing Values</span>
+                            <span class="topic-tag">Outliers</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty medium">Intermedio</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">TIMESERIES</div>                        <h4>� Time Series Analysis & Forecasting</h4>
+                        <p>Series temporales end-to-end: datetime indexing, resampling, rolling windows, ARIMA, SARIMA, seasonal decomposition, stationarity (ADF test), Prophet (Facebook), forecasting con ML (XGBoost para series temporales). PROYECTO: Predictor de ventas/stock prices con accuracy evaluado.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">Time Series</span>
+                            <span class="topic-tag">ARIMA</span>
+                            <span class="topic-tag">Prophet</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty hard">Avanzado</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">FEATURE ENG</div>                        <h4>🎯 Feature Engineering Bible</h4>
+                        <p>El arte de crear features ganadoras: encoding categóricos (one-hot, label, target, ordinal, binary), feature scaling (StandardScaler, MinMaxScaler, RobustScaler), feature generation (polynomial, interactions, binning), domain-specific features, feature selection (SelectKBest, RFE, LASSO, tree importance). PROYECTO: Feature engineering para Kaggle competition.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">Feature Engineering</span>
+                            <span class="topic-tag">Encoding</span>
+                            <span class="topic-tag">Feature Selection</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty hard">Avanzado</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card">                        <h4>📈 Statistical Testing & A/B Testing</h4>
+                        <p>Testing estadístico aplicado: hypothesis testing (t-test, z-test, ANOVA, chi-squared), p-values interpretación, confidence intervals, A/B testing completo (sample size calculation, power analysis, statistical vs practical significance), Bayesian A/B testing. PROYECTO: Análisis A/B test de feature web con conclusiones business.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">Hypothesis Testing</span>
+                            <span class="topic-tag">A/B Testing</span>
+                            <span class="topic-tag">Statistics</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty hard">Avanzado</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card">                        <h4>🚀 Python Performance & Optimization</h4>
+                        <p>Código Python 100x más rápido: profiling (cProfile, line_profiler), vectorización con NumPy, Numba (JIT compilation), parallel processing (multiprocessing, joblib), memory optimization, generators, lazy evaluation. PROYECTO: Optimizar script lento (10 min → 10 seg).</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">Performance</span>
+                            <span class="topic-tag">Numba</span>
+                            <span class="topic-tag">Optimization</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty hard">Avanzado</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Semestre 3 -->
+            <div class="semester-block" data-semester="3">
+                <div class="semester-header">
+                    <h3><span class="semester-number">3</span> Tercer Semestre - Machine Learning Complete Mastery</h3>
+                    <p class="semester-desc">ML desde fundamentos hasta Kaggle top 1%. Scikit-learn total, XGBoost dominance, Polars performance, proyectos competitivos reales</p>
+                </div>
+                
+                <div class="subjects-grid">
+                    <div class="subject-card elite">
+                        <div class="subject-badge">ML START</div>                        <h4>🤖 Machine Learning Foundations - Theory to Practice</h4>
+                        <p>ML desde cero: supervised vs unsupervised, regression (linear, polynomial, ridge, lasso), classification (logistic, SVM, KNN), bias-variance tradeoff, overfitting/underfitting, regularization (L1/L2), cross-validation (k-fold, stratified), train/test/val splits, learning curves. PROYECTO: Predictor de precios de casas (Boston Housing) con 5+ modelos comparados.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">ML Theory</span>
+                            <span class="topic-tag">Regression</span>
+                            <span class="topic-tag">Classification</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty hard">Avanzado</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">SKLEARN</div>                        <h4>🔬 Scikit-learn Bible - Every Algorithm</h4>
+                        <p>Dominio TOTAL de scikit-learn: LinearRegression, Ridge, Lasso, ElasticNet, LogisticRegression, SVM (linear, RBF, poly kernels), KNN, Decision Trees, Random Forests, Gradient Boosting, pipelines (ColumnTransformer, Pipeline), GridSearchCV, RandomizedSearchCV, cross_val_score, custom transformers. PROYECTO: Clasificador de Titanic survivors con pipeline completo end-to-end.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">Scikit-learn Total</span>
+                            <span class="topic-tag">Pipelines</span>
+                            <span class="topic-tag">Hyperparameter Tuning</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty hard">Avanzado</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">KAGGLE WEAPON</div>                        <h4>⚡ XGBoost, LightGBM & CatBoost Mastery</h4>
+                        <p>Gradient boosting dominance: XGBoost (el #1 en Kaggle), LightGBM (velocidad extrema, leaf-wise growth), CatBoost (categorical features automáticos), hyperparameter tuning profundo (learning_rate, max_depth, n_estimators, subsample), early stopping, feature importance (gain, cover, SHAP). PROYECTO: Competencia Kaggle real (House Prices Advanced) - objetivo top 10%.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">XGBoost</span>
+                            <span class="topic-tag">LightGBM</span>
+                            <span class="topic-tag">Kaggle</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty hard">Avanzado</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">NEXT-GEN</div>                        <h4>� Polars - The Future of Data Manipulation</h4>
+                        <p>Polars (sucesor de Pandas): lazy evaluation (escanea datos sin cargar), expresiones optimizadas, query optimizer automático, velocidad 5-50x vs Pandas, sintaxis moderna, parallel processing nativo, Arrow backend, streaming de archivos gigantes. PROYECTO: Procesar dataset de 10GB+ (imposible en Pandas) con Polars en minutos.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">Polars</span>
+                            <span class="topic-tag">Lazy Evaluation</span>
+                            <span class="topic-tag">Performance</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty medium">Intermedio</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">UNSUPERVISED</div>                        <h4>🎯 Clustering & Dimensionality Reduction</h4>
+                        <p>Unsupervised learning completo: K-Means (elbow method, silhouette score), DBSCAN (density-based, encuentra outliers), Hierarchical clustering (dendrograms), PCA (reducir dimensiones), t-SNE (visualización), UMAP (mejor que t-SNE), Anomaly detection (Isolation Forest, Local Outlier Factor). PROYECTO: Segmentación de clientes e-commerce en 5 grupos con interpretación business.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">Clustering</span>
+                            <span class="topic-tag">PCA</span>
+                            <span class="topic-tag">Customer Segmentation</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty medium">Intermedio</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">EVALUATION</div>                        <h4>📊 Model Evaluation & Ensemble Methods</h4>
+                        <p>Evaluación profesional: métricas (accuracy, precision, recall, F1, ROC-AUC, PR-AUC, log loss), confusion matrix interpretación, imbalanced data handling (SMOTE, class_weight, threshold tuning), cross-validation estrategias, ensemble methods (voting, averaging, stacking con meta-learner, blending). PROYECTO: Fraud detection con dataset ultra-imbalanced (0.1% fraudes).</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">Metrics</span>
+                            <span class="topic-tag">Ensembles</span>
+                            <span class="topic-tag">Imbalanced Data</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty hard">Avanzado</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">FIRST KAGGLE</div>                        <h4>🏆 Kaggle Competition Strategy & Techniques</h4>
+                        <p>Tu primera competencia Kaggle seria: estrategias top 1% (feature engineering extremo, leak detection, target encoding, ensembling masivo, pseudo-labeling), manejo de leaderboard (public vs private), kernel study, collaboration, submission strategy. PROYECTO: Completar 2 competencias Kaggle activas con ranking documentado y kernel público.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">Kaggle</span>
+                            <span class="topic-tag">Competitions</span>
+                            <span class="topic-tag">Advanced Techniques</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty hard">Avanzado</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Semestre 4 -->
+            <div class="semester-block" data-semester="4">
+                <div class="semester-header">
+                    <h3><span class="semester-number">4</span> Cuarto Semestre - Deep Learning & Neural Networks</h3>
+                    <p class="semester-desc">PyTorch desde cero hasta modelos productivos. Neural networks, CNN, NLP con transformers, computer vision real, deployment completo</p>
+                </div>
+                
+                <div class="subjects-grid">
+                    <div class="subject-card elite">
+                        <div class="subject-badge">DL START</div>                        <h4>🧠 Deep Learning Foundations - Neural Nets from Scratch</h4>
+                        <p>Neural networks matemáticos: perceptrón desde cero en NumPy, backpropagation manual (chain rule), gradient descent (SGD, momentum, Adam, RMSprop), activation functions (ReLU, sigmoid, tanh, Leaky ReLU), weight initialization (Xavier, He), batch/layer normalization, dropout, vanishing/exploding gradients. PROYECTO: Red neuronal desde cero en NumPy puro (sin frameworks) - MNIST 95%+ accuracy.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">Neural Networks</span>
+                            <span class="topic-tag">Backpropagation</span>
+                            <span class="topic-tag">Math</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty hard">Avanzado</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">PYTORCH</div>                        <h4>� PyTorch Complete Bible</h4>
+                        <p>PyTorch dominio total: tensors y operaciones, autograd (computational graph), nn.Module (custom layers, architectures), DataLoader (custom datasets, collate_fn), training loops profesionales, GPU acceleration (CUDA, .to(device)), mixed precision training (AMP), gradient clipping, learning rate scheduling, checkpointing. PROYECTO: Clasificador de imágenes custom con arquitectura propia - 90%+ accuracy en dataset propio.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">PyTorch</span>
+                            <span class="topic-tag">GPU Training</span>
+                            <span class="topic-tag">Deep Learning</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty hard">Avanzado</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">VISION</div>                        <h4>�️ Computer Vision & CNN Architectures</h4>
+                        <p>Convolutional Neural Networks mastery: arquitecturas clásicas (AlexNet, VGG, ResNet, DenseNet, EfficientNet), transfer learning (fine-tuning vs feature extraction), image classification, object detection (YOLO, Faster R-CNN), image segmentation (U-Net, Mask R-CNN), data augmentation (albumentations), pre-trained models. PROYECTO: Detector de objetos custom dataset (ej: defectos manufactura) con YOLOv8.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">CNN</span>
+                            <span class="topic-tag">YOLO</span>
+                            <span class="topic-tag">Object Detection</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty hard">Avanzado</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">NLP</div>                        <h4>💬 NLP with Transformers - BERT to GPT</h4>
+                        <p>Natural Language Processing moderno: tokenización (WordPiece, BPE), embeddings (Word2Vec, GloVe, fastText), RNNs y LSTMs (secuencias), attention mechanisms (self-attention), transformers arquitectura (encoder-decoder), BERT (bidireccional), GPT (autoregresivo), Hugging Face transformers (pipeline, AutoModel, Trainer), fine-tuning para tareas custom. PROYECTO: Clasificador de sentimientos + Q&A bot fine-tuneado con dataset custom.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">Transformers</span>
+                            <span class="topic-tag">BERT</span>
+                            <span class="topic-tag">Hugging Face</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty hard">Avanzado</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">RECOMMENDER</div>                        <h4>🎯 Recommendation Systems - Netflix Level</h4>
+                        <p>Sistemas de recomendación profesionales: collaborative filtering (user-based, item-based), matrix factorization (SVD, ALS), content-based filtering, hybrid systems, neural recommenders (NCF, Wide & Deep), cold start problem solutions, implicit feedback, ranking metrics (MAP, NDCG), A/B testing de recomendaciones. PROYECTO: Sistema de recomendación estilo Netflix/Spotify con 1M+ interacciones.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">RecSys</span>
+                            <span class="topic-tag">Collaborative Filtering</span>
+                            <span class="topic-tag">Matrix Factorization</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty hard">Avanzado</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">MLOPS</div>                        <h4>📦 ML Model Deployment & Serving</h4>
+                        <p>Deployment productivo: model serialization (pickle, joblib, ONNX), API creation (FastAPI con Pydantic validation), containerization (Docker multi-stage builds), model serving (TorchServe, TensorFlow Serving), batch prediction vs real-time, monitoring (Prometheus, Grafana), logging, error handling, load testing. PROYECTO: API de ML en producción con FastAPI + Docker + CI/CD deploy a cloud.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">FastAPI</span>
+                            <span class="topic-tag">Docker</span>
+                            <span class="topic-tag">Production</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty hard">Avanzado</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">TRACKING</div>                        <h4>🧪 ML Experiment Tracking - MLflow & Weights & Biases</h4>
+                        <p>Experiment management profesional: MLflow tracking (logging params, metrics, artifacts), experiment comparison, model registry, versioning, Weights & Biases (wandb sweeps, hyperparameter optimization), DVC (data version control), reproducibilidad total, experiment organization. PROYECTO: Pipeline de experiments con MLflow tracking 50+ experimentos y selección del mejor modelo automático.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">MLflow</span>
+                            <span class="topic-tag">W&B</span>
+                            <span class="topic-tag">Experiment Tracking</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty medium">Intermedio</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Semestre 5 -->
+            <div class="semester-block" data-semester="5">
+                <div class="semester-header">
+                    <h3><span class="semester-number">5</span> Quinto Semestre - Production ML & Big Data</h3>
+                    <p class="semester-desc">MLOps completo, cloud computing mastery, PySpark big data, arquitecturas escalables, sistemas productivos reales</p>
+                </div>
+                
+                <div class="subjects-grid">
+                    <div class="subject-card elite">
+                        <div class="subject-badge">MLOPS</div>                        <h4>🚀 MLOps Complete - Docker to Kubernetes</h4>
+                        <p>MLOps producción profesional: Docker (multi-stage builds, optimization), Kubernetes (pods, deployments, services, scaling), model serving (FastAPI, Flask, TorchServe), CI/CD pipelines (GitHub Actions, GitLab CI), monitoring (Prometheus, Grafana, Sentry), logging (ELK stack), model versioning, rollback strategies, blue-green deployment. PROYECTO: Sistema ML completo con CI/CD automático y monitoring en Kubernetes.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">MLOps</span>
+                            <span class="topic-tag">Kubernetes</span>
+                            <span class="topic-tag">CI/CD</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty hard">Avanzado</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">CLOUD</div>                        <h4>☁️ Cloud Computing Mastery - AWS/Azure/GCP</h4>
+                        <p>Cloud dominio total: AWS (S3, EC2, Lambda, SageMaker, Glue, Athena, Redshift, EMR), Azure (Synapse, ML Studio, Data Factory, Databricks), GCP (BigQuery, Vertex AI, Cloud Functions, Dataflow), serverless ML, cost optimization, security (IAM, VPC), arquitecturas cloud escalables, terraform (infrastructure as code). PROYECTO: Deploy de pipeline ML completo en 2 clouds diferentes con terraform.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">AWS</span>
+                            <span class="topic-tag">Azure</span>
+                            <span class="topic-tag">GCP</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty hard">Avanzado</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">BIG DATA</div>                        <h4>⚡ Apache Spark & PySpark - Process Billions of Rows</h4>
+                        <p>Big Data mastery: Spark architecture (driver, executors, cluster manager), RDDs vs DataFrames vs Datasets, Spark SQL (queries optimizados), transformations vs actions, lazy evaluation, partitioning strategies, broadcast variables, accumulators, performance tuning (shuffle optimization, memory management), Spark on cloud (AWS EMR, Databricks), streaming (Structured Streaming). PROYECTO: Procesar dataset de 100GB+ con PySpark en cluster distribuido.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">PySpark</span>
+                            <span class="topic-tag">Big Data</span>
+                            <span class="topic-tag">Distributed Computing</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty hard">Avanzado</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">STREAMING</div>                        <h4>� Real-time Data Processing - Kafka & Flink</h4>
+                        <p>Streaming mastery: Apache Kafka (producers, consumers, topics, partitions, replication), Kafka Streams, event-driven architecture, Apache Flink (stateful streaming), Spark Streaming comparison, message queues (RabbitMQ, Redis Streams), real-time analytics, windowing operations, watermarks, exactly-once semantics, low-latency systems (<100ms). PROYECTO: Pipeline streaming real-time con Kafka procesando 10K+ events/segundo.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">Kafka</span>
+                            <span class="topic-tag">Flink</span>
+                            <span class="topic-tag">Real-time</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty hard">Avanzado</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">DATABASES</div>                        <h4>🗄️ Modern Database Systems - SQL to NoSQL</h4>
+                        <p>Databases complete: NoSQL (MongoDB aggregation pipelines, Cassandra wide-column, Redis caching strategies), data warehouses (Snowflake, Redshift, BigQuery optimization), data lakes (Delta Lake, Iceberg), OLAP vs OLTP, columnar databases (Parquet, ORC), graph databases (Neo4j, Cypher), NewSQL, database sharding, replication strategies, CAP theorem. PROYECTO: Arquitectura de datos multi-database (SQL + NoSQL + warehouse).</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">NoSQL</span>
+                            <span class="topic-tag">Data Warehouse</span>
+                            <span class="topic-tag">BigQuery</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty hard">Avanzado</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">DATA ENG</div>                        <h4>🏗️ Data Engineering - Airflow & dbt</h4>
+                        <p>Data engineering profesional: Apache Airflow (DAGs, operators, sensors, XComs, dynamic DAGs), dbt (models, tests, documentation, incremental models), ETL/ELT pipelines, data modeling (dimensional, Kimball, star/snowflake schema), data governance, data catalogs (DataHub), metadata management, data quality (Great Expectations), orchestration strategies, idempotency. PROYECTO: Data warehouse completo con Airflow + dbt + tests automatizados.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">Airflow</span>
+                            <span class="topic-tag">dbt</span>
+                            <span class="topic-tag">ETL/ELT</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty hard">Avanzado</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">AUTOML</div>                        <h4>🤖 AutoML & Hyperparameter Optimization</h4>
+                        <p>AutoML mastery: H2O.ai (AutoML API), TPOT (genetic programming), AutoGluon (state-of-art), PyCaret (low-code ML), automated hyperparameter tuning (Optuna bayesian optimization, Ray Tune distributed tuning, Hyperopt), neural architecture search (NAS), automated feature engineering (Featuretools), cuando usar vs manual ML, benchmarking. PROYECTO: Sistema AutoML custom que supera a soluciones comerciales en benchmark dataset.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">AutoML</span>
+                            <span class="topic-tag">Optuna</span>
+                            <span class="topic-tag">Ray Tune</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty medium">Intermedio</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Semestre 6 -->
+            <div class="semester-block" data-semester="6">
+                <div class="semester-header">
+                    <h3><span class="semester-number">6</span> Sexto Semestre - Career Launch & World-Class Portfolio</h3>
+                    <p class="semester-desc">Proyecto capstone épico, Kaggle ranking, interview mastery, portfolio de $150K+, estrategia para conseguir ofertas múltiples</p>
+                </div>
+                
+                <div class="subjects-grid">
+                    <div class="subject-card elite">
+                        <div class="subject-badge">CAPSTONE</div>                        <h4>🎯 Capstone Project - Production ML System</h4>
+                        <p>Proyecto final ÉPICO end-to-end: problema real de negocio ($1M+ impact potencial), data pipeline completo (Airflow), EDA profundo, feature engineering avanzado, 5+ modelos ML comparados, hyperparameter tuning (Optuna), ensemble final, API con FastAPI, frontend dashboard (React/Streamlit), Docker + Kubernetes deployment, CI/CD pipeline, monitoring (Grafana), documentación técnica completa, presentación ejecutiva de 20 min. PROYECTO: Sistema ML production-ready que va directo a tu portfolio como proyecto principal.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">Full Stack ML</span>
+                            <span class="topic-tag">Production</span>
+                            <span class="topic-tag">Portfolio Killer</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty expert">Experto</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">KAGGLE TOP 1%</div>                        <h4>🏆 Kaggle Grandmaster Path - Ranking Real</h4>
+                        <p>Estrategias Kaggle Grandmaster: competir en 3+ competitions simultáneas, estrategia top 1% (feature engineering extremo con 200+ features, leak detection avanzado, target encoding + K-fold, stacking de 10+ modelos diferentes, ensembling masivo con weights optimization, pseudo-labeling), manejo de leaderboard (public vs private shake-up), kernel study de winners, collaboration teams, time management. META: Conseguir 1 medalla (Gold/Silver/Bronze) y ranking top 5% en al menos 1 competencia. Tu Kaggle profile es tu mejor CV.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">Kaggle</span>
+                            <span class="topic-tag">Competitions</span>
+                            <span class="topic-tag">Top 1%</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty expert">Experto</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">INTERVIEWS</div>                        <h4>💼 Technical Interview Mastery - FAANG Ready</h4>
+                        <p>Prep completo para interviews FAANG/Big Tech: Coding (LeetCode medium/hard - 150+ problemas: arrays, trees, graphs, DP, greedy), SQL (window functions, CTEs, complex joins - 100+ queries), Python (list comprehensions, decorators, generators, async), ML fundamentals (bias-variance, regularization, cross-validation, 50+ preguntas), ML system design (recommendation system, fraud detection, search ranking - 10+ designs completos), take-home assignments (4-6 horas, código production-quality), behavioral (STAR method, 20+ historias preparadas), salary negotiation ($80K → $120K+ con técnicas correctas). PROYECTO: Mock interviews semanales + feedback hasta dominar.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">LeetCode</span>
+                            <span class="topic-tag">System Design</span>
+                            <span class="topic-tag">FAANG Prep</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty hard">Avanzado</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">PORTFOLIO</div>                        <h4>📂 GitHub Portfolio - Impresiona a Cualquier Recruiter</h4>
+                        <p>Portfolio nivel senior ($150K+): GitHub profile optimization (pinned repos estratégicos, contribution graph verde, 500+ commits último año), 5-7 proyectos KILLER (cada uno con README.md impecable: demo GIF, problem statement, tech stack, installation, usage, results con gráficos, architecture diagram), documentación técnica nivel Google (docstrings, type hints, tests), blog técnico (Medium/Dev.to con 5+ artículos: "How I built...", "Lessons from Kaggle", tutorials), LinkedIn optimization (headline atractivo, about section con keywords, featured projects, 500+ conexiones estratégicas), networking efectivo (cold messages que funcionan, coffee chats, referrals), open source contributions (PRs a librerías conocidas). PROYECTO: Portfolio que hace que recruiters te contacten sin aplicar.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">Portfolio</span>
+                            <span class="topic-tag">Personal Brand</span>
+                            <span class="topic-tag">Networking</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty medium">Intermedio</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">EXPLAINABILITY</div>                        <h4>� Explainable AI & Model Interpretability</h4>
+                        <p>XAI para stakeholders: SHAP (TreeExplainer, KernelExplainer, force plots, summary plots, dependence plots, waterfall charts), LIME (local interpretability, superpixels para imágenes), feature importance (gain, cover, permutation), partial dependence plots (PDP), individual conditional expectation (ICE), model-agnostic methods, black-box vs white-box models, interpretación para business (traducir SHAP values a insights accionables), compliance y regulaciones (GDPR, fair lending), ethical AI considerations. PROYECTO: Dashboard interactivo de explicabilidad de modelo para stakeholders no-técnicos.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">SHAP</span>
+                            <span class="topic-tag">LIME</span>
+                            <span class="topic-tag">Interpretability</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty medium">Intermedio</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">BUSINESS</div>                        <h4>🏢 Industry Case Studies - Real Business Impact</h4>
+                        <p>Casos reales con impacto medible: Recommendation systems (Netflix/Spotify - aumentar engagement 15%), fraud detection (bancos - reducir pérdidas $10M+/año), churn prediction (telco - retener 20% más clientes), pricing optimization (retail - aumentar revenue 8%), demand forecasting (supply chain - reducir inventory costs 25%), A/B testing (tech - ship features data-driven), customer segmentation (e-commerce - personalización que convierte 3x más). Cada caso incluye: business context, data exploration, ML solution, ROI calculation, presentation to stakeholders. PROYECTO: 3 case studies completos documentados estilo consulting.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">Real Cases</span>
+                            <span class="topic-tag">ROI</span>
+                            <span class="topic-tag">Business Impact</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty medium">Intermedio</span>
+                        </div>
+                    </div>
+
+                    <div class="subject-card elite">
+                        <div class="subject-badge">CAREER LAUNCH</div>                        <h4>🚀 Job Hunt Strategy - Get Multiple Offers</h4>
+                        <p>Estrategia para conseguir 3-5 ofertas simultáneas: Resume optimization (ATS-friendly, keywords estratégicos, quantified achievements: "Increased model accuracy 23%", "Processed 10M+ records", 1 página perfecto), cover letter formula (3 párrafos que consiguen interview), LinkedIn cold outreach (mensajes con 40%+ response rate), application strategy (apply smart no spray-and-pray: 10 empresas/semana targeted), networking mastery (conseguir referrals que 5x tus chances), interview pipeline management (coordinar 5+ procesos simultáneos), offer negotiation ($80K → $110K+ con scripts exactos), offer comparison (TC total: salary + bonus + equity + benefits), first 90 days plan (cómo brillar desde día 1). META FINAL: Conseguir offer de $100K+ (USA remote o local equivalente) en primeros 3 meses de búsqueda.</p>
+                        <div class="subject-topics">
+                            <span class="topic-tag">Job Search</span>
+                            <span class="topic-tag">Negotiation</span>
+                            <span class="topic-tag">Multiple Offers</span>
+                        </div>
+                        <div class="subject-footer">
+                            <span class="subject-hours">⏱️ 3 horas/día • 16 semanas</span>
+                            <span class="subject-difficulty medium">Intermedio</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>🚀 ¿Listo para Convertirte en el Mejor Data Analyst del Mundo?</h2>
+                <p>Únete a la universidad más intensiva de Data Science. 3 años de Python puro para dominar todo el stack que paga $80K-$200K.</p>
+                <div class="cta-buttons">
+                    <a href="../index.html#admision" class="btn btn-primary">Inscríbete Ahora</a>
+                    <a href="data-analysis-salaries.html" class="btn btn-secondary">Ver Salarios & Campo Laboral</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>ACADEMIA DE LA POLIS</h3>
+                    <p>La universidad online más intensiva de Latinoamérica. Aprende Python, ML, Deep Learning y Data Science al nivel de las mejores empresas del mundo.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Enlaces Rápidos</h4>
+                    <ul>
+                        <li><a href="../index.html">Inicio</a></li>
+                        <li><a href="../index.html#carreras">Carreras</a></li>
+                        <li><a href="../index.html#admision">Admisión</a></li>
+                        <li><a href="../index.html#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Carreras</h4>
+                    <ul>
+                        <li><a href="data-analysis.html">Data Analysis</a></li>
+                        <li><a href="#">Desarrollo Web (Próximamente)</a></li>
+                        <li><a href="#">Inteligencia Artificial (Próximamente)</a></li>
+                        <li><a href="#">UX/UI Design (Próximamente)</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <p>📧 contacto@academiadepolis.com</p>
+                    <p>📱 WhatsApp: +1 (555) 123-4567</p>
+                    <div class="social-links">
+                        <a href="#">LinkedIn</a>
+                        <a href="#">Twitter</a>
+                        <a href="#">GitHub</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 ACADEMIA DE LA POLIS. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Action Buttons -->
+    <a href="https://wa.me/1234567890" class="whatsapp-float" target="_blank">
+        <span class="wa-icon">💬</span>
+    </a>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/career.js"></script>
+</body>
+</html>
+

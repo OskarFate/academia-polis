@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Estudiante - ACADEMIA DE LA POLIS</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        .portal-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--light-color) 0%, white 100%);
+        }
+
+        .portal-header {
+            background: var(--gradient);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .portal-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .portal-logo h1 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .portal-user {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: white;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .btn-logout {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-logout:hover {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .portal-content {
+            padding: 3rem 0;
+        }
+
+        .welcome-banner {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .welcome-banner h2 {
+            font-size: 2rem;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-banner p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border-color: var(--primary-color);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .card-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-action {
+            display: inline-block;
+            background: var(--gradient);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .card-action:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(229, 115, 115, 0.3);
+        }
+
+        .card-action.disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .career-selection {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .career-selection h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark-color);
+        }
+
+        .career-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .career-option {
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .career-option:hover {
+            border-color: var(--primary-color);
+            background: var(--light-color);
+        }
+
+        .career-option.selected {
+            border-color: var(--primary-color);
+            background: var(--light-color);
+        }
+
+        .career-option.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .career-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .career-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .career-status {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .btn-enroll {
+            display: inline-block;
+            background: var(--gradient);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 10px;
+            border: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .btn-enroll:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(229, 115, 115, 0.3);
+        }
+
+        .btn-enroll:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .enrolled-career {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .enrolled-career h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .enrolled-career p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            margin-bottom: 2rem;
+        }
+
+        .enrolled-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .enrolled-actions a {
+            background: white;
+            color: var(--primary-color);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        .enrolled-actions a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .portal-header .container {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .career-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="portal-container">
+        <!-- Portal Header -->
+        <div class="portal-header">
+            <div class="container">
+                <div class="portal-logo">
+                    <h1>🏛️ ACADEMIA DE LA POLIS</h1>
+                    <p style="font-size: 0.85rem; opacity: 0.9; margin-top: 0.3rem;">"Saber para todos, poder para el pueblo."</p>
+                </div>
+                <div class="portal-user">
+                    <div class="user-avatar" id="user-avatar">?</div>
+                    <div>
+                        <div style="font-weight: 600;" id="user-name">Cargando...</div>
+                        <div style="font-size: 0.85rem; opacity: 0.9;" id="user-email"></div>
+                    </div>
+                    <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Portal Content -->
+        <div class="portal-content">
+            <div class="container">
+                <!-- Welcome Banner -->
+                <div class="welcome-banner">
+                    <h2>👋 ¡Bienvenido a tu Portal!</h2>
+                    <p>Aquí podrás gestionar tu carrera, ver tu progreso y acceder a todo el contenido educativo.</p>
+                </div>
+
+                <!-- Enrolled Career Section (Hidden by default) -->
+                <div id="enrolled-section" style="display: none;">
+                    <div class="enrolled-career">
+                        <h3>🎓 Tu Carrera Actual</h3>
+                        <p id="enrolled-career-name">Data Analysis & Python Mastery</p>
+                        <div class="enrolled-actions">
+                            <a href="../carreras/data-analysis-curriculum.html">📚 Ver Malla Curricular</a>
+                            <a href="../carreras/data-analysis-salaries.html">💰 Salarios & Campo</a>
+                            <a href="#" onclick="showProgress()">📈 Mi Progreso</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Career Selection (Shown if not enrolled) -->
+                <div id="selection-section">
+                    <div class="career-selection">
+                        <h3>🎯 Elige tu Carrera</h3>
+                        <p style="color: #666; margin-bottom: 2rem;">Selecciona la carrera que quieres estudiar. Es 100% gratis y puedes cambiar después.</p>
+                        
+                        <div class="career-options">
+                            <div class="career-option" data-career="data-analysis" onclick="selectCareer('data-analysis')">
+                                <div class="career-icon">🐍</div>
+                                <div class="career-name">Data Analysis & Python</div>
+                                <div class="career-status">✅ Disponible</div>
+                            </div>
+                            
+                            <div class="career-option disabled">
+                                <div class="career-icon">💻</div>
+                                <div class="career-name">Desarrollo Web Full Stack</div>
+                                <div class="career-status">🔜 Próximamente</div>
+                            </div>
+                            
+                            <div class="career-option disabled">
+                                <div class="career-icon">🤖</div>
+                                <div class="career-name">Inteligencia Artificial</div>
+                                <div class="career-status">🔜 Próximamente</div>
+                            </div>
+                            
+                            <div class="career-option disabled">
+                                <div class="career-icon">🎨</div>
+                                <div class="career-name">Diseño UX/UI</div>
+                                <div class="career-status">🔜 Próximamente</div>
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center;">
+                            <button class="btn-enroll" id="enroll-btn" onclick="enrollCareer()" disabled>
+                                ✨ Inscribirme en esta Carrera
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Cards -->
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="card-icon">📚</div>
+                        <div class="card-title">Mis Materias</div>
+                        <div class="card-description">
+                            Accede a todas las materias de tu carrera, contenido, proyectos y recursos.
+                        </div>
+                        <a href="#" class="card-action" id="subjects-link">Ver Materias</a>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-icon">📈</div>
+                        <div class="card-title">Mi Progreso</div>
+                        <div class="card-description">
+                            Sigue tu avance, materias completadas y certificados obtenidos.
+                        </div>
+                        <a href="#" class="card-action" onclick="showProgress()">Ver Progreso</a>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-icon">💝</div>
+                        <div class="card-title">Apoyar el Proyecto</div>
+                        <div class="card-description">
+                            ¿Te está ayudando? Considera hacer una donación voluntaria para mantenerlo gratis.
+                        </div>
+                        <a href="../index.html#donaciones" class="card-action">💝 Donar</a>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-icon">👥</div>
+                        <div class="card-title">Comunidad</div>
+                        <div class="card-description">
+                            Únete a Discord, conoce otros estudiantes y comparte tu progreso.
+                        </div>
+                        <a href="#" class="card-action">Unirse</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        let selectedCareer = null;
+
+        // Verificar autenticación al cargar
+        window.addEventListener('DOMContentLoaded', async () => {
+            if (!authManager) {
+                setTimeout(() => checkAuth(), 500);
+            } else {
+                await checkAuth();
+            }
+        });
+
+        async function checkAuth() {
+            if (!authManager.isAuthenticated()) {
+                window.location.href = '../login.html';
+                return;
+            }
+
+            // Cargar datos del usuario
+            const profile = await authManager.getStudentProfile();
+            
+            if (profile) {
+                document.getElementById('user-name').textContent = profile.full_name || 'Estudiante';
+                document.getElementById('user-email').textContent = profile.email;
+                document.getElementById('user-avatar').textContent = (profile.full_name || 'E')[0].toUpperCase();
+
+                // Si tiene carrera inscrita
+                if (profile.enrolled_career) {
+                    document.getElementById('selection-section').style.display = 'none';
+                    document.getElementById('enrolled-section').style.display = 'block';
+                    document.getElementById('subjects-link').classList.remove('disabled');
+                    document.getElementById('subjects-link').href = '../carreras/data-analysis-curriculum.html';
+                } else {
+                    document.getElementById('selection-section').style.display = 'block';
+                    document.getElementById('enrolled-section').style.display = 'none';
+                    document.getElementById('subjects-link').classList.add('disabled');
+                }
+            }
+        }
+
+        function selectCareer(career) {
+            selectedCareer = career;
+            
+            // Quitar selección de todas
+            document.querySelectorAll('.career-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Seleccionar la elegida
+            document.querySelector(`[data-career="${career}"]`).classList.add('selected');
+            
+            // Habilitar botón
+            document.getElementById('enroll-btn').disabled = false;
+        }
+
+        async function enrollCareer() {
+            if (!selectedCareer) return;
+            
+            const btn = document.getElementById('enroll-btn');
+            btn.disabled = true;
+            btn.textContent = 'Inscribiendo...';
+            
+            const result = await authManager.enrollCareer(selectedCareer);
+            
+            if (result.success) {
+                authManager.showNotification('¡Felicitaciones! Te has inscrito exitosamente.', 'success');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+            } else {
+                authManager.showNotification(result.message, 'error');
+                btn.disabled = false;
+                btn.textContent = '✨ Inscribirme en esta Carrera';
+            }
+        }
+
+        function showProgress() {
+            authManager.showNotification('Sistema de progreso en desarrollo. Próximamente disponible.', 'info');
+        }
+
+        async function logout() {
+            if (confirm('¿Seguro que quieres cerrar sesión?')) {
+                await authManager.signOut();
+            }
+        }
+
+        // Estilos de notificación
+        const style = document.createElement('style');
+        style.textContent = `
+            .notification {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: white;
+                color: #333;
+                padding: 1.5rem 2rem;
+                border-radius: 10px;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+                z-index: 10000;
+                opacity: 0;
+                transform: translateY(-20px);
+                transition: all 0.3s ease;
+                max-width: 400px;
+                font-weight: 600;
+            }
+
+            .notification.show {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .notification-success {
+                border-left: 5px solid #28a745;
+            }
+
+            .notification-error {
+                border-left: 5px solid #dc3545;
+            }
+
+            .notification-info {
+                border-left: 5px solid #17a2b8;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
