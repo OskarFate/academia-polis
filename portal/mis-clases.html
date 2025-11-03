@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Clases - ACADEMIA DE LA POLIS</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #fce4ec 0%, white 100%);
+            min-height: 100vh;
+        }
+
+        .page-header {
+            background: var(--gradient);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .page-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(-5px);
+        }
+
+        .content-section {
+            padding: 3rem 0;
+        }
+
+        .week-selector {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .week-nav {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .week-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .week-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(229, 115, 115, 0.3);
+        }
+
+        .week-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .week-info {
+            text-align: center;
+        }
+
+        .week-number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+
+        .week-dates {
+            color: #666;
+            font-size: 0.95rem;
+            margin-top: 0.3rem;
+        }
+
+        .stats-bar {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+        }
+
+        .classes-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .class-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+            border-left: 5px solid var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .class-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            background: linear-gradient(135deg, #ffffff 0%, #fce4ec 100%);
+        }
+
+        .class-card.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+            border-left-color: #999;
+            background: #f5f5f5;
+        }
+
+        .class-card.locked:hover {
+            transform: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            background: #f5f5f5;
+        }
+
+        .class-card.completed {
+            border-left-color: #4caf50;
+            background: #f1f8f4;
+        }
+
+        .class-info {
+            flex: 1;
+        }
+
+        .class-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .class-number {
+            background: var(--gradient);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .class-card.completed .class-number {
+            background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+        }
+
+        .class-card.locked .class-number {
+            background: #999;
+        }
+
+        .class-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+        .class-meta {
+            display: flex;
+            gap: 2rem;
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .class-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .class-status {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .status-available {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .status-completed {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-locked {
+            background: #eeeeee;
+            color: #999;
+        }
+
+        .status-in-progress {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .class-progress {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.5rem;
+            min-width: 120px;
+        }
+
+        .progress-percent {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--gradient);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .class-card.completed .progress-bar-fill {
+            background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+        }
+
+        .class-arrow {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            transition: all 0.3s;
+        }
+
+        .class-card:hover .class-arrow {
+            transform: translateX(10px);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .empty-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .semester-info {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .semester-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .semester-duration {
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .week-selector {
+                flex-direction: column;
+            }
+
+            .stats-bar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-header">
+        <div class="container">
+            <div>
+                <h1>📅 Mis Clases Semanales</h1>
+                <p style="margin-top: 0.5rem; opacity: 0.9;">Cronograma personalizado desde tu fecha de inicio</p>
+            </div>
+            <a href="estudiante.html" class="back-btn">
+                ← Volver al Portal
+            </a>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <div class="container">
+            <div id="loading" class="loading">
+                🔄 Generando tu cronograma personalizado...
+            </div>
+            
+            <div id="content" style="display: none;">
+                <!-- Info del semestre actual -->
+                <div class="semester-info">
+                    <div class="semester-title" id="semester-title">📖 Semestre 1 - Fundamentos</div>
+                    <div class="semester-duration" id="semester-duration">6 meses • 24 semanas</div>
+                </div>
+
+                <!-- Estadísticas -->
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <div class="stat-value" id="total-classes">0</div>
+                        <div class="stat-label">Total de Clases</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="completed-classes">0</div>
+                        <div class="stat-label">Completadas</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="current-week-display">1</div>
+                        <div class="stat-label">Semana Actual</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="overall-progress">0%</div>
+                        <div class="stat-label">Progreso Total</div>
+                    </div>
+                </div>
+
+                <!-- Selector de semana -->
+                <div class="week-selector">
+                    <button class="week-btn" onclick="previousWeek()" id="prev-week-btn">← Anterior</button>
+                    <div class="week-info">
+                        <div class="week-number" id="week-number">Semana 1</div>
+                        <div class="week-dates" id="week-dates">1 - 7 Nov 2025</div>
+                    </div>
+                    <button class="week-btn" onclick="nextWeek()" id="next-week-btn">Siguiente →</button>
+                </div>
+
+                <!-- Grid de clases -->
+                <div class="classes-grid" id="classes-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        // Definición de materias por semestre (mismo orden que en mis-materias.html)
+        const subjectsBySemester = {
+            1: [
+                { id: 'python-basics', name: 'Python Básico', hours: 40 },
+                { id: 'data-structures', name: 'Estructuras de Datos', hours: 35 },
+                { id: 'algorithms', name: 'Algoritmos', hours: 30 },
+                { id: 'git-github', name: 'Git & GitHub', hours: 20 },
+                { id: 'linux-basics', name: 'Linux Básico', hours: 25 },
+                { id: 'sql-fundamentals', name: 'SQL Fundamentos', hours: 30 },
+                { id: 'statistics-1', name: 'Estadística I', hours: 35 }
+            ],
+            2: [
+                { id: 'python-advanced', name: 'Python Avanzado', hours: 40 },
+                { id: 'pandas-numpy', name: 'Pandas & NumPy', hours: 45 },
+                { id: 'data-viz', name: 'Visualización de Datos', hours: 35 },
+                { id: 'sql-advanced', name: 'SQL Avanzado', hours: 35 },
+                { id: 'statistics-2', name: 'Estadística II', hours: 40 },
+                { id: 'probability', name: 'Probabilidad', hours: 30 },
+                { id: 'linear-algebra', name: 'Álgebra Lineal', hours: 35 }
+            ],
+            3: [
+                { id: 'ml-basics', name: 'Machine Learning Básico', hours: 50 },
+                { id: 'supervised-learning', name: 'Aprendizaje Supervisado', hours: 45 },
+                { id: 'unsupervised-learning', name: 'Aprendizaje No Supervisado', hours: 40 },
+                { id: 'sklearn', name: 'Scikit-Learn', hours: 35 },
+                { id: 'model-evaluation', name: 'Evaluación de Modelos', hours: 30 },
+                { id: 'feature-engineering', name: 'Feature Engineering', hours: 35 },
+                { id: 'time-series', name: 'Series Temporales', hours: 40 }
+            ],
+            4: [
+                { id: 'deep-learning', name: 'Deep Learning', hours: 50 },
+                { id: 'neural-networks', name: 'Redes Neuronales', hours: 45 },
+                { id: 'tensorflow-keras', name: 'TensorFlow & Keras', hours: 40 },
+                { id: 'computer-vision', name: 'Visión por Computadora', hours: 35 },
+                { id: 'nlp', name: 'Procesamiento de Lenguaje Natural', hours: 40 },
+                { id: 'recommendation-systems', name: 'Sistemas de Recomendación', hours: 30 },
+                { id: 'ab-testing', name: 'A/B Testing', hours: 25 }
+            ],
+            5: [
+                { id: 'big-data', name: 'Big Data Fundamentals', hours: 45 },
+                { id: 'spark', name: 'Apache Spark', hours: 40 },
+                { id: 'hadoop', name: 'Hadoop Ecosystem', hours: 35 },
+                { id: 'aws-data', name: 'AWS para Data Science', hours: 40 },
+                { id: 'docker-kubernetes', name: 'Docker & Kubernetes', hours: 35 },
+                { id: 'mlops', name: 'MLOps', hours: 40 },
+                { id: 'data-engineering', name: 'Ingeniería de Datos', hours: 45 }
+            ],
+            6: [
+                { id: 'business-intelligence', name: 'Business Intelligence', hours: 40 },
+                { id: 'tableau-powerbi', name: 'Tableau & Power BI', hours: 35 },
+                { id: 'data-storytelling', name: 'Data Storytelling', hours: 30 },
+                { id: 'ethics-ai', name: 'Ética en IA', hours: 25 },
+                { id: 'capstone-project', name: 'Proyecto Final', hours: 80 },
+                { id: 'career-prep', name: 'Preparación Profesional', hours: 30 },
+                { id: 'portfolio-building', name: 'Construcción de Portfolio', hours: 40 }
+            ]
+        };
+
+        const semesterNames = {
+            1: '📖 Semestre 1 - Fundamentos',
+            2: '📊 Semestre 2 - Análisis de Datos',
+            3: '🤖 Semestre 3 - Machine Learning',
+            4: '📈 Semestre 4 - Advanced Analytics',
+            5: '🚀 Semestre 5 - Big Data & Cloud',
+            6: '🎯 Semestre 6 - Especialización'
+        };
+
+        let currentWeek = 1;
+        let startDate = null;
+        let allClasses = [];
+        let progressMap = {};
+        let currentSemester = 1;
+
+        async function loadSchedule() {
+            await authManager.waitForReady();
+
+            if (!authManager.isAuthenticated()) {
+                window.location.href = '../login.html';
+                return;
+            }
+
+            // Obtener fecha de inicio del estudiante
+            const { data: student } = await supabase
+                .from('students')
+                .select('created_at, enrolled_career')
+                .eq('user_id', authManager.user.id)
+                .single();
+
+            if (student) {
+                startDate = new Date(student.created_at);
+            } else {
+                // Si no existe, usar la fecha actual
+                startDate = new Date();
+            }
+
+            // Obtener progreso
+            const progress = await authManager.getSubjectProgress();
+            progress.forEach(p => {
+                progressMap[p.subject_id] = p;
+            });
+
+            // Determinar semestre actual (basado en materias completadas)
+            currentSemester = getCurrentSemester();
+
+            // Generar clases
+            generateClasses();
+
+            // Calcular semana actual
+            const today = new Date();
+            const weeksDiff = Math.floor((today - startDate) / (7 * 24 * 60 * 60 * 1000));
+            currentWeek = Math.max(1, Math.min(weeksDiff + 1, 24));
+
+            // Actualizar UI
+            updateSemesterInfo();
+            updateStats();
+            renderWeek(currentWeek);
+
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
+        }
+
+        function getCurrentSemester() {
+            // Calcular basado en materias completadas
+            for (let sem = 1; sem <= 6; sem++) {
+                const subjects = subjectsBySemester[sem];
+                const completedCount = subjects.filter(s => progressMap[s.id]?.completed).length;
+                
+                if (completedCount < subjects.length) {
+                    return sem;
+                }
+            }
+            return 6; // Último semestre
+        }
+
+        function generateClasses() {
+            allClasses = [];
+            const subjects = subjectsBySemester[currentSemester];
+            
+            // Generar 24 semanas (6 meses) de clases
+            // Cada semana tiene UNA clase de CADA materia
+            for (let week = 1; week <= 24; week++) {
+                subjects.forEach((subject, index) => {
+                    const classDate = new Date(startDate);
+                    classDate.setDate(classDate.getDate() + ((week - 1) * 7));
+                    
+                    const classNumber = (week - 1) * subjects.length + index + 1;
+                    
+                    allClasses.push({
+                        classNumber: classNumber,
+                        week: week,
+                        subjectId: subject.id,
+                        subjectName: subject.name,
+                        durationHours: subject.hours,
+                        semester: currentSemester,
+                        startDate: classDate,
+                        status: getClassStatus(classDate, subject.id),
+                        progress: progressMap[subject.id]?.progress_percentage || 0
+                    });
+                });
+            }
+        }
+
+        function getClassStatus(classDate, subjectId) {
+            const today = new Date();
+            const progress = progressMap[subjectId];
+
+            if (progress?.completed) {
+                return 'completed';
+            }
+
+            if (classDate > today) {
+                return 'locked';
+            }
+
+            if (progress?.progress_percentage > 0) {
+                return 'in-progress';
+            }
+
+            return 'available';
+        }
+
+        function updateSemesterInfo() {
+            document.getElementById('semester-title').textContent = semesterNames[currentSemester];
+            document.getElementById('semester-duration').textContent = '6 meses • 24 semanas • ' + subjectsBySemester[currentSemester].length + ' materias';
+        }
+
+        function updateStats() {
+            const totalClasses = allClasses.length;
+            const completedClasses = allClasses.filter(c => c.status === 'completed').length;
+            const overallProgress = totalClasses > 0 ? Math.round((completedClasses / totalClasses) * 100) : 0;
+
+            document.getElementById('total-classes').textContent = totalClasses;
+            document.getElementById('completed-classes').textContent = completedClasses;
+            document.getElementById('current-week-display').textContent = currentWeek;
+            document.getElementById('overall-progress').textContent = overallProgress + '%';
+        }
+
+        function renderWeek(week) {
+            const grid = document.getElementById('classes-grid');
+            grid.innerHTML = '';
+
+            // Obtener clases de esta semana
+            const weekClasses = allClasses.filter(c => c.week === week);
+
+            if (weekClasses.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📅</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--dark-color); margin-bottom: 0.5rem;">
+                            No hay clases esta semana
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            // Actualizar navegación
+            document.getElementById('week-number').textContent = `Semana ${week}`;
+            
+            const weekStart = new Date(startDate);
+            weekStart.setDate(weekStart.getDate() + ((week - 1) * 7));
+            const weekEnd = new Date(weekStart);
+            weekEnd.setDate(weekEnd.getDate() + 6);
+            
+            document.getElementById('week-dates').textContent = formatDateRange(weekStart, weekEnd);
+
+            // Botones de navegación
+            document.getElementById('prev-week-btn').disabled = week === 1;
+            document.getElementById('next-week-btn').disabled = week === 24;
+
+            // Renderizar clases
+            weekClasses.forEach(classItem => {
+                const statusLabels = {
+                    'available': '🔓 Disponible',
+                    'in-progress': '📚 En progreso',
+                    'completed': '✅ Completada',
+                    'locked': '🔒 Bloqueada'
+                };
+
+                const statusClass = `status-${classItem.status}`;
+                const cardClass = classItem.status === 'locked' ? 'class-card locked' : 
+                                  classItem.status === 'completed' ? 'class-card completed' : 'class-card';
+                const clickable = classItem.status !== 'locked' ? `onclick="openClass('${classItem.subjectId}', '${classItem.subjectName}')"` : '';
+
+                grid.innerHTML += `
+                    <div class="${cardClass}" ${clickable}>
+                        <div class="class-info">
+                            <div class="class-header">
+                                <div class="class-number">Clase ${classItem.classNumber}</div>
+                                <div class="class-name">${classItem.subjectName}</div>
+                            </div>
+                            <div class="class-meta">
+                                <div class="class-meta-item">
+                                    <span>📅</span>
+                                    <span>${formatDate(classItem.startDate)}</span>
+                                </div>
+                                <div class="class-meta-item">
+                                    <span>⏱️</span>
+                                    <span>${classItem.durationHours}h</span>
+                                </div>
+                                <div class="class-meta-item">
+                                    <span>📖</span>
+                                    <span>Semestre ${classItem.semester}</span>
+                                </div>
+                            </div>
+                            <div class="class-status ${statusClass}">${statusLabels[classItem.status]}</div>
+                        </div>
+                        <div class="class-progress">
+                            <div class="progress-percent">${classItem.status === 'locked' ? '🔒' : classItem.progress + '%'}</div>
+                            ${classItem.status !== 'locked' ? `
+                            <div class="progress-bar-container">
+                                <div class="progress-bar-fill" style="width: ${classItem.progress}%"></div>
+                            </div>
+                            ` : ''}
+                        </div>
+                        <div class="class-arrow">${classItem.status === 'locked' ? '🔒' : '→'}</div>
+                    </div>
+                `;
+            });
+        }
+
+        function previousWeek() {
+            if (currentWeek > 1) {
+                currentWeek--;
+                renderWeek(currentWeek);
+                updateStats();
+            }
+        }
+
+        function nextWeek() {
+            if (currentWeek < 24) {
+                currentWeek++;
+                renderWeek(currentWeek);
+                updateStats();
+            }
+        }
+
+        function formatDate(date) {
+            const options = { day: 'numeric', month: 'short', year: 'numeric' };
+            return date.toLocaleDateString('es-ES', options);
+        }
+
+        function formatDateRange(start, end) {
+            const startStr = start.getDate() + ' ' + start.toLocaleDateString('es-ES', { month: 'short' });
+            const endStr = end.getDate() + ' ' + end.toLocaleDateString('es-ES', { month: 'short', year: 'numeric' });
+            return startStr + ' - ' + endStr;
+        }
+
+        function openClass(subjectId, subjectName) {
+            // Redirigir a la página del curso
+            window.location.href = `curso.html?id=${subjectId}&name=${encodeURIComponent(subjectName)}`;
+        }
+
+        window.addEventListener('DOMContentLoaded', loadSchedule);
+    </script>
+</body>
+</html>
