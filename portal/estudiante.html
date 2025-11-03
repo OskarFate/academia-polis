@@ -638,17 +638,19 @@
                            authManager.currentUser.user_metadata?.full_name || 
                            authManager.currentUser.email.split('@')[0];
             const email = profile?.email || authManager.currentUser.email;
-            const firstLetter = fullName[0].toUpperCase();
+            
+            // Usar avatar personalizado si existe, sino usar primera letra
+            const avatarDisplay = profile?.avatar_url || fullName[0].toUpperCase();
             
             // Actualizar elementos principales
             document.getElementById('user-name').textContent = fullName;
             document.getElementById('user-email').textContent = email;
-            document.getElementById('user-avatar').textContent = firstLetter;
+            document.getElementById('user-avatar').textContent = avatarDisplay;
             
             // Actualizar elementos del dropdown
             document.getElementById('dropdown-name').textContent = fullName;
             document.getElementById('dropdown-email').textContent = email;
-            document.getElementById('dropdown-avatar').textContent = firstLetter;
+            document.getElementById('dropdown-avatar').textContent = avatarDisplay;
 
             // Cargar y mostrar racha SIEMPRE (incluso si es 0)
             const stats = await authManager.getStudentStats();

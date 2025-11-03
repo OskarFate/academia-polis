@@ -508,6 +508,72 @@
         </div>
     </div>
 
+    <!-- Modal para cambiar foto de perfil -->
+    <div id="modal-avatar" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">📸 Cambiar Foto de Perfil</div>
+            <div class="modal-body">
+                <p style="margin-bottom: 1rem; color: #666;">Selecciona un emoji como tu foto de perfil:</p>
+                <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.5rem; margin-bottom: 1rem;">
+                    <div class="emoji-option" onclick="selectEmoji('😀')">😀</div>
+                    <div class="emoji-option" onclick="selectEmoji('😎')">😎</div>
+                    <div class="emoji-option" onclick="selectEmoji('🤓')">🤓</div>
+                    <div class="emoji-option" onclick="selectEmoji('😊')">😊</div>
+                    <div class="emoji-option" onclick="selectEmoji('🚀')">🚀</div>
+                    <div class="emoji-option" onclick="selectEmoji('⭐')">⭐</div>
+                    <div class="emoji-option" onclick="selectEmoji('🎯')">🎯</div>
+                    <div class="emoji-option" onclick="selectEmoji('💡')">💡</div>
+                    <div class="emoji-option" onclick="selectEmoji('🔥')">🔥</div>
+                    <div class="emoji-option" onclick="selectEmoji('💪')">💪</div>
+                    <div class="emoji-option" onclick="selectEmoji('🦸')">🦸</div>
+                    <div class="emoji-option" onclick="selectEmoji('🧠')">🧠</div>
+                    <div class="emoji-option" onclick="selectEmoji('👨‍💻')">👨‍💻</div>
+                    <div class="emoji-option" onclick="selectEmoji('👩‍💻')">👩‍💻</div>
+                    <div class="emoji-option" onclick="selectEmoji('🐱')">🐱</div>
+                    <div class="emoji-option" onclick="selectEmoji('🐶')">🐶</div>
+                    <div class="emoji-option" onclick="selectEmoji('🦊')">🦊</div>
+                    <div class="emoji-option" onclick="selectEmoji('🐼')">🐼</div>
+                    <div class="emoji-option" onclick="selectEmoji('🦁')">🦁</div>
+                    <div class="emoji-option" onclick="selectEmoji('🐯')">🐯</div>
+                    <div class="emoji-option" onclick="selectEmoji('🦄')">🦄</div>
+                    <div class="emoji-option" onclick="selectEmoji('🐉')">🐉</div>
+                    <div class="emoji-option" onclick="selectEmoji('🌟')">🌟</div>
+                    <div class="emoji-option" onclick="selectEmoji('✨')">✨</div>
+                </div>
+                <div style="text-align: center; margin-top: 1rem;">
+                    <p style="color: #666; font-size: 0.9rem;">Avatar seleccionado:</p>
+                    <div id="selected-emoji" style="font-size: 3rem; margin: 0.5rem 0;">😀</div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" onclick="closeModal('modal-avatar')">Cancelar</button>
+                <button class="modal-btn confirm" style="background: var(--primary-color);" onclick="saveAvatar()">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .emoji-option {
+            font-size: 2rem;
+            padding: 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .emoji-option:hover {
+            background: #f0f0f0;
+            transform: scale(1.1);
+        }
+
+        .emoji-option.selected {
+            background: var(--light-color);
+            border-color: var(--primary-color);
+        }
+    </style>
+
     <!-- Modal para renunciar carrera -->
     <div id="modal-unenroll" class="modal">
         <div class="modal-content">
@@ -547,10 +613,12 @@
                            authManager.currentUser.user_metadata?.full_name || 
                            authManager.currentUser.email.split('@')[0];
             const email = currentProfile?.email || authManager.currentUser.email;
-            const firstLetter = fullName[0].toUpperCase();
+            
+            // Usar avatar personalizado si existe, sino usar primera letra
+            const avatarDisplay = currentProfile?.avatar_url || fullName[0].toUpperCase();
 
             // Actualizar info básica
-            document.getElementById('profile-avatar').textContent = firstLetter;
+            document.getElementById('profile-avatar').textContent = avatarDisplay;
             document.getElementById('profile-name').textContent = fullName;
             document.getElementById('profile-email').textContent = email;
             document.getElementById('current-email').textContent = email;
@@ -598,8 +666,46 @@
             container.style.display = 'block';
         }
 
+        let selectedEmojiValue = '😀';
+
         function changeAvatar() {
-            authManager.showNotification('🚧 Función en desarrollo. Próximamente podrás subir tu foto de perfil.', 'info');
+            // Cargar el avatar actual si existe
+            const currentAvatar = document.getElementById('profile-avatar').textContent;
+            if (currentAvatar.length === 1 || /\p{Emoji}/u.test(currentAvatar)) {
+                selectedEmojiValue = currentAvatar;
+                document.getElementById('selected-emoji').textContent = currentAvatar;
+            }
+            openModal('modal-avatar');
+        }
+
+        function selectEmoji(emoji) {
+            selectedEmojiValue = emoji;
+            document.getElementById('selected-emoji').textContent = emoji;
+            
+            // Quitar selección de todos
+            document.querySelectorAll('.emoji-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Seleccionar el clickeado
+            event.target.classList.add('selected');
+        }
+
+        async function saveAvatar() {
+            const supabase = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+            
+            const { error } = await supabase
+                .from('students')
+                .update({ avatar_url: selectedEmojiValue })
+                .eq('user_id', authManager.currentUser.id);
+
+            if (error) {
+                authManager.showNotification('❌ Error al actualizar foto de perfil', 'error');
+            } else {
+                authManager.showNotification('✅ Foto de perfil actualizada', 'success');
+                document.getElementById('profile-avatar').textContent = selectedEmojiValue;
+                closeModal('modal-avatar');
+            }
         }
 
         function changeName() {
