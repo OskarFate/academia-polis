@@ -36,6 +36,41 @@
             gap: 1rem;
         }
 
+        /* Racha de días */
+        .streak-display {
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+        }
+
+        .streak-icon {
+            font-size: 1.3rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .streak-number {
+            font-size: 1.3rem;
+        }
+
+        .streak-label {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        /* Avatar y menú desplegable */
+        .user-menu-container {
+            position: relative;
+        }
+
         .user-avatar {
             width: 45px;
             height: 45px;
@@ -47,22 +82,107 @@
             justify-content: center;
             font-weight: 700;
             font-size: 1.2rem;
-        }
-
-        .btn-logout {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: 2px solid white;
-            padding: 0.6rem 1.5rem;
-            border-radius: 10px;
             cursor: pointer;
-            font-weight: 600;
             transition: all 0.3s;
+            border: 3px solid rgba(255,255,255,0.5);
         }
 
-        .btn-logout:hover {
+        .user-avatar:hover {
+            transform: scale(1.1);
+            border-color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .user-info-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Menú desplegable */
+        .user-dropdown {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            min-width: 280px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .user-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-header {
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .dropdown-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
             background: white;
             color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .dropdown-name {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .dropdown-email {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: #e0e0e0;
+            margin: 0.5rem 0;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background: #f5f5f5;
+        }
+
+        .dropdown-item.danger {
+            color: #dc3545;
+        }
+
+        .dropdown-item.danger:hover {
+            background: #fff5f5;
+        }
+
+        .dropdown-item span {
+            font-size: 1.2rem;
         }
 
         .portal-content {
@@ -304,12 +424,45 @@
                     <p style="font-size: 0.85rem; opacity: 0.9; margin-top: 0.3rem;">"Saber para todos, poder para el pueblo."</p>
                 </div>
                 <div class="portal-user">
-                    <div class="user-avatar" id="user-avatar">?</div>
-                    <div>
+                    <!-- Racha de días -->
+                    <div class="streak-display" id="streak-display" style="display: none;">
+                        <span class="streak-icon">🔥</span>
+                        <span class="streak-number" id="streak-number">0</span>
+                        <span class="streak-label">días</span>
+                    </div>
+                    
+                    <!-- Avatar con menú desplegable -->
+                    <div class="user-menu-container">
+                        <div class="user-avatar" id="user-avatar" onclick="toggleUserMenu()">?</div>
+                        <div class="user-dropdown" id="user-dropdown">
+                            <div class="dropdown-header">
+                                <div class="dropdown-avatar" id="dropdown-avatar">?</div>
+                                <div>
+                                    <div class="dropdown-name" id="dropdown-name">Cargando...</div>
+                                    <div class="dropdown-email" id="dropdown-email">email...</div>
+                                </div>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <a href="evaluaciones.html" class="dropdown-item">
+                                <span>📝</span> Mis Evaluaciones
+                            </a>
+                            <a href="progreso.html" class="dropdown-item">
+                                <span>📊</span> Mi Progreso
+                            </a>
+                            <a href="#" class="dropdown-item" onclick="showStreakDetails(); return false;">
+                                <span>🔥</span> Racha y Estadísticas
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item danger" onclick="logout(); return false;">
+                                <span>🚪</span> Cerrar Sesión
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="user-info-text">
                         <div style="font-weight: 600;" id="user-name">Cargando...</div>
                         <div style="font-size: 0.85rem; opacity: 0.9;" id="user-email"></div>
                     </div>
-                    <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
                 </div>
             </div>
         </div>
@@ -418,46 +571,125 @@
         </div>
     </div>
 
-    <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/config.js"></script>
     <script src="../js/auth.js"></script>
     <script>
         let selectedCareer = null;
 
         // Verificar autenticación al cargar
         window.addEventListener('DOMContentLoaded', async () => {
+            // Esperar a que authManager esté listo
             if (!authManager) {
-                setTimeout(() => checkAuth(), 500);
-            } else {
-                await checkAuth();
+                await new Promise(resolve => setTimeout(resolve, 1000));
             }
-        });
-
-        async function checkAuth() {
-            if (!authManager.isAuthenticated()) {
+            
+            if (!authManager) {
+                console.error('AuthManager no se inicializó');
                 window.location.href = '../login.html';
                 return;
             }
 
-            // Cargar datos del usuario
-            const profile = await authManager.getStudentProfile();
-            
-            if (profile) {
-                document.getElementById('user-name').textContent = profile.full_name || 'Estudiante';
-                document.getElementById('user-email').textContent = profile.email;
-                document.getElementById('user-avatar').textContent = (profile.full_name || 'E')[0].toUpperCase();
+            await authManager.waitForReady();
+            await checkAuth();
+        });
 
-                // Si tiene carrera inscrita
-                if (profile.enrolled_career) {
-                    document.getElementById('selection-section').style.display = 'none';
-                    document.getElementById('enrolled-section').style.display = 'block';
-                    document.getElementById('subjects-link').classList.remove('disabled');
-                    document.getElementById('subjects-link').href = '../carreras/data-analysis-curriculum.html';
-                } else {
-                    document.getElementById('selection-section').style.display = 'block';
-                    document.getElementById('enrolled-section').style.display = 'none';
-                    document.getElementById('subjects-link').classList.add('disabled');
-                }
+        // Toggle menú de usuario
+        function toggleUserMenu() {
+            const dropdown = document.getElementById('user-dropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // Cerrar menú al hacer click fuera
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('user-dropdown');
+            const avatar = document.getElementById('user-avatar');
+            if (dropdown && !dropdown.contains(e.target) && e.target !== avatar) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+
+
+        // Mostrar detalles de racha
+        async function showStreakDetails() {
+            const stats = await authManager.getStudentStats();
+            if (stats) {
+                authManager.showNotification(
+                    `🔥 Racha actual: ${stats.current_streak} días\n` +
+                    `🏆 Mejor racha: ${stats.longest_streak} días\n` +
+                    `📚 Lecciones completadas: ${stats.total_lessons_completed}\n` +
+                    `⏱️ Tiempo total: ${Math.floor(stats.total_time_minutes / 60)} horas`,
+                    'info'
+                );
+            }
+        }
+
+        async function checkAuth() {
+            if (!authManager || !authManager.isAuthenticated()) {
+                console.log('No autenticado, redirigiendo al login...');
+                window.location.href = '../login.html';
+                return;
+            }
+            
+            console.log('Usuario autenticado:', authManager.currentUser.email);
+
+            // Cargar datos del usuario
+            let profile = await authManager.getStudentProfile();
+            
+            // Si no existe perfil, crearlo
+            if (!profile) {
+                console.log('Perfil no existe, creando...');
+                const userName = authManager.currentUser.user_metadata?.full_name || 
+                                authManager.currentUser.email.split('@')[0];
+                
+                await authManager.createStudentProfile(
+                    authManager.currentUser.id,
+                    userName,
+                    authManager.currentUser.email
+                );
+                
+                // Intentar cargar de nuevo
+                profile = await authManager.getStudentProfile();
+            }
+            
+            // Usar datos de auth si no hay perfil
+            const fullName = profile?.full_name || 
+                           authManager.currentUser.user_metadata?.full_name || 
+                           authManager.currentUser.email.split('@')[0];
+            const email = profile?.email || authManager.currentUser.email;
+            const firstLetter = fullName[0].toUpperCase();
+            
+            // Actualizar elementos principales
+            document.getElementById('user-name').textContent = fullName;
+            document.getElementById('user-email').textContent = email;
+            document.getElementById('user-avatar').textContent = firstLetter;
+            
+            // Actualizar elementos del dropdown
+            document.getElementById('dropdown-name').textContent = fullName;
+            document.getElementById('dropdown-email').textContent = email;
+            document.getElementById('dropdown-avatar').textContent = firstLetter;
+
+            // Cargar y mostrar racha SIEMPRE (incluso si es 0)
+            const stats = await authManager.getStudentStats();
+            if (stats) {
+                const streakDisplay = document.getElementById('streak-display');
+                const streakNumber = document.getElementById('streak-number');
+                
+                streakNumber.textContent = stats.current_streak || 0;
+                streakDisplay.style.display = 'flex'; // Siempre mostrar
+            }
+
+            // Si tiene carrera inscrita
+            if (profile && profile.enrolled_career) {
+                document.getElementById('selection-section').style.display = 'none';
+                document.getElementById('enrolled-section').style.display = 'block';
+                document.getElementById('subjects-link').classList.remove('disabled');
+                document.getElementById('subjects-link').href = '../carreras/data-analysis-curriculum.html';
+            } else {
+                document.getElementById('selection-section').style.display = 'block';
+                document.getElementById('enrolled-section').style.display = 'none';
+                document.getElementById('subjects-link').classList.add('disabled');
             }
         }
 

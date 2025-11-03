@@ -296,8 +296,8 @@
         </div>
     </div>
 
-    <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
     <script src="js/auth.js"></script>
     <script>
         // Cambiar tabs
@@ -354,10 +354,14 @@
             const result = await authManager.signIn(email, password);
             
             if (result.success) {
+                console.log('Login exitoso, usuario:', result.user.email);
                 showAlert(result.message, 'success');
-                setTimeout(() => {
-                    window.location.href = 'portal/estudiante.html';
-                }, 1500);
+                
+                // Esperar un poco para que se guarde la sesión
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                console.log('Redirigiendo al portal...');
+                window.location.href = 'portal/estudiante.html';
             } else {
                 showAlert(result.message, 'error');
                 btn.disabled = false;

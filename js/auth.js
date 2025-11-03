@@ -1,33 +1,13 @@
-// ============================================
-// SUPABASE CONFIGURATION
-// ============================================
-
-// INSTRUCCIONES DE CONFIGURACIÓN:
-// 1. Crea una cuenta en https://supabase.com
-// 2. Crea un nuevo proyecto
-// 3. Ve a Settings > API
-// 4. Copia tu Project URL y anon/public key
-// 5. Reemplaza los valores abajo con tus credenciales reales
-
-const SUPABASE_CONFIG = {
-    url: 'https://bajkdvhooousgtahuslp.supabase.co',
-    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJhamtkdmhvb291c2d0YWh1c2xwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIxMzU2MzcsImV4cCI6MjA3NzcxMTYzN30.LtfTHTYysZRnG6NALQYRvD0ofurntS9aljOXuAVw2sM'
-};
-
-// Inicializar cliente de Supabase
 const supabase = window.supabase.createClient(
     SUPABASE_CONFIG.url,
     SUPABASE_CONFIG.anonKey
 );
 
-// ============================================
-// AUTHENTICATION MANAGER
-// ============================================
-
 class AuthManager {
     constructor() {
         this.currentUser = null;
-        this.init();
+        this.ready = false;
+        this.initPromise = this.init();
     }
 
     async init() {
@@ -48,6 +28,15 @@ class AuthManager {
                 this.updateUI();
             }
         });
+
+        this.ready = true;
+        return this;
+    }
+
+    // Esperar a que AuthManager esté listo
+    async waitForReady() {
+        await this.initPromise;
+        return this;
     }
 
     // Registro de nuevo usuario
@@ -87,7 +76,10 @@ class AuthManager {
 
             if (error) throw error;
 
-            return { success: true, message: '¡Bienvenido de vuelta!' };
+            // Actualizar usuario actual
+            this.currentUser = data.user;
+
+            return { success: true, message: '¡Bienvenido de vuelta!', user: data.user };
         } catch (error) {
             return { success: false, message: 'Email o contraseña incorrectos' };
         }
@@ -218,6 +210,151 @@ class AuthManager {
             notification.classList.remove('show');
             setTimeout(() => notification.remove(), 300);
         }, 3000);
+    }
+
+    async getStudentStats() {
+        if (!this.currentUser) return null;
+
+        try {
+            const { data, error } = await supabase
+                .from('student_stats')
+                .select('*')
+                .eq('user_id', this.currentUser.id)
+                .single();
+
+            if (error && error.code === 'PGRST116') {
+                // No existe, crear uno nuevo
+                return await this.createStudentStats();
+            }
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            console.error('Error obteniendo estadísticas:', error);
+            return null;
+        }
+    }
+
+    // Crear estadísticas iniciales
+    async createStudentStats() {
+        try {
+            const { data, error } = await supabase
+                .from('student_stats')
+                .insert([{
+                    user_id: this.currentUser.id,
+                    current_streak: 0,
+                    longest_streak: 0,
+                    total_lessons_completed: 0,
+                    total_exercises_completed: 0,
+                    total_time_minutes: 0,
+                    level: 1,
+                    experience_points: 0
+                }])
+                .select()
+                .single();
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            console.error('Error creando estadísticas:', error);
+            return null;
+        }
+    }
+
+    // Registrar actividad diaria
+    async recordDailyActivity(lessonsCompleted = 0, timeSpentMinutes = 0, exercisesCompleted = 0) {
+        if (!this.currentUser) return { success: false, message: 'No autenticado' };
+
+        try {
+            const today = new Date().toISOString().split('T')[0];
+
+            // Intentar insertar o actualizar
+            const { data, error } = await supabase
+                .from('daily_activity')
+                .upsert({
+                    user_id: this.currentUser.id,
+                    activity_date: today,
+                    lessons_completed: lessonsCompleted,
+                    time_spent_minutes: timeSpentMinutes,
+                    exercises_completed: exercisesCompleted
+                }, {
+                    onConflict: 'user_id,activity_date',
+                    ignoreDuplicates: false
+                });
+
+            if (error) throw error;
+
+            return { success: true, data };
+        } catch (error) {
+            console.error('Error registrando actividad:', error);
+            return { success: false, message: error.message };
+        }
+    }
+
+    // Obtener evaluaciones del estudiante
+    async getEvaluations(subjectId = null) {
+        if (!this.currentUser) return null;
+
+        try {
+            let query = supabase
+                .from('evaluations')
+                .select('*')
+                .eq('user_id', this.currentUser.id)
+                .order('completed_at', { ascending: false });
+
+            if (subjectId) {
+                query = query.eq('subject_id', subjectId);
+            }
+
+            const { data, error } = await query;
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            console.error('Error obteniendo evaluaciones:', error);
+            return [];
+        }
+    }
+
+    // Obtener progreso de materias
+    async getSubjectProgress() {
+        if (!this.currentUser) return [];
+
+        try {
+            const { data, error } = await supabase
+                .from('subject_progress')
+                .select('*')
+                .eq('user_id', this.currentUser.id);
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            console.error('Error obteniendo progreso:', error);
+            return [];
+        }
+    }
+
+    // Obtener actividad de los últimos 30 días
+    async getRecentActivity(days = 30) {
+        if (!this.currentUser) return [];
+
+        try {
+            const startDate = new Date();
+            startDate.setDate(startDate.getDate() - days);
+
+            const { data, error } = await supabase
+                .from('daily_activity')
+                .select('*')
+                .eq('user_id', this.currentUser.id)
+                .gte('activity_date', startDate.toISOString().split('T')[0])
+                .order('activity_date', { ascending: true });
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            console.error('Error obteniendo actividad reciente:', error);
+            return [];
+        }
     }
 }
 

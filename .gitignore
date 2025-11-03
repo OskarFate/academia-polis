@@ -1,22 +1,36 @@
-# Node modules
+# Configuración sensible
+js/config.js
+**/config.js
+*.key
+*.pem
+.env*
+*_token.txt
+*_credentials.json
+supabase_config.json
+
+# Documentación interna
+*SETUP*.md
+*INSTALL*.md
+*CONFIG*.md
+SUBIR*.md
+EJECUTAR*.md
+PRUEBA*.md
+INICIO*.md
+RESUMEN*.md
+
+# Node
 node_modules/
-
-# Logs
 *.log
-npm-debug.log*
 
-# Environment variables
-.env
-.env.local
-
-# OS files
+# OS
 .DS_Store
 Thumbs.db
 
-# Editor directories
+# IDEs
 .vscode/
 .idea/
+*.swp
 
-# Temporary files
+# Temp
 *.tmp
-*.temp
+*.bak

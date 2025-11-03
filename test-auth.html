@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Autenticación</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .result {
+            background: white;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .success { border-left: 4px solid #4caf50; }
+        .error { border-left: 4px solid #f44336; }
+        .info { border-left: 4px solid #2196f3; }
+        h1 { color: #333; }
+        pre { background: #f5f5f5; padding: 10px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Diagnóstico de Autenticación</h1>
+    <div id="results"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script>
+        const results = document.getElementById('results');
+
+        function addResult(title, content, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `result ${type}`;
+            div.innerHTML = `<h3>${title}</h3><pre>${content}</pre>`;
+            results.appendChild(div);
+        }
+
+        async function runTests() {
+            // Test 1: Config
+            addResult('✅ Test 1: Config cargado', JSON.stringify({
+                url: SUPABASE_CONFIG.url,
+                keyLength: SUPABASE_CONFIG.anonKey.length
+            }, null, 2), 'success');
+
+            // Test 2: Supabase client
+            const supabase = window.supabase.createClient(
+                SUPABASE_CONFIG.url,
+                SUPABASE_CONFIG.anonKey
+            );
+            addResult('✅ Test 2: Cliente Supabase creado', 'Cliente inicializado correctamente', 'success');
+
+            // Test 3: Sesión actual
+            const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+            if (session) {
+                addResult('✅ Test 3: Sesión activa encontrada', JSON.stringify({
+                    user_id: session.user.id,
+                    email: session.user.email,
+                    created_at: session.user.created_at
+                }, null, 2), 'success');
+
+                // Test 4: Perfil en students
+                const { data: profile, error: profileError } = await supabase
+                    .from('students')
+                    .select('*')
+                    .eq('user_id', session.user.id)
+                    .single();
+
+                if (profileError) {
+                    addResult('❌ Test 4: Error al obtener perfil', profileError.message, 'error');
+                } else if (profile) {
+                    addResult('✅ Test 4: Perfil encontrado', JSON.stringify(profile, null, 2), 'success');
+                } else {
+                    addResult('⚠️ Test 4: No se encontró perfil', 'El usuario existe pero no tiene perfil en la tabla students', 'error');
+                }
+
+                // Test 5: Estadísticas
+                const { data: stats, error: statsError } = await supabase
+                    .from('student_stats')
+                    .select('*')
+                    .eq('user_id', session.user.id)
+                    .single();
+
+                if (statsError && statsError.code === 'PGRST116') {
+                    addResult('⚠️ Test 5: No hay estadísticas', 'Se crearán automáticamente al usarlas', 'info');
+                } else if (statsError) {
+                    addResult('❌ Test 5: Error al obtener estadísticas', statsError.message, 'error');
+                } else {
+                    addResult('✅ Test 5: Estadísticas encontradas', JSON.stringify(stats, null, 2), 'success');
+                }
+
+            } else {
+                addResult('❌ Test 3: No hay sesión activa', 
+                    'Debes iniciar sesión primero. Ve a login.html', 'error');
+            }
+
+            // Test 6: Tablas existentes
+            const { data: tables, error: tablesError } = await supabase
+                .from('students')
+                .select('count');
+
+            if (tablesError) {
+                addResult('❌ Test 6: Error al verificar tablas', 
+                    'Las tablas pueden no existir: ' + tablesError.message, 'error');
+            } else {
+                addResult('✅ Test 6: Tabla students accesible', 'Las tablas fueron creadas correctamente', 'success');
+            }
+        }
+
+        runTests().catch(err => {
+            addResult('❌ Error general', err.message, 'error');
+        });
+    </script>
+</body>
+</html>
