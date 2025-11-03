@@ -1,0 +1,237 @@
+=============================================================
+🔥 SISTEMA DE RACHAS Y PROGRESO - DOCUMENTACIÓN COMPLETA
+=============================================================
+
+ALGORITMO DE RACHAS
+===================
+
+1. CÁLCULO AUTOMÁTICO (SQL Trigger)
+   - Se activa al INSERT/UPDATE en daily_activity
+   - Compara fecha actual con última actividad
+   - Lógica:
+     * Si es día consecutivo → +1 a racha
+     * Si es mismo día → No cambia
+     * Si hay salto → Reinicia a 1
+
+2. VERIFICACIÓN AL INICIAR SESIÓN
+   - checkAndUpdateStreak() se ejecuta automáticamente
+   - Si han pasado >1 día sin actividad → Racha = 0
+   - Previene rachas falsas por inactividad
+
+3. PERSISTENCIA EN DATABASE
+   - Tabla: student_stats
+   - Campos:
+     * current_streak (INT)
+     * longest_streak (INT)
+     * last_activity_date (DATE)
+
+
+SISTEMA DE EXPERIENCIA (XP) Y NIVELES
+======================================
+
+1. GANANCIAS DE XP:
+   ✅ Completar Lección: +50 XP
+   💪 Completar Ejercicio: +25 XP
+   📝 Aprobar Evaluación: +100 XP
+
+2. CÁLCULO DE NIVEL:
+   Fórmula: Nivel = √(XP / 100) + 1
+   
+   Progresión:
+   - Nivel 1: 0-100 XP
+   - Nivel 2: 100-400 XP
+   - Nivel 3: 400-900 XP
+   - Nivel 4: 900-1600 XP
+   - Nivel 5: 1600-2500 XP
+   - etc.
+
+3. NOTIFICACIÓN DE SUBIDA:
+   - Se muestra cuando leveledUp = true
+   - "🎉 ¡Subiste al Nivel X!"
+
+
+REGISTRO DE ACTIVIDAD DIARIA
+=============================
+
+1. TABLA: daily_activity
+   Campos:
+   - user_id (UUID)
+   - activity_date (DATE)
+   - lessons_completed (INT)
+   - time_spent_minutes (INT)
+   - exercises_completed (INT)
+
+2. MÉTODO: recordDailyActivity()
+   - UPSERT: Crea o actualiza registro del día
+   - Trigger automático actualiza racha
+   - Actualiza totales en student_stats
+
+
+PROGRESO POR MATERIA
+=====================
+
+1. TABLA: subject_progress
+   Campos:
+   - user_id (UUID)
+   - subject_id (TEXT)
+   - subject_name (TEXT)
+   - completed (BOOLEAN)
+   - progress_percentage (INT 0-100)
+   - completed_at (TIMESTAMP)
+
+2. ACTUALIZACIÓN:
+   - Lección completada: +5%
+   - Evaluación aprobada: +10%
+   - Al llegar a 100%: completed = true
+
+
+EVALUACIONES
+============
+
+1. TABLA: evaluations
+   Campos:
+   - user_id (UUID)
+   - subject_id (TEXT)
+   - evaluation_type (TEXT)
+   - title (TEXT)
+   - score (DECIMAL)
+   - max_score (DECIMAL)
+   - passed (BOOLEAN)
+
+2. CRITERIO DE APROBACIÓN:
+   - Passed = (score / max_score) >= 0.6
+   - 60% mínimo para aprobar
+
+3. EFECTOS:
+   - Si passed = true:
+     * +10% progreso en materia
+     * +100 XP
+
+
+FUNCIONES PRINCIPALES EN AUTH.JS
+=================================
+
+1. completeLesson(subjectId, subjectName, timeSpent)
+   - Registra lección en daily_activity
+   - Actualiza progreso (+5%)
+   - Trigger actualiza racha automáticamente
+
+2. completeExercise(subjectId, subjectName, timeSpent)
+   - Registra ejercicio en daily_activity
+   - Actualiza contador de ejercicios
+
+3. submitEvaluation(subjectId, ..., score, maxScore)
+   - Guarda evaluación en database
+   - Si aprobó: actualiza progreso (+10%)
+   - Retorna si pasó o no
+
+4. checkAndUpdateStreak()
+   - Verifica última actividad
+   - Rompe racha si >1 día sin actividad
+   - Se llama al cargar portal
+
+5. addExperience(amount)
+   - Añade XP al usuario
+   - Recalcula nivel
+   - Retorna si subió de nivel
+
+6. calculateLevel(xp)
+   - Fórmula: √(xp/100) + 1
+   - Retorna nivel calculado
+
+
+FLUJO DE USO TÍPICO
+====================
+
+1. USUARIO INICIA SESIÓN
+   ↓
+2. checkAndUpdateStreak() verifica racha
+   ↓
+3. USUARIO COMPLETA LECCIÓN
+   ↓
+4. completeLesson() registra actividad
+   ↓
+5. TRIGGER SQL actualiza racha
+   ↓
+6. addExperience(50) añade XP
+   ↓
+7. Si level_up: muestra notificación
+   ↓
+8. Portal actualiza UI con nuevos datos
+
+
+PÁGINA DE DEMO
+==============
+
+Ubicación: portal/demo-rachas.html
+
+Funcionalidades:
+✅ Botón "Completar Lección" (+30 min, +50 XP)
+✅ Botón "Completar Ejercicio" (+15 min, +25 XP)
+✅ Formulario de evaluación
+✅ Estadísticas en tiempo real
+✅ Registro de actividades
+
+Acceso:
+- Desde menú del usuario
+- "🔥 Demo: Sistema de Rachas"
+
+
+SEGURIDAD (RLS)
+===============
+
+Todas las tablas tienen Row Level Security:
+- Users can only SELECT their own data
+- Users can only INSERT their own data
+- Users can only UPDATE their own data
+
+Policy check: auth.uid() = user_id
+
+
+OPTIMIZACIONES
+==============
+
+1. ÍNDICES EN DATABASE:
+   - idx_daily_activity_user_id
+   - idx_daily_activity_date
+   - idx_student_stats_user_id
+   - idx_subject_progress_user_id
+
+2. TRIGGERS AUTOMÁTICOS:
+   - update_streak() → Calcula racha
+   - update_updated_at_column() → Actualiza timestamps
+
+3. ALGORITMO EFICIENTE:
+   - Un solo INSERT actualiza todo
+   - Trigger hace cálculos en DB (más rápido)
+   - No requiere múltiples queries
+
+
+PRUEBAS RECOMENDADAS
+====================
+
+1. Ir a portal/demo-rachas.html
+2. Completar 3 lecciones
+   - Debería sumar: +90 min, +150 XP
+   - Racha debería ser 1 (hoy)
+3. Completar 2 ejercicios
+   - Debería sumar: +30 min, +50 XP
+   - Total: 200 XP → Nivel 2
+4. Registrar evaluación con 85 puntos
+   - Debería aprobar
+   - +100 XP → Total 300 XP
+5. Verificar en perfil.html que todo se actualizó
+
+
+PRÓXIMAS MEJORAS
+================
+
+□ Gráfico de actividad (últimos 30 días)
+□ Racha de fuego animada
+□ Badges por logros
+□ Comparación con otros estudiantes
+□ Metas diarias personalizadas
+□ Notificaciones de recordatorio
+□ Recompensas por rachas largas
+
+=============================================================

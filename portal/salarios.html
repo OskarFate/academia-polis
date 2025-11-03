@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salarios & Campo Laboral - Data Analysis</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #fce4ec 0%, white 100%);
+            min-height: 100vh;
+        }
+
+        .page-header {
+            background: var(--gradient);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .page-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(-5px);
+        }
+
+        .content-section {
+            padding: 3rem 0;
+        }
+
+        .salary-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--dark-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .salary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .salary-item {
+            background: linear-gradient(135deg, #fce4ec 0%, #f8f9fa 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .salary-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .salary-level {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .salary-amount {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .salary-range {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .roles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .role-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 1.5rem;
+            border-left: 4px solid var(--primary-color);
+            transition: all 0.3s;
+        }
+
+        .role-card:hover {
+            background: #e3f2fd;
+            transform: translateX(5px);
+        }
+
+        .role-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .role-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .role-salary {
+            display: inline-block;
+            background: var(--light-color);
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+
+        .skills-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .skill-badge {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 0.8rem;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .skill-badge:hover {
+            background: #1976d2;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .stat-box {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-weight: 600;
+        }
+
+        .companies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .company-item {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--dark-color);
+            transition: all 0.3s;
+        }
+
+        .company-item:hover {
+            background: var(--light-color);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="page-header">
+        <div class="container">
+            <div>
+                <h1>💰 Salarios & Campo Laboral</h1>
+                <p style="margin-top: 0.5rem; opacity: 0.9;">Data Analysis & Python Mastery</p>
+            </div>
+            <a href="estudiante.html" class="back-btn">
+                ← Volver al Portal
+            </a>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <div class="container">
+            <!-- Estadísticas del Mercado -->
+            <div class="salary-card">
+                <div class="card-title">📊 Estadísticas del Mercado</div>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-icon">📈</div>
+                        <div class="stat-value">+25%</div>
+                        <div class="stat-label">Crecimiento Anual</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon">💼</div>
+                        <div class="stat-value">150K+</div>
+                        <div class="stat-label">Empleos Disponibles</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-value">9.2/10</div>
+                        <div class="stat-label">Satisfacción Laboral</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon">🌍</div>
+                        <div class="stat-value">100%</div>
+                        <div class="stat-label">Trabajo Remoto</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rangos Salariales -->
+            <div class="salary-card">
+                <div class="card-title">💵 Rangos Salariales (USD/año)</div>
+                <div class="salary-grid">
+                    <div class="salary-item">
+                        <div class="salary-level">🌱 Junior (0-2 años)</div>
+                        <div class="salary-amount">$50K</div>
+                        <div class="salary-range">$40K - $65K</div>
+                    </div>
+                    <div class="salary-item">
+                        <div class="salary-level">🚀 Mid-Level (2-5 años)</div>
+                        <div class="salary-amount">$85K</div>
+                        <div class="salary-range">$70K - $110K</div>
+                    </div>
+                    <div class="salary-item">
+                        <div class="salary-level">⭐ Senior (5-10 años)</div>
+                        <div class="salary-amount">$130K</div>
+                        <div class="salary-range">$110K - $160K</div>
+                    </div>
+                    <div class="salary-item">
+                        <div class="salary-level">👑 Lead/Principal (10+ años)</div>
+                        <div class="salary-amount">$180K+</div>
+                        <div class="salary-range">$160K - $250K+</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Roles Profesionales -->
+            <div class="salary-card">
+                <div class="card-title">💼 Roles Profesionales</div>
+                <div class="roles-grid">
+                    <div class="role-card">
+                        <div class="role-name">📊 Data Analyst</div>
+                        <div class="role-description">
+                            Análisis de datos, creación de dashboards, insights de negocio
+                        </div>
+                        <div class="role-salary">$60K - $95K</div>
+                    </div>
+                    <div class="role-card">
+                        <div class="role-name">🔬 Data Scientist</div>
+                        <div class="role-description">
+                            Machine learning, modelos predictivos, experimentación
+                        </div>
+                        <div class="role-salary">$90K - $140K</div>
+                    </div>
+                    <div class="role-card">
+                        <div class="role-name">🛠️ Data Engineer</div>
+                        <div class="role-description">
+                            Pipelines de datos, infraestructura, ETL
+                        </div>
+                        <div class="role-salary">$95K - $150K</div>
+                    </div>
+                    <div class="role-card">
+                        <div class="role-name">🤖 ML Engineer</div>
+                        <div class="role-description">
+                            Deploy de modelos, MLOps, optimización
+                        </div>
+                        <div class="role-salary">$110K - $170K</div>
+                    </div>
+                    <div class="role-card">
+                        <div class="role-name">💡 Business Intelligence</div>
+                        <div class="role-description">
+                            Reportes, KPIs, estrategia de datos
+                        </div>
+                        <div class="role-salary">$70K - $120K</div>
+                    </div>
+                    <div class="role-card">
+                        <div class="role-name">🎯 Analytics Manager</div>
+                        <div class="role-description">
+                            Liderazgo de equipos, estrategia, gestión
+                        </div>
+                        <div class="role-salary">$120K - $180K</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Habilidades Más Demandadas -->
+            <div class="skills-section">
+                <div class="card-title">🎯 Habilidades Más Demandadas</div>
+                <div class="skills-grid">
+                    <div class="skill-badge">Python</div>
+                    <div class="skill-badge">SQL</div>
+                    <div class="skill-badge">Pandas</div>
+                    <div class="skill-badge">NumPy</div>
+                    <div class="skill-badge">Scikit-Learn</div>
+                    <div class="skill-badge">TensorFlow</div>
+                    <div class="skill-badge">Tableau</div>
+                    <div class="skill-badge">Power BI</div>
+                    <div class="skill-badge">Spark</div>
+                    <div class="skill-badge">AWS</div>
+                    <div class="skill-badge">Git</div>
+                    <div class="skill-badge">Docker</div>
+                    <div class="skill-badge">Statistics</div>
+                    <div class="skill-badge">Machine Learning</div>
+                    <div class="skill-badge">Deep Learning</div>
+                    <div class="skill-badge">Data Visualization</div>
+                </div>
+            </div>
+
+            <!-- Empresas que Contratan -->
+            <div class="salary-card">
+                <div class="card-title">🏢 Empresas que Contratan</div>
+                <div class="companies-grid">
+                    <div class="company-item">🔵 Meta</div>
+                    <div class="company-item">🔴 Google</div>
+                    <div class="company-item">🟠 Amazon</div>
+                    <div class="company-item">🟢 Microsoft</div>
+                    <div class="company-item">🟣 Netflix</div>
+                    <div class="company-item">🔵 Apple</div>
+                    <div class="company-item">🟡 Uber</div>
+                    <div class="company-item">🟠 Airbnb</div>
+                    <div class="company-item">🔴 Tesla</div>
+                    <div class="company-item">🟢 Spotify</div>
+                    <div class="company-item">🔵 LinkedIn</div>
+                    <div class="company-item">🟣 Salesforce</div>
+                    <div class="company-item">🟠 Adobe</div>
+                    <div class="company-item">🔴 Oracle</div>
+                    <div class="company-item">🟢 IBM</div>
+                    <div class="company-item">🔵 Intel</div>
+                </div>
+            </div>
+
+            <!-- Beneficios Comunes -->
+            <div class="salary-card">
+                <div class="card-title">✨ Beneficios Comunes</div>
+                <div class="roles-grid">
+                    <div class="role-card">
+                        <div class="role-name">🏠 Trabajo Remoto</div>
+                        <div class="role-description">
+                            Flexibilidad 100% remoto o híbrido en la mayoría de empresas
+                        </div>
+                    </div>
+                    <div class="role-card">
+                        <div class="role-name">📚 Capacitación</div>
+                        <div class="role-description">
+                            Presupuesto anual para cursos, conferencias y certificaciones
+                        </div>
+                    </div>
+                    <div class="role-card">
+                        <div class="role-name">💰 Bonos</div>
+                        <div class="role-description">
+                            Bonos por desempeño, stock options en empresas tech
+                        </div>
+                    </div>
+                    <div class="role-card">
+                        <div class="role-name">🏥 Seguro Médico</div>
+                        <div class="role-description">
+                            Cobertura médica completa para ti y tu familia
+                        </div>
+                    </div>
+                    <div class="role-card">
+                        <div class="role-name">🎯 Horarios Flexibles</div>
+                        <div class="role-description">
+                            Libertad para organizar tu tiempo de trabajo
+                        </div>
+                    </div>
+                    <div class="role-card">
+                        <div class="role-name">🌴 Vacaciones</div>
+                        <div class="role-description">
+                            20-30 días de vacaciones anuales + días festivos
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        async function init() {
+            await authManager.waitForReady();
+
+            if (!authManager.isAuthenticated()) {
+                window.location.href = '../login.html';
+                return;
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

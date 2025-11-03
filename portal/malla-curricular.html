@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malla Curricular - Data Analysis</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #fce4ec 0%, white 100%);
+            min-height: 100vh;
+        }
+
+        .page-header {
+            background: var(--gradient);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .page-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(-5px);
+        }
+
+        .content-section {
+            padding: 3rem 0;
+        }
+
+        .semester-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+
+        .semester-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .semester-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--dark-color);
+        }
+
+        .semester-duration {
+            background: var(--light-color);
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .subject-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            border-left: 4px solid var(--primary-color);
+            cursor: pointer;
+        }
+
+        .subject-card:hover {
+            transform: translateX(5px);
+            background: #e8f5e9;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .subject-card.completed {
+            background: #e8f5e9;
+            border-left-color: #4caf50;
+        }
+
+        .subject-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .subject-meta {
+            display: flex;
+            gap: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .subject-status {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .status-available {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .status-locked {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .status-completed {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .progress-summary {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .summary-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .summary-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-label {
+            color: #666;
+            font-weight: 600;
+        }
+
+        .action-btn {
+            background: var(--gradient);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 115, 115, 0.3);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.2rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-header">
+        <div class="container">
+            <div>
+                <h1>📚 Malla Curricular</h1>
+                <p style="margin-top: 0.5rem; opacity: 0.9;">Data Analysis & Python Mastery</p>
+            </div>
+            <a href="estudiante.html" class="back-btn">
+                ← Volver al Portal
+            </a>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <div class="container">
+            <div id="loading" class="loading">
+                🔄 Cargando malla curricular...
+            </div>
+            
+            <div id="content" style="display: none;">
+                <!-- Resumen de Progreso -->
+                <div class="progress-summary">
+                    <h2 style="margin-bottom: 1.5rem; color: var(--dark-color);">📊 Resumen de tu Progreso</h2>
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <div class="summary-value" id="total-subjects">42</div>
+                            <div class="summary-label">Materias Totales</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-value" id="completed-subjects">0</div>
+                            <div class="summary-label">Completadas</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-value" id="progress-percent">0%</div>
+                            <div class="summary-label">Progreso Total</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-value" id="current-semester">1</div>
+                            <div class="summary-label">Semestre Actual</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Semestre 1 -->
+                <div class="semester-section">
+                    <div class="semester-header">
+                        <div class="semester-title">📖 Semestre 1 - Fundamentos</div>
+                        <div class="semester-duration">6 meses</div>
+                    </div>
+                    <div class="subjects-grid" id="semester-1"></div>
+                </div>
+
+                <!-- Semestre 2 -->
+                <div class="semester-section">
+                    <div class="semester-header">
+                        <div class="semester-title">🔬 Semestre 2 - Análisis de Datos</div>
+                        <div class="semester-duration">6 meses</div>
+                    </div>
+                    <div class="subjects-grid" id="semester-2"></div>
+                </div>
+
+                <!-- Semestre 3 -->
+                <div class="semester-section">
+                    <div class="semester-header">
+                        <div class="semester-title">🤖 Semestre 3 - Machine Learning</div>
+                        <div class="semester-duration">6 meses</div>
+                    </div>
+                    <div class="subjects-grid" id="semester-3"></div>
+                </div>
+
+                <!-- Semestre 4 -->
+                <div class="semester-section">
+                    <div class="semester-header">
+                        <div class="semester-title">📈 Semestre 4 - Advanced Analytics</div>
+                        <div class="semester-duration">6 meses</div>
+                    </div>
+                    <div class="subjects-grid" id="semester-4"></div>
+                </div>
+
+                <!-- Semestre 5 -->
+                <div class="semester-section">
+                    <div class="semester-header">
+                        <div class="semester-title">🚀 Semestre 5 - Big Data & Cloud</div>
+                        <div class="semester-duration">6 meses</div>
+                    </div>
+                    <div class="subjects-grid" id="semester-5"></div>
+                </div>
+
+                <!-- Semestre 6 -->
+                <div class="semester-section">
+                    <div class="semester-header">
+                        <div class="semester-title">🎯 Semestre 6 - Especialización</div>
+                        <div class="semester-duration">6 meses</div>
+                    </div>
+                    <div class="subjects-grid" id="semester-6"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        const curriculum = {
+            1: [
+                { id: 'python-basics', name: 'Python Básico', hours: 40 },
+                { id: 'data-structures', name: 'Estructuras de Datos', hours: 35 },
+                { id: 'algorithms', name: 'Algoritmos', hours: 30 },
+                { id: 'git-github', name: 'Git & GitHub', hours: 20 },
+                { id: 'linux-basics', name: 'Linux Básico', hours: 25 },
+                { id: 'sql-fundamentals', name: 'SQL Fundamentos', hours: 30 },
+                { id: 'statistics-1', name: 'Estadística I', hours: 35 }
+            ],
+            2: [
+                { id: 'python-advanced', name: 'Python Avanzado', hours: 40 },
+                { id: 'pandas-numpy', name: 'Pandas & NumPy', hours: 45 },
+                { id: 'data-viz', name: 'Visualización de Datos', hours: 35 },
+                { id: 'sql-advanced', name: 'SQL Avanzado', hours: 35 },
+                { id: 'statistics-2', name: 'Estadística II', hours: 40 },
+                { id: 'probability', name: 'Probabilidad', hours: 30 },
+                { id: 'linear-algebra', name: 'Álgebra Lineal', hours: 35 }
+            ],
+            3: [
+                { id: 'ml-basics', name: 'Machine Learning Básico', hours: 50 },
+                { id: 'supervised-learning', name: 'Aprendizaje Supervisado', hours: 45 },
+                { id: 'unsupervised-learning', name: 'Aprendizaje No Supervisado', hours: 40 },
+                { id: 'sklearn', name: 'Scikit-Learn', hours: 35 },
+                { id: 'model-evaluation', name: 'Evaluación de Modelos', hours: 30 },
+                { id: 'feature-engineering', name: 'Feature Engineering', hours: 35 },
+                { id: 'time-series', name: 'Series Temporales', hours: 40 }
+            ],
+            4: [
+                { id: 'deep-learning', name: 'Deep Learning', hours: 50 },
+                { id: 'neural-networks', name: 'Redes Neuronales', hours: 45 },
+                { id: 'tensorflow-keras', name: 'TensorFlow & Keras', hours: 40 },
+                { id: 'computer-vision', name: 'Visión por Computadora', hours: 35 },
+                { id: 'nlp', name: 'Procesamiento de Lenguaje Natural', hours: 40 },
+                { id: 'recommendation-systems', name: 'Sistemas de Recomendación', hours: 30 },
+                { id: 'ab-testing', name: 'A/B Testing', hours: 25 }
+            ],
+            5: [
+                { id: 'big-data', name: 'Big Data Fundamentals', hours: 45 },
+                { id: 'spark', name: 'Apache Spark', hours: 40 },
+                { id: 'hadoop', name: 'Hadoop Ecosystem', hours: 35 },
+                { id: 'aws-data', name: 'AWS para Data Science', hours: 40 },
+                { id: 'docker-kubernetes', name: 'Docker & Kubernetes', hours: 35 },
+                { id: 'mlops', name: 'MLOps', hours: 40 },
+                { id: 'data-engineering', name: 'Ingeniería de Datos', hours: 45 }
+            ],
+            6: [
+                { id: 'business-intelligence', name: 'Business Intelligence', hours: 40 },
+                { id: 'tableau-powerbi', name: 'Tableau & Power BI', hours: 35 },
+                { id: 'data-storytelling', name: 'Data Storytelling', hours: 30 },
+                { id: 'ethics-ai', name: 'Ética en IA', hours: 25 },
+                { id: 'capstone-project', name: 'Proyecto Final', hours: 80 },
+                { id: 'career-prep', name: 'Preparación Profesional', hours: 30 },
+                { id: 'portfolio-building', name: 'Construcción de Portfolio', hours: 40 }
+            ]
+        };
+
+        async function loadCurriculum() {
+            await authManager.waitForReady();
+
+            if (!authManager.isAuthenticated()) {
+                window.location.href = '../login.html';
+                return;
+            }
+
+            // Obtener progreso del usuario
+            const progress = await authManager.getSubjectProgress();
+            const progressMap = {};
+            
+            progress.forEach(p => {
+                progressMap[p.subject_id] = p;
+            });
+
+            // Calcular resumen
+            const totalSubjects = 42;
+            const completedCount = progress.filter(p => p.completed).length;
+            const progressPercent = Math.round((completedCount / totalSubjects) * 100);
+
+            document.getElementById('completed-subjects').textContent = completedCount;
+            document.getElementById('progress-percent').textContent = progressPercent + '%';
+
+            // Renderizar cada semestre
+            for (let semester = 1; semester <= 6; semester++) {
+                const container = document.getElementById(`semester-${semester}`);
+                const subjects = curriculum[semester];
+
+                subjects.forEach(subject => {
+                    const subjectProgress = progressMap[subject.id];
+                    const isCompleted = subjectProgress?.completed;
+                    const percentage = subjectProgress?.progress_percentage || 0;
+
+                    const statusClass = isCompleted ? 'completed' : '';
+                    const statusLabel = isCompleted ? 
+                        '<span class="subject-status status-completed">✅ Completada</span>' :
+                        percentage > 0 ?
+                        `<span class="subject-status status-available">📚 En progreso (${percentage}%)</span>` :
+                        '<span class="subject-status status-available">🔓 Disponible</span>';
+
+                    container.innerHTML += `
+                        <div class="subject-card ${statusClass}" onclick="openSubject('${subject.id}', '${subject.name}')">
+                            <div class="subject-name">${subject.name}</div>
+                            <div class="subject-meta">
+                                <span>⏱️ ${subject.hours}h</span>
+                                <span>📖 ${semester}° Semestre</span>
+                            </div>
+                            ${statusLabel}
+                        </div>
+                    `;
+                });
+            }
+
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
+        }
+
+        function openSubject(subjectId, subjectName) {
+            authManager.showNotification(`📚 ${subjectName}\n\n🚧 El contenido de la materia estará disponible próximamente.\n\nPor ahora puedes usar la demo de rachas para registrar progreso.`, 'info');
+        }
+
+        window.addEventListener('DOMContentLoaded', loadCurriculum);
+    </script>
+</body>
+</html>
