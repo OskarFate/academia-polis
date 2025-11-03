@@ -429,6 +429,65 @@
         let modules = [];
         let completedModules = new Set();
 
+        // Función para generar 26 clases semanales
+        function generateWeeklyClasses() {
+            const classes = [];
+            
+            for (let week = 1; week <= 26; week++) {
+                let title, description, weekType;
+                
+                if (week <= 20) {
+                    // Semanas 1-20: Clases regulares
+                    title = `Semana ${week}: Clase Regular`;
+                    description = `Contenido de la clase de la semana ${week}. Aprenderás conceptos fundamentales y realizarás ejercicios prácticos.`;
+                    weekType = 'regular';
+                } else if (week <= 22) {
+                    // Semanas 21-22: Repaso
+                    title = `Semana ${week}: Repaso y Consolidación`;
+                    description = `Repaso de los conceptos aprendidos en las semanas anteriores. Resolución de dudas y práctica adicional.`;
+                    weekType = 'review';
+                } else if (week <= 24) {
+                    // Semanas 23-24: Evaluaciones
+                    title = `Semana ${week}: Evaluación Final`;
+                    description = `Evaluación de los conocimientos adquiridos durante el curso. Proyecto final y examen.`;
+                    weekType = 'exam';
+                } else {
+                    // Semanas 25-26: Descanso
+                    title = `Semana ${week}: ${week === 25 ? 'Descanso' : 'Cierre del Semestre'}`;
+                    description = week === 25 ? 
+                        'Semana de descanso y reflexión sobre lo aprendido.' : 
+                        'Semana de cierre, feedback y preparación para el siguiente semestre.';
+                    weekType = 'break';
+                }
+                
+                classes.push({
+                    title: title,
+                    duration: weekType === 'break' ? '0 min' : weekType === 'exam' ? '180 min' : '90 min',
+                    description: description,
+                    week: week,
+                    weekType: weekType,
+                    sections: [
+                        { 
+                            title: 'Contenido de la Clase', 
+                            content: weekType === 'break' ? 
+                                'Esta es una semana sin clases programadas. Aprovecha para descansar y consolidar lo aprendido.' :
+                                'El contenido detallado de esta clase estará disponible próximamente. Cada clase incluye teoría, ejemplos prácticos y ejercicios.'
+                        },
+                        { 
+                            title: 'Objetivos', 
+                            content: 'Dominar los conceptos presentados y aplicarlos en ejercicios prácticos.' 
+                        }
+                    ],
+                    resources: [
+                        { name: 'Material de Estudio.pdf', icon: '📄' },
+                        { name: 'Ejercicios Prácticos.pdf', icon: '📝' }
+                    ]
+                });
+            }
+            
+            return classes;
+        }
+
         // Datos de ejemplo para los módulos
         const courseModules = {
             'python-basics': [
@@ -555,13 +614,13 @@
                 return;
             }
 
-            // Cargar módulos del curso
-            modules = courseModules[courseId] || courseModules['default'];
+            // Generar 26 clases/semanas para el curso
+            modules = generateWeeklyClasses();
             
             // Actualizar título
             document.getElementById('course-name').textContent = courseName;
             document.getElementById('page-title').textContent = `${courseName} - ACADEMIA DE LA POLIS`;
-            document.getElementById('course-modules').textContent = `${modules.length} módulos`;
+            document.getElementById('course-modules').textContent = `${modules.length} clases`;
             
             // Calcular duración total
             const totalMinutes = modules.reduce((sum, m) => {
@@ -604,6 +663,13 @@
                 const isCompleted = completedModules.has(index);
                 const isActive = index === currentModuleIndex;
                 
+                // Iconos según tipo de semana
+                let icon = '📖';
+                if (isCompleted) icon = '✅';
+                else if (module.weekType === 'review') icon = '📝';
+                else if (module.weekType === 'exam') icon = '📋';
+                else if (module.weekType === 'break') icon = '🏖️';
+                
                 const moduleDiv = document.createElement('div');
                 moduleDiv.className = 'module-item' + 
                     (isActive ? ' active' : '') + 
@@ -611,8 +677,8 @@
                 moduleDiv.onclick = () => loadModule(index);
                 
                 moduleDiv.innerHTML = `
-                    <span class="module-icon">${isCompleted ? '✅' : '📖'}</span>
-                    <span class="module-name">${index + 1}. ${module.title}</span>
+                    <span class="module-icon">${icon}</span>
+                    <span class="module-name">${module.title}</span>
                     <span class="module-duration">${module.duration}</span>
                 `;
                 
