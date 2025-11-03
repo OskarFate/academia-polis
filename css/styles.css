@@ -53,16 +53,19 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 0;
+    padding: 1.5rem 0;
+    gap: 2rem;
 }
 
 .logo h1 {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     background: var(--gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 0;
+    margin-bottom: 0.2rem;
+    font-weight: 700;
+    line-height: 1.2;
 }
 
 .logo a {
@@ -71,29 +74,56 @@ body {
 }
 
 .academy-motto {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-style: italic;
     color: var(--primary-color);
-    margin-top: -5px;
     font-weight: 500;
-    opacity: 0.9;
+    opacity: 0.85;
+    line-height: 1;
 }
 
 .nav-menu {
     display: flex;
     list-style: none;
-    gap: 2rem;
+    gap: 2.5rem;
+    align-items: center;
+}
+
+.nav-menu li {
+    white-space: nowrap;
 }
 
 .nav-menu a {
     text-decoration: none;
     color: var(--text-color);
     font-weight: 500;
-    transition: color 0.3s;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
 }
 
 .nav-menu a:hover {
     color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.nav-login-btn {
+    margin-left: 0.5rem;
+}
+
+.login-button {
+    background: var(--gradient) !important;
+    color: white !important;
+    padding: 0.7rem 2rem !important;
+    border-radius: 25px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 15px rgba(229, 115, 115, 0.3);
+    transition: all 0.3s ease !important;
+}
+
+.login-button:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 6px 20px rgba(229, 115, 115, 0.4) !important;
+    color: white !important;
 }
 
 .menu-toggle {
@@ -2294,6 +2324,18 @@ section {
         font-size: 2rem;
     }
 
+    .navbar {
+        padding: 1rem 0;
+    }
+
+    .logo h1 {
+        font-size: 1.3rem;
+    }
+
+    .academy-motto {
+        font-size: 0.7rem;
+    }
+
     .nav-menu {
         display: none;
         position: absolute;
@@ -2302,8 +2344,30 @@ section {
         right: 0;
         background: white;
         flex-direction: column;
-        padding: 1rem;
+        padding: 1.5rem;
         box-shadow: var(--shadow-lg);
+        gap: 0;
+    }
+
+    .nav-menu li {
+        width: 100%;
+        text-align: center;
+        padding: 0.8rem 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .nav-menu li:last-child {
+        border-bottom: none;
+        margin-top: 1rem;
+    }
+
+    .nav-login-btn {
+        margin-left: 0;
+    }
+
+    .login-button {
+        display: block;
+        width: 100%;
     }
 
     .nav-menu.active {
