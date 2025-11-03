@@ -737,7 +737,7 @@
                 const cardClass = classItem.status === 'locked' ? 'class-card locked' : 
                                   classItem.status === 'completed' ? 'class-card completed' : 'class-card';
                 const clickable = classItem.status !== 'locked' && classItem.weekType !== 'break' ? 
-                                  `onclick="openClass('${classItem.subjectId}', '${classItem.subjectName}')"` : '';
+                                  `onclick="openClass(${classItem.classNumber}, ${classItem.week}, '${classItem.subjectId}', '${classItem.subjectName}')"` : '';
 
                 grid.innerHTML += `
                     <div class="${cardClass}" ${clickable}>
@@ -803,9 +803,9 @@
             return startStr + ' - ' + endStr;
         }
 
-        function openClass(subjectId, subjectName) {
-            // Redirigir a la página del curso
-            window.location.href = `curso.html?id=${subjectId}&name=${encodeURIComponent(subjectName)}`;
+        function openClass(classNumber, week, subjectId, subjectName) {
+            // Redirigir a la página de la clase individual
+            window.location.href = `clase.html?class=${classNumber}&week=${week}&subject=${subjectId}`;
         }
 
         window.addEventListener('DOMContentLoaded', loadSchedule);
