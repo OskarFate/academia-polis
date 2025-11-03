@@ -369,7 +369,10 @@
                 <!-- Info del semestre actual -->
                 <div class="semester-info">
                     <div class="semester-title" id="semester-title">📖 Semestre 1 - Fundamentos</div>
-                    <div class="semester-duration" id="semester-duration">6 meses • 24 semanas</div>
+                    <div class="semester-duration" id="semester-duration">6 meses • 26 semanas</div>
+                    <div style="color: #666; font-size: 0.9rem; margin-top: 0.5rem;">
+                        📚 20-22 semanas de clases • 📝 2-3 semanas de evaluación • 🏖️ 1-2 semanas de descanso
+                    </div>
                 </div>
 
                 <!-- Estadísticas -->
@@ -522,7 +525,7 @@
             // Calcular semana actual
             const today = new Date();
             const weeksDiff = Math.floor((today - startDate) / (7 * 24 * 60 * 60 * 1000));
-            currentWeek = Math.max(1, Math.min(weeksDiff + 1, 24));
+            currentWeek = Math.max(1, Math.min(weeksDiff + 1, 26));
 
             // Actualizar UI
             updateSemesterInfo();
@@ -550,27 +553,68 @@
             allClasses = [];
             const subjects = subjectsBySemester[currentSemester];
             
-            // Generar 24 semanas (6 meses) de clases
-            // Cada semana tiene UNA clase de CADA materia
-            for (let week = 1; week <= 24; week++) {
-                subjects.forEach((subject, index) => {
-                    const classDate = new Date(startDate);
-                    classDate.setDate(classDate.getDate() + ((week - 1) * 7));
-                    
-                    const classNumber = (week - 1) * subjects.length + index + 1;
-                    
+            // Generar 26 semanas (6 meses) de clases
+            // Distribución:
+            // - Semanas 1-20: Clases regulares (todas las materias)
+            // - Semanas 21-22: Clases de repaso/finalización (todas las materias)
+            // - Semanas 23-24: Evaluaciones finales (exámenes por materia)
+            // - Semanas 25-26: Descanso/cierre (sin clases programadas)
+            
+            for (let week = 1; week <= 26; week++) {
+                const classDate = new Date(startDate);
+                classDate.setDate(classDate.getDate() + ((week - 1) * 7));
+                
+                if (week <= 22) {
+                    // Semanas 1-22: Clases regulares de todas las materias
+                    subjects.forEach((subject, index) => {
+                        const classNumber = (week - 1) * subjects.length + index + 1;
+                        
+                        allClasses.push({
+                            classNumber: classNumber,
+                            week: week,
+                            subjectId: subject.id,
+                            subjectName: subject.name,
+                            durationHours: subject.hours,
+                            semester: currentSemester,
+                            startDate: classDate,
+                            weekType: week <= 20 ? 'regular' : 'review',
+                            status: getClassStatus(classDate, subject.id),
+                            progress: progressMap[subject.id]?.progress_percentage || 0
+                        });
+                    });
+                } else if (week <= 24) {
+                    // Semanas 23-24: Evaluaciones finales
+                    subjects.forEach((subject, index) => {
+                        const classNumber = 22 * subjects.length + (week - 23) * subjects.length + index + 1;
+                        
+                        allClasses.push({
+                            classNumber: classNumber,
+                            week: week,
+                            subjectId: subject.id,
+                            subjectName: `Evaluación Final: ${subject.name}`,
+                            durationHours: 3,
+                            semester: currentSemester,
+                            startDate: classDate,
+                            weekType: 'exam',
+                            status: getClassStatus(classDate, subject.id),
+                            progress: progressMap[subject.id]?.progress_percentage || 0
+                        });
+                    });
+                } else {
+                    // Semanas 25-26: Descanso (sin clases)
                     allClasses.push({
-                        classNumber: classNumber,
+                        classNumber: null,
                         week: week,
-                        subjectId: subject.id,
-                        subjectName: subject.name,
-                        durationHours: subject.hours,
+                        subjectId: 'break',
+                        subjectName: week === 25 ? '🏖️ Semana de Descanso' : '🎉 Semana de Cierre',
+                        durationHours: 0,
                         semester: currentSemester,
                         startDate: classDate,
-                        status: getClassStatus(classDate, subject.id),
-                        progress: progressMap[subject.id]?.progress_percentage || 0
+                        weekType: 'break',
+                        status: 'break',
+                        progress: 0
                     });
-                });
+                }
             }
         }
 
@@ -595,7 +639,9 @@
 
         function updateSemesterInfo() {
             document.getElementById('semester-title').textContent = semesterNames[currentSemester];
-            document.getElementById('semester-duration').textContent = '6 meses • 24 semanas • ' + subjectsBySemester[currentSemester].length + ' materias';
+            const subjects = subjectsBySemester[currentSemester].length;
+            document.getElementById('semester-duration').innerHTML = `6 meses • 26 semanas • ${subjects} materias<br>
+                <span style="color: #666; font-size: 0.9rem;">📚 20-22 semanas de clases • 📝 2-3 semanas de evaluación • 🏖️ 1-2 semanas de descanso</span>`;
         }
 
         function updateStats() {
@@ -640,10 +686,38 @@
 
             // Botones de navegación
             document.getElementById('prev-week-btn').disabled = week === 1;
-            document.getElementById('next-week-btn').disabled = week === 24;
+            document.getElementById('next-week-btn').disabled = week === 26;
 
             // Renderizar clases
             weekClasses.forEach(classItem => {
+                // Manejo especial para semanas de descanso
+                if (classItem.weekType === 'break') {
+                    grid.innerHTML += `
+                        <div class="class-card" style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-left-color: #4caf50; cursor: default;">
+                            <div class="class-info">
+                                <div class="class-header">
+                                    <div class="class-number" style="background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);">Descanso</div>
+                                    <div class="class-name">${classItem.subjectName}</div>
+                                </div>
+                                <div class="class-meta">
+                                    <div class="class-meta-item">
+                                        <span>📅</span>
+                                        <span>${formatDate(classItem.startDate)}</span>
+                                    </div>
+                                    <div class="class-meta-item">
+                                        <span>🎉</span>
+                                        <span>${week === 25 ? 'Recarga energías' : 'Preparación para siguiente semestre'}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="class-progress">
+                                <div class="progress-percent" style="color: #4caf50;">✓</div>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+
                 const statusLabels = {
                     'available': '🔓 Disponible',
                     'in-progress': '📚 En progreso',
@@ -651,17 +725,26 @@
                     'locked': '🔒 Bloqueada'
                 };
 
+                // Etiquetas especiales según tipo de semana
+                let weekTypeLabel = '';
+                if (classItem.weekType === 'review') {
+                    weekTypeLabel = '<span style="background: #fff3e0; color: #f57c00; padding: 0.2rem 0.5rem; border-radius: 5px; font-size: 0.75rem; margin-left: 0.5rem;">📝 Repaso</span>';
+                } else if (classItem.weekType === 'exam') {
+                    weekTypeLabel = '<span style="background: #ffebee; color: #c62828; padding: 0.2rem 0.5rem; border-radius: 5px; font-size: 0.75rem; margin-left: 0.5rem;">📋 Examen</span>';
+                }
+
                 const statusClass = `status-${classItem.status}`;
                 const cardClass = classItem.status === 'locked' ? 'class-card locked' : 
                                   classItem.status === 'completed' ? 'class-card completed' : 'class-card';
-                const clickable = classItem.status !== 'locked' ? `onclick="openClass('${classItem.subjectId}', '${classItem.subjectName}')"` : '';
+                const clickable = classItem.status !== 'locked' && classItem.weekType !== 'break' ? 
+                                  `onclick="openClass('${classItem.subjectId}', '${classItem.subjectName}')"` : '';
 
                 grid.innerHTML += `
                     <div class="${cardClass}" ${clickable}>
                         <div class="class-info">
                             <div class="class-header">
                                 <div class="class-number">Clase ${classItem.classNumber}</div>
-                                <div class="class-name">${classItem.subjectName}</div>
+                                <div class="class-name">${classItem.subjectName}${weekTypeLabel}</div>
                             </div>
                             <div class="class-meta">
                                 <div class="class-meta-item">
@@ -702,7 +785,7 @@
         }
 
         function nextWeek() {
-            if (currentWeek < 24) {
+            if (currentWeek < 26) {
                 currentWeek++;
                 renderWeek(currentWeek);
                 updateStats();
