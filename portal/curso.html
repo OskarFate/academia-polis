@@ -696,9 +696,98 @@
             document.getElementById('module-title').textContent = module.title;
             document.getElementById('module-description').textContent = module.description;
 
-            // Renderizar secciones
+            // Renderizar secciones con introducción
             const sectionsContainer = document.getElementById('content-sections');
-            sectionsContainer.innerHTML = module.sections.map(section => `
+            
+            // Agregar introducción según tipo de clase
+            let introHtml = '';
+            if (module.weekType === 'regular') {
+                introHtml = `
+                    <div class="section-block" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-left: 4px solid #2196f3;">
+                        <div class="section-title" style="color: #1565c0;">📚 Introducción a la Clase</div>
+                        <div class="section-content">
+                            <p><strong>Bienvenido a la Semana ${module.week} de ${courseName}.</strong></p>
+                            <p>En esta clase exploraremos conceptos fundamentales que te ayudarán a construir una base sólida en esta materia. 
+                            El aprendizaje es un proceso gradual, así que tómate tu tiempo para entender cada concepto antes de avanzar.</p>
+                            <p style="margin-top: 1rem;"><strong>¿Qué lograrás en esta clase?</strong></p>
+                            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                                <li>Comprender los conceptos teóricos clave</li>
+                                <li>Aplicar el conocimiento en ejercicios prácticos</li>
+                                <li>Desarrollar habilidades de resolución de problemas</li>
+                                <li>Prepararte para temas más avanzados</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            } else if (module.weekType === 'review') {
+                introHtml = `
+                    <div class="section-block" style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border-left: 4px solid #ff9800;">
+                        <div class="section-title" style="color: #e65100;">📝 Introducción al Repaso</div>
+                        <div class="section-content">
+                            <p><strong>Semana de Repaso y Consolidación - Semana ${module.week}</strong></p>
+                            <p>Esta semana está dedicada a revisar y reforzar todo lo que has aprendido hasta ahora. 
+                            Es un momento perfecto para aclarar dudas, practicar más y asegurarte de que dominas todos los conceptos.</p>
+                            <p style="margin-top: 1rem;"><strong>Actividades de esta semana:</strong></p>
+                            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                                <li>Revisión de conceptos clave de semanas anteriores</li>
+                                <li>Ejercicios de repaso y práctica adicional</li>
+                                <li>Resolución de dudas comunes</li>
+                                <li>Preparación para las evaluaciones finales</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            } else if (module.weekType === 'exam') {
+                introHtml = `
+                    <div class="section-block" style="background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%); border-left: 4px solid #f44336;">
+                        <div class="section-title" style="color: #c62828;">📋 Introducción a la Evaluación</div>
+                        <div class="section-content">
+                            <p><strong>Semana de Evaluación Final - Semana ${module.week}</strong></p>
+                            <p>Has llegado al momento de demostrar todo lo que has aprendido. Esta evaluación está diseñada para 
+                            medir tu comprensión de los conceptos y tu capacidad para aplicarlos en situaciones reales.</p>
+                            <p style="margin-top: 1rem;"><strong>Información importante:</strong></p>
+                            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                                <li><strong>Duración:</strong> 3 horas (180 minutos)</li>
+                                <li><strong>Formato:</strong> Teórico-práctico con proyecto final</li>
+                                <li><strong>Aprobación:</strong> 60% o más para aprobar</li>
+                                <li><strong>Recursos:</strong> Puedes consultar material de estudio</li>
+                            </ul>
+                            <p style="margin-top: 1rem; padding: 1rem; background: rgba(255,255,255,0.7); border-radius: 8px; font-weight: 600; color: #d32f2f;">
+                                💡 Consejo: Revisa tus notas antes de comenzar y tómate tu tiempo para responder cada pregunta.
+                            </p>
+                        </div>
+                    </div>
+                `;
+            } else if (module.weekType === 'break') {
+                introHtml = `
+                    <div class="section-block" style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-left: 4px solid #4caf50;">
+                        <div class="section-title" style="color: #2e7d32;">🏖️ Introducción a la Semana de Descanso</div>
+                        <div class="section-content">
+                            <p><strong>${module.week === 25 ? 'Semana de Descanso' : 'Semana de Cierre del Semestre'} - Semana ${module.week}</strong></p>
+                            <p>${module.week === 25 ? 
+                                'Has completado todas las clases y evaluaciones. ¡Felicitaciones! Esta semana es para descansar, reflexionar sobre lo aprendido y recargar energías.' :
+                                'Esta es la última semana del semestre. Es momento de recibir feedback, actualizar tu portfolio y prepararte mentalmente para el siguiente nivel.'
+                            }</p>
+                            <p style="margin-top: 1rem;"><strong>Actividades sugeridas:</strong></p>
+                            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                                ${module.week === 25 ? `
+                                    <li>Descansar y recuperar energías</li>
+                                    <li>Reflexionar sobre tu progreso</li>
+                                    <li>Revisar tus proyectos y notas</li>
+                                    <li>Celebrar tus logros 🎉</li>
+                                ` : `
+                                    <li>Revisar calificaciones y feedback</li>
+                                    <li>Actualizar tu portfolio con proyectos</li>
+                                    <li>Preparar tu plan para el siguiente semestre</li>
+                                    <li>Participar en la ceremonia de cierre</li>
+                                `}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            sectionsContainer.innerHTML = introHtml + module.sections.map(section => `
                 <div class="section-block">
                     <div class="section-title">
                         📌 ${section.title}
