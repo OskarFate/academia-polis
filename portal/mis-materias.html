@@ -320,63 +320,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../js/config.js"></script>
+    <script src="../js/curriculum-data.js"></script>
     <script src="../js/auth.js"></script>
     <script>
-        const allCourses = [
-            // Semestre 1
-            { id: 'python-basics', name: 'Python Básico', semester: 1, hours: 40 },
-            { id: 'data-structures', name: 'Estructuras de Datos', semester: 1, hours: 35 },
-            { id: 'algorithms', name: 'Algoritmos', semester: 1, hours: 30 },
-            { id: 'git-github', name: 'Git & GitHub', semester: 1, hours: 20 },
-            { id: 'linux-basics', name: 'Linux Básico', semester: 1, hours: 25 },
-            { id: 'sql-fundamentals', name: 'SQL Fundamentos', semester: 1, hours: 30 },
-            { id: 'statistics-1', name: 'Estadística I', semester: 1, hours: 35 },
-            
-            // Semestre 2
-            { id: 'python-advanced', name: 'Python Avanzado', semester: 2, hours: 40 },
-            { id: 'pandas-numpy', name: 'Pandas & NumPy', semester: 2, hours: 45 },
-            { id: 'data-viz', name: 'Visualización de Datos', semester: 2, hours: 35 },
-            { id: 'sql-advanced', name: 'SQL Avanzado', semester: 2, hours: 35 },
-            { id: 'statistics-2', name: 'Estadística II', semester: 2, hours: 40 },
-            { id: 'probability', name: 'Probabilidad', semester: 2, hours: 30 },
-            { id: 'linear-algebra', name: 'Álgebra Lineal', semester: 2, hours: 35 },
-            
-            // Semestre 3
-            { id: 'ml-basics', name: 'Machine Learning Básico', semester: 3, hours: 50 },
-            { id: 'supervised-learning', name: 'Aprendizaje Supervisado', semester: 3, hours: 45 },
-            { id: 'unsupervised-learning', name: 'Aprendizaje No Supervisado', semester: 3, hours: 40 },
-            { id: 'sklearn', name: 'Scikit-Learn', semester: 3, hours: 35 },
-            { id: 'model-evaluation', name: 'Evaluación de Modelos', semester: 3, hours: 30 },
-            { id: 'feature-engineering', name: 'Feature Engineering', semester: 3, hours: 35 },
-            { id: 'time-series', name: 'Series Temporales', semester: 3, hours: 40 },
-            
-            // Semestre 4
-            { id: 'deep-learning', name: 'Deep Learning', semester: 4, hours: 50 },
-            { id: 'neural-networks', name: 'Redes Neuronales', semester: 4, hours: 45 },
-            { id: 'tensorflow-keras', name: 'TensorFlow & Keras', semester: 4, hours: 40 },
-            { id: 'computer-vision', name: 'Visión por Computadora', semester: 4, hours: 35 },
-            { id: 'nlp', name: 'Procesamiento de Lenguaje Natural', semester: 4, hours: 40 },
-            { id: 'recommendation-systems', name: 'Sistemas de Recomendación', semester: 4, hours: 30 },
-            { id: 'ab-testing', name: 'A/B Testing', semester: 4, hours: 25 },
-            
-            // Semestre 5
-            { id: 'big-data', name: 'Big Data Fundamentals', semester: 5, hours: 45 },
-            { id: 'spark', name: 'Apache Spark', semester: 5, hours: 40 },
-            { id: 'hadoop', name: 'Hadoop Ecosystem', semester: 5, hours: 35 },
-            { id: 'aws-data', name: 'AWS para Data Science', semester: 5, hours: 40 },
-            { id: 'docker-kubernetes', name: 'Docker & Kubernetes', semester: 5, hours: 35 },
-            { id: 'mlops', name: 'MLOps', semester: 5, hours: 40 },
-            { id: 'data-engineering', name: 'Ingeniería de Datos', semester: 5, hours: 45 },
-            
-            // Semestre 6
-            { id: 'business-intelligence', name: 'Business Intelligence', semester: 6, hours: 40 },
-            { id: 'tableau-powerbi', name: 'Tableau & Power BI', semester: 6, hours: 35 },
-            { id: 'data-storytelling', name: 'Data Storytelling', semester: 6, hours: 30 },
-            { id: 'ethics-ai', name: 'Ética en IA', semester: 6, hours: 25 },
-            { id: 'capstone-project', name: 'Proyecto Final', semester: 6, hours: 80 },
-            { id: 'career-prep', name: 'Preparación Profesional', semester: 6, hours: 30 },
-            { id: 'portfolio-building', name: 'Construcción de Portfolio', semester: 6, hours: 40 }
-        ];
+        // Usar datos centralizados del currículum
+        const allCourses = CURRICULUM_DATA.getAllSubjects();
 
         let courseProgress = {};
 
@@ -494,10 +442,13 @@
                 const cardClass = isLocked ? 'course-card locked' : 'course-card';
                 const clickAction = isLocked ? '' : `onclick="openCourse('${course.id}', '${course.name}')"`;
 
+                // Obtener icono de la materia
+                const courseIcon = course.icon || '📚';
+
                 grid.innerHTML += `
                     <div class="${cardClass}" ${clickAction}>
                         <div class="course-info">
-                            <div class="course-name">${course.name}</div>
+                            <div class="course-name">${courseIcon} ${course.name}</div>
                             <div class="course-meta">
                                 <div class="course-meta-item">
                                     <span>⏱️</span>

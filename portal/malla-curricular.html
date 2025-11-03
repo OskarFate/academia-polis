@@ -306,64 +306,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../js/config.js"></script>
+    <script src="../js/curriculum-data.js"></script>
     <script src="../js/auth.js"></script>
     <script>
-        const curriculum = {
-            1: [
-                { id: 'python-basics', name: 'Python Básico', hours: 40 },
-                { id: 'data-structures', name: 'Estructuras de Datos', hours: 35 },
-                { id: 'algorithms', name: 'Algoritmos', hours: 30 },
-                { id: 'git-github', name: 'Git & GitHub', hours: 20 },
-                { id: 'linux-basics', name: 'Linux Básico', hours: 25 },
-                { id: 'sql-fundamentals', name: 'SQL Fundamentos', hours: 30 },
-                { id: 'statistics-1', name: 'Estadística I', hours: 35 }
-            ],
-            2: [
-                { id: 'python-advanced', name: 'Python Avanzado', hours: 40 },
-                { id: 'pandas-numpy', name: 'Pandas & NumPy', hours: 45 },
-                { id: 'data-viz', name: 'Visualización de Datos', hours: 35 },
-                { id: 'sql-advanced', name: 'SQL Avanzado', hours: 35 },
-                { id: 'statistics-2', name: 'Estadística II', hours: 40 },
-                { id: 'probability', name: 'Probabilidad', hours: 30 },
-                { id: 'linear-algebra', name: 'Álgebra Lineal', hours: 35 }
-            ],
-            3: [
-                { id: 'ml-basics', name: 'Machine Learning Básico', hours: 50 },
-                { id: 'supervised-learning', name: 'Aprendizaje Supervisado', hours: 45 },
-                { id: 'unsupervised-learning', name: 'Aprendizaje No Supervisado', hours: 40 },
-                { id: 'sklearn', name: 'Scikit-Learn', hours: 35 },
-                { id: 'model-evaluation', name: 'Evaluación de Modelos', hours: 30 },
-                { id: 'feature-engineering', name: 'Feature Engineering', hours: 35 },
-                { id: 'time-series', name: 'Series Temporales', hours: 40 }
-            ],
-            4: [
-                { id: 'deep-learning', name: 'Deep Learning', hours: 50 },
-                { id: 'neural-networks', name: 'Redes Neuronales', hours: 45 },
-                { id: 'tensorflow-keras', name: 'TensorFlow & Keras', hours: 40 },
-                { id: 'computer-vision', name: 'Visión por Computadora', hours: 35 },
-                { id: 'nlp', name: 'Procesamiento de Lenguaje Natural', hours: 40 },
-                { id: 'recommendation-systems', name: 'Sistemas de Recomendación', hours: 30 },
-                { id: 'ab-testing', name: 'A/B Testing', hours: 25 }
-            ],
-            5: [
-                { id: 'big-data', name: 'Big Data Fundamentals', hours: 45 },
-                { id: 'spark', name: 'Apache Spark', hours: 40 },
-                { id: 'hadoop', name: 'Hadoop Ecosystem', hours: 35 },
-                { id: 'aws-data', name: 'AWS para Data Science', hours: 40 },
-                { id: 'docker-kubernetes', name: 'Docker & Kubernetes', hours: 35 },
-                { id: 'mlops', name: 'MLOps', hours: 40 },
-                { id: 'data-engineering', name: 'Ingeniería de Datos', hours: 45 }
-            ],
-            6: [
-                { id: 'business-intelligence', name: 'Business Intelligence', hours: 40 },
-                { id: 'tableau-powerbi', name: 'Tableau & Power BI', hours: 35 },
-                { id: 'data-storytelling', name: 'Data Storytelling', hours: 30 },
-                { id: 'ethics-ai', name: 'Ética en IA', hours: 25 },
-                { id: 'capstone-project', name: 'Proyecto Final', hours: 80 },
-                { id: 'career-prep', name: 'Preparación Profesional', hours: 30 },
-                { id: 'portfolio-building', name: 'Construcción de Portfolio', hours: 40 }
-            ]
-        };
+        // Usar datos centralizados del currículum
+        const curriculum = CURRICULUM_DATA.subjects;
 
         async function loadCurriculum() {
             await authManager.waitForReady();
@@ -406,9 +353,12 @@
                         `<span class="subject-status status-available">📚 En progreso (${percentage}%)</span>` :
                         '<span class="subject-status status-available">🔓 Disponible</span>';
 
+                    // Obtener icono de la materia
+                    const subjectIcon = subject.icon || '📚';
+
                     container.innerHTML += `
                         <div class="subject-card ${statusClass}" onclick="openSubject('${subject.id}', '${subject.name}')">
-                            <div class="subject-name">${subject.name}</div>
+                            <div class="subject-name">${subjectIcon} ${subject.name}</div>
                             <div class="subject-meta">
                                 <span>⏱️ ${subject.hours}h</span>
                                 <span>📖 ${semester}° Semestre</span>
