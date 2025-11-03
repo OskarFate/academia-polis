@@ -552,26 +552,31 @@
         function generateClasses() {
             allClasses = [];
             const subjects = subjectsBySemester[currentSemester];
+            const daysOfWeek = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
             
             // Generar 26 semanas (6 meses) de clases
             // Distribución:
-            // - Semanas 1-20: Clases regulares (todas las materias)
-            // - Semanas 21-22: Clases de repaso/finalización (todas las materias)
-            // - Semanas 23-24: Evaluaciones finales (exámenes por materia)
+            // - Semanas 1-20: Clases regulares (1 materia por día)
+            // - Semanas 21-22: Clases de repaso (1 materia por día)
+            // - Semanas 23-24: Evaluaciones finales (1 examen por día)
             // - Semanas 25-26: Descanso/cierre (sin clases programadas)
             
+            let globalClassNumber = 1;
+            
             for (let week = 1; week <= 26; week++) {
-                const classDate = new Date(startDate);
-                classDate.setDate(classDate.getDate() + ((week - 1) * 7));
-                
                 if (week <= 22) {
-                    // Semanas 1-22: Clases regulares de todas las materias
-                    subjects.forEach((subject, index) => {
-                        const classNumber = (week - 1) * subjects.length + index + 1;
+                    // Semanas 1-22: Clases regulares - 1 materia por día de la semana
+                    subjects.forEach((subject, dayIndex) => {
+                        const classDate = new Date(startDate);
+                        // Calcular fecha: semana base + día de la semana (0-6)
+                        classDate.setDate(classDate.getDate() + ((week - 1) * 7) + dayIndex);
+                        
+                        const dayName = daysOfWeek[classDate.getDay()];
                         
                         allClasses.push({
-                            classNumber: classNumber,
+                            classNumber: globalClassNumber++,
                             week: week,
+                            dayOfWeek: dayName,
                             subjectId: subject.id,
                             subjectName: subject.name,
                             durationHours: subject.hours,
@@ -583,13 +588,17 @@
                         });
                     });
                 } else if (week <= 24) {
-                    // Semanas 23-24: Evaluaciones finales
-                    subjects.forEach((subject, index) => {
-                        const classNumber = 22 * subjects.length + (week - 23) * subjects.length + index + 1;
+                    // Semanas 23-24: Evaluaciones finales - 1 examen por día
+                    subjects.forEach((subject, dayIndex) => {
+                        const classDate = new Date(startDate);
+                        classDate.setDate(classDate.getDate() + ((week - 1) * 7) + dayIndex);
+                        
+                        const dayName = daysOfWeek[classDate.getDay()];
                         
                         allClasses.push({
-                            classNumber: classNumber,
+                            classNumber: globalClassNumber++,
                             week: week,
+                            dayOfWeek: dayName,
                             subjectId: subject.id,
                             subjectName: `Evaluación Final: ${subject.name}`,
                             durationHours: 3,
@@ -601,10 +610,14 @@
                         });
                     });
                 } else {
-                    // Semanas 25-26: Descanso (sin clases)
+                    // Semanas 25-26: Descanso (sin clases individuales)
+                    const classDate = new Date(startDate);
+                    classDate.setDate(classDate.getDate() + ((week - 1) * 7));
+                    
                     allClasses.push({
                         classNumber: null,
                         week: week,
+                        dayOfWeek: 'Toda la semana',
                         subjectId: 'break',
                         subjectName: week === 25 ? '🏖️ Semana de Descanso' : '🎉 Semana de Cierre',
                         durationHours: 0,
@@ -749,15 +762,15 @@
                             <div class="class-meta">
                                 <div class="class-meta-item">
                                     <span>📅</span>
+                                    <span style="font-weight: 600; color: #2563eb;">${classItem.dayOfWeek}</span>
+                                </div>
+                                <div class="class-meta-item">
+                                    <span>📆</span>
                                     <span>${formatDate(classItem.startDate)}</span>
                                 </div>
                                 <div class="class-meta-item">
                                     <span>⏱️</span>
                                     <span>${classItem.durationHours}h</span>
-                                </div>
-                                <div class="class-meta-item">
-                                    <span>📖</span>
-                                    <span>Semestre ${classItem.semester}</span>
                                 </div>
                             </div>
                             <div class="class-status ${statusClass}">${statusLabels[classItem.status]}</div>
