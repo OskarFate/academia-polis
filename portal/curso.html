@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Curso - ACADEMIA DE LA POLIS</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #fce4ec 0%, white 100%);
+            min-height: 100vh;
+        }
+
+        .course-header {
+            background: var(--gradient);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .course-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .course-title-section {
+            flex: 1;
+        }
+
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(-5px);
+        }
+
+        .course-title {
+            font-size: 2rem;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .course-meta-header {
+            display: flex;
+            gap: 2rem;
+            opacity: 0.95;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .progress-header {
+            background: rgba(255,255,255,0.2);
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .progress-value {
+            font-size: 2rem;
+            font-weight: 800;
+            display: block;
+        }
+
+        .progress-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .course-content {
+            padding: 3rem 0;
+        }
+
+        .content-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+
+        /* Sidebar de navegación */
+        .course-nav {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .nav-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+        }
+
+        .module-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .module-item {
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            border: 2px solid transparent;
+        }
+
+        .module-item:hover {
+            background: #fce4ec;
+            transform: translateX(5px);
+        }
+
+        .module-item.active {
+            background: var(--gradient);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .module-item.completed {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .module-icon {
+            font-size: 1.2rem;
+        }
+
+        .module-name {
+            flex: 1;
+            font-weight: 600;
+        }
+
+        .module-duration {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        /* Panel de contenido */
+        .content-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            min-height: 600px;
+        }
+
+        .content-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+        }
+
+        .content-description {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .content-video {
+            width: 100%;
+            height: 500px;
+            background: #000;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .content-sections {
+            margin-top: 2rem;
+        }
+
+        .section-block {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-content {
+            line-height: 1.8;
+            color: #444;
+        }
+
+        .section-content ul {
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .section-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(229, 115, 115, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: var(--dark-color);
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .resources-section {
+            background: #fff3e0;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-top: 2rem;
+        }
+
+        .resources-title {
+            font-weight: 700;
+            color: #f57c00;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .resource-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .resource-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .resource-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .resource-icon {
+            font-size: 1.5rem;
+        }
+
+        .download-btn {
+            background: var(--gradient);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .download-btn:hover {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 968px) {
+            .content-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .course-nav {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="course-header">
+        <div class="container">
+            <div class="course-title-section">
+                <h1 class="course-title" id="course-name">Cargando...</h1>
+                <div class="course-meta-header">
+                    <div class="meta-item">
+                        <span>📖</span>
+                        <span id="course-modules">0 módulos</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>⏱️</span>
+                        <span id="course-duration">0 horas</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>📊</span>
+                        <span id="course-level">Todos los niveles</span>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 1rem; align-items: flex-end;">
+                <a href="mis-materias.html" class="back-btn">
+                    ← Volver a Mis Materias
+                </a>
+                <div class="progress-header">
+                    <span class="progress-value" id="header-progress">0%</span>
+                    <span class="progress-label">Completado</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="course-content">
+        <div class="container">
+            <div class="content-layout">
+                <!-- Sidebar de navegación -->
+                <aside class="course-nav">
+                    <div class="nav-title">📚 Módulos del curso</div>
+                    <div class="module-list" id="module-list">
+                        <!-- Los módulos se cargarán dinámicamente -->
+                    </div>
+                </aside>
+
+                <!-- Panel de contenido principal -->
+                <main class="content-panel" id="content-panel">
+                    <div class="content-title" id="module-title">Cargando...</div>
+                    <div class="content-description" id="module-description"></div>
+                    
+                    <div class="content-video" id="video-container">
+                        🎥 Video del módulo
+                    </div>
+
+                    <div class="content-sections" id="content-sections"></div>
+
+                    <div class="resources-section" id="resources-section">
+                        <div class="resources-title">
+                            📎 Recursos Descargables
+                        </div>
+                        <div id="resources-list"></div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn-secondary" id="prev-btn" onclick="previousModule()">
+                            ← Módulo Anterior
+                        </button>
+                        <button class="btn-primary" id="complete-btn" onclick="completeModule()">
+                            ✓ Marcar como Completado
+                        </button>
+                        <button class="btn-secondary" id="next-btn" onclick="nextModule()">
+                            Siguiente Módulo →
+                        </button>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const courseId = urlParams.get('id');
+        const courseName = urlParams.get('name');
+
+        let currentModuleIndex = 0;
+        let modules = [];
+        let completedModules = new Set();
+
+        // Datos de ejemplo para los módulos
+        const courseModules = {
+            'python-basics': [
+                {
+                    title: 'Introducción a Python',
+                    duration: '45 min',
+                    description: 'Aprende los fundamentos del lenguaje Python, su sintaxis básica y cómo configurar tu entorno de desarrollo.',
+                    sections: [
+                        { title: '¿Qué es Python?', content: 'Python es un lenguaje de programación de alto nivel, interpretado y de propósito general. Es conocido por su sintaxis clara y legible.' },
+                        { title: 'Instalación', content: 'Aprenderás a instalar Python en Windows, Mac y Linux. También configuraremos un IDE adecuado.' },
+                        { title: 'Primer Programa', content: 'Escribiremos nuestro primer programa: el clásico "Hola Mundo" y entenderemos su estructura.' }
+                    ],
+                    resources: [
+                        { name: 'Guía de Instalación.pdf', icon: '📄' },
+                        { name: 'Cheat Sheet Python.pdf', icon: '📝' },
+                        { name: 'Código de ejemplos.zip', icon: '💾' }
+                    ]
+                },
+                {
+                    title: 'Variables y Tipos de Datos',
+                    duration: '60 min',
+                    description: 'Conoce los diferentes tipos de datos en Python: strings, números, booleanos y cómo trabajar con variables.',
+                    sections: [
+                        { title: 'Variables', content: 'Las variables son contenedores para almacenar valores. En Python no necesitas declarar el tipo.' },
+                        { title: 'Tipos Numéricos', content: 'Integers, floats y complex numbers. Operaciones aritméticas básicas.' },
+                        { title: 'Strings', content: 'Cadenas de texto, concatenación, formateo y métodos comunes.' }
+                    ],
+                    resources: [
+                        { name: 'Ejercicios Variables.pdf', icon: '📝' },
+                        { name: 'Ejemplos Tipos de Datos.py', icon: '💾' }
+                    ]
+                },
+                {
+                    title: 'Estructuras de Control',
+                    duration: '75 min',
+                    description: 'Aprende a controlar el flujo de tu programa con condicionales (if/else) y bucles (for/while).',
+                    sections: [
+                        { title: 'Condicionales', content: 'Sentencias if, elif y else para tomar decisiones en tu código.' },
+                        { title: 'Bucle For', content: 'Iteración sobre secuencias, range() y comprensión de listas.' },
+                        { title: 'Bucle While', content: 'Repetición basada en condiciones y control de flujo con break/continue.' }
+                    ],
+                    resources: [
+                        { name: 'Ejercicios Estructuras.pdf', icon: '📝' },
+                        { name: 'Soluciones.py', icon: '💾' }
+                    ]
+                },
+                {
+                    title: 'Funciones',
+                    duration: '90 min',
+                    description: 'Crea código reutilizable con funciones. Parámetros, valores de retorno y scope.',
+                    sections: [
+                        { title: 'Definir Funciones', content: 'Sintaxis de funciones, parámetros y valores por defecto.' },
+                        { title: 'Return y Yield', content: 'Diferencias entre return y yield, funciones generadoras.' },
+                        { title: 'Lambda Functions', content: 'Funciones anónimas para operaciones simples.' }
+                    ],
+                    resources: [
+                        { name: 'Guía Funciones.pdf', icon: '📄' },
+                        { name: 'Proyecto Práctico.py', icon: '💾' }
+                    ]
+                },
+                {
+                    title: 'Listas y Tuplas',
+                    duration: '70 min',
+                    description: 'Estructuras de datos fundamentales: listas mutables y tuplas inmutables.',
+                    sections: [
+                        { title: 'Listas', content: 'Creación, indexación, slicing y métodos de listas.' },
+                        { title: 'Tuplas', content: 'Tuplas inmutables, unpacking y cuándo usarlas.' },
+                        { title: 'List Comprehension', content: 'Forma elegante de crear listas basadas en iteraciones.' }
+                    ],
+                    resources: [
+                        { name: 'Ejercicios Listas.pdf', icon: '📝' }
+                    ]
+                }
+            ],
+            // Para otros cursos, usar módulos genéricos
+            'default': [
+                {
+                    title: 'Introducción al curso',
+                    duration: '30 min',
+                    description: 'Conoce los objetivos del curso y qué aprenderás en cada módulo.',
+                    sections: [
+                        { title: 'Bienvenida', content: 'Te damos la bienvenida a este curso. Aquí aprenderás conceptos fundamentales y prácticos.' },
+                        { title: 'Objetivos', content: 'Al finalizar dominarás las herramientas y técnicas necesarias para aplicar estos conocimientos.' }
+                    ],
+                    resources: [
+                        { name: 'Syllabus.pdf', icon: '📄' }
+                    ]
+                },
+                {
+                    title: 'Conceptos Fundamentales',
+                    duration: '60 min',
+                    description: 'Aprende los conceptos básicos que necesitas para avanzar en el curso.',
+                    sections: [
+                        { title: 'Fundamentos', content: 'Revisaremos los conceptos teóricos esenciales con ejemplos prácticos.' }
+                    ],
+                    resources: [
+                        { name: 'Guía de Estudio.pdf', icon: '📄' }
+                    ]
+                },
+                {
+                    title: 'Práctica y Ejercicios',
+                    duration: '90 min',
+                    description: 'Aplica lo aprendido con ejercicios prácticos y casos reales.',
+                    sections: [
+                        { title: 'Ejercicios', content: 'Serie de ejercicios para reforzar lo aprendido.' }
+                    ],
+                    resources: [
+                        { name: 'Ejercicios.pdf', icon: '📝' }
+                    ]
+                }
+            ]
+        };
+
+        async function loadCourse() {
+            await authManager.waitForReady();
+
+            if (!authManager.isAuthenticated()) {
+                window.location.href = '../login.html';
+                return;
+            }
+
+            if (!courseId || !courseName) {
+                window.location.href = 'mis-materias.html';
+                return;
+            }
+
+            // Cargar módulos del curso
+            modules = courseModules[courseId] || courseModules['default'];
+            
+            // Actualizar título
+            document.getElementById('course-name').textContent = courseName;
+            document.getElementById('page-title').textContent = `${courseName} - ACADEMIA DE LA POLIS`;
+            document.getElementById('course-modules').textContent = `${modules.length} módulos`;
+            
+            // Calcular duración total
+            const totalMinutes = modules.reduce((sum, m) => {
+                const minutes = parseInt(m.duration);
+                return sum + (isNaN(minutes) ? 0 : minutes);
+            }, 0);
+            const hours = Math.floor(totalMinutes / 60);
+            const mins = totalMinutes % 60;
+            document.getElementById('course-duration').textContent = `${hours}h ${mins}min`;
+
+            // Cargar progreso del curso
+            await loadProgress();
+
+            // Renderizar lista de módulos
+            renderModuleList();
+
+            // Cargar primer módulo
+            loadModule(0);
+        }
+
+        async function loadProgress() {
+            try {
+                const progress = await authManager.getSubjectProgress();
+                const courseProgress = progress.find(p => p.subject_id === courseId);
+                
+                if (courseProgress) {
+                    const percentage = courseProgress.progress_percentage || 0;
+                    document.getElementById('header-progress').textContent = percentage + '%';
+                }
+            } catch (error) {
+                console.error('Error loading progress:', error);
+            }
+        }
+
+        function renderModuleList() {
+            const listContainer = document.getElementById('module-list');
+            listContainer.innerHTML = '';
+
+            modules.forEach((module, index) => {
+                const isCompleted = completedModules.has(index);
+                const isActive = index === currentModuleIndex;
+                
+                const moduleDiv = document.createElement('div');
+                moduleDiv.className = 'module-item' + 
+                    (isActive ? ' active' : '') + 
+                    (isCompleted ? ' completed' : '');
+                moduleDiv.onclick = () => loadModule(index);
+                
+                moduleDiv.innerHTML = `
+                    <span class="module-icon">${isCompleted ? '✅' : '📖'}</span>
+                    <span class="module-name">${index + 1}. ${module.title}</span>
+                    <span class="module-duration">${module.duration}</span>
+                `;
+                
+                listContainer.appendChild(moduleDiv);
+            });
+        }
+
+        function loadModule(index) {
+            if (index < 0 || index >= modules.length) return;
+            
+            currentModuleIndex = index;
+            const module = modules[index];
+
+            // Actualizar contenido
+            document.getElementById('module-title').textContent = module.title;
+            document.getElementById('module-description').textContent = module.description;
+
+            // Renderizar secciones
+            const sectionsContainer = document.getElementById('content-sections');
+            sectionsContainer.innerHTML = module.sections.map(section => `
+                <div class="section-block">
+                    <div class="section-title">
+                        📌 ${section.title}
+                    </div>
+                    <div class="section-content">
+                        ${section.content}
+                    </div>
+                </div>
+            `).join('');
+
+            // Renderizar recursos
+            const resourcesContainer = document.getElementById('resources-list');
+            resourcesContainer.innerHTML = module.resources.map(resource => `
+                <div class="resource-item">
+                    <div class="resource-info">
+                        <span class="resource-icon">${resource.icon}</span>
+                        <span>${resource.name}</span>
+                    </div>
+                    <a href="#" class="download-btn" onclick="return false;">Descargar</a>
+                </div>
+            `).join('');
+
+            // Actualizar botones
+            document.getElementById('prev-btn').disabled = index === 0;
+            document.getElementById('next-btn').disabled = index === modules.length - 1;
+
+            // Actualizar lista de módulos
+            renderModuleList();
+
+            // Scroll al inicio
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        async function completeModule() {
+            completedModules.add(currentModuleIndex);
+            
+            // Calcular progreso
+            const progressPercentage = Math.round((completedModules.size / modules.length) * 100);
+            
+            try {
+                // Registrar en la base de datos
+                await authManager.completeLesson(
+                    courseId,
+                    courseName,
+                    parseInt(modules[currentModuleIndex].duration) || 30
+                );
+
+                // Actualizar UI
+                document.getElementById('header-progress').textContent = progressPercentage + '%';
+                renderModuleList();
+
+                // Avanzar al siguiente módulo
+                if (currentModuleIndex < modules.length - 1) {
+                    setTimeout(() => {
+                        loadModule(currentModuleIndex + 1);
+                    }, 500);
+                } else {
+                    alert('🎉 ¡Felicitaciones! Has completado todos los módulos del curso.');
+                }
+            } catch (error) {
+                console.error('Error completing module:', error);
+                alert('Error al registrar el progreso. Intenta nuevamente.');
+            }
+        }
+
+        function previousModule() {
+            loadModule(currentModuleIndex - 1);
+        }
+
+        function nextModule() {
+            loadModule(currentModuleIndex + 1);
+        }
+
+        window.addEventListener('DOMContentLoaded', loadCourse);
+    </script>
+</body>
+</html>

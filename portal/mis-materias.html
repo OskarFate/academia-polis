@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Materias - ACADEMIA DE LA POLIS</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #fce4ec 0%, white 100%);
+            min-height: 100vh;
+        }
+
+        .page-header {
+            background: var(--gradient);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .page-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(-5px);
+        }
+
+        .content-section {
+            padding: 3rem 0;
+        }
+
+        .search-box {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .courses-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+            border-left: 5px solid var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .course-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            background: linear-gradient(135deg, #ffffff 0%, #fce4ec 100%);
+        }
+
+        .course-info {
+            flex: 1;
+        }
+
+        .course-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .course-meta {
+            display: flex;
+            gap: 2rem;
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 0.8rem;
+        }
+
+        .course-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .course-progress {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.5rem;
+            min-width: 120px;
+        }
+
+        .progress-percent {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--gradient);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .course-status {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-in-progress {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .status-completed {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-not-started {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .course-arrow {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            transition: all 0.3s;
+        }
+
+        .course-card:hover .course-arrow {
+            transform: translateX(10px);
+        }
+
+        .semester-divider {
+            background: white;
+            border-radius: 15px;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin: 2rem 0 1rem 0;
+            text-align: center;
+        }
+
+        .semester-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .empty-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .stats-bar {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-header">
+        <div class="container">
+            <div>
+                <h1>📚 Mis Materias</h1>
+                <p style="margin-top: 0.5rem; opacity: 0.9;">Vista general de cursos</p>
+            </div>
+            <a href="estudiante.html" class="back-btn">
+                ← Volver al Portal
+            </a>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <div class="container">
+            <div id="loading" class="loading">
+                🔄 Cargando tus materias...
+            </div>
+            
+            <div id="content" style="display: none;">
+                <!-- Estadísticas -->
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <div class="stat-value" id="total-courses">0</div>
+                        <div class="stat-label">Total Materias</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="in-progress-courses">0</div>
+                        <div class="stat-label">En Progreso</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="completed-courses">0</div>
+                        <div class="stat-label">Completadas</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="overall-progress">0%</div>
+                        <div class="stat-label">Progreso General</div>
+                    </div>
+                </div>
+
+                <!-- Buscador -->
+                <div class="search-box">
+                    <input type="text" class="search-input" id="search-input" placeholder="🔍 Buscar materias..." onkeyup="filterCourses()">
+                </div>
+
+                <!-- Grid de materias -->
+                <div class="courses-grid" id="courses-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        const allCourses = [
+            // Semestre 1
+            { id: 'python-basics', name: 'Python Básico', semester: 1, hours: 40 },
+            { id: 'data-structures', name: 'Estructuras de Datos', semester: 1, hours: 35 },
+            { id: 'algorithms', name: 'Algoritmos', semester: 1, hours: 30 },
+            { id: 'git-github', name: 'Git & GitHub', semester: 1, hours: 20 },
+            { id: 'linux-basics', name: 'Linux Básico', semester: 1, hours: 25 },
+            { id: 'sql-fundamentals', name: 'SQL Fundamentos', semester: 1, hours: 30 },
+            { id: 'statistics-1', name: 'Estadística I', semester: 1, hours: 35 },
+            
+            // Semestre 2
+            { id: 'python-advanced', name: 'Python Avanzado', semester: 2, hours: 40 },
+            { id: 'pandas-numpy', name: 'Pandas & NumPy', semester: 2, hours: 45 },
+            { id: 'data-viz', name: 'Visualización de Datos', semester: 2, hours: 35 },
+            { id: 'sql-advanced', name: 'SQL Avanzado', semester: 2, hours: 35 },
+            { id: 'statistics-2', name: 'Estadística II', semester: 2, hours: 40 },
+            { id: 'probability', name: 'Probabilidad', semester: 2, hours: 30 },
+            { id: 'linear-algebra', name: 'Álgebra Lineal', semester: 2, hours: 35 },
+            
+            // Semestre 3
+            { id: 'ml-basics', name: 'Machine Learning Básico', semester: 3, hours: 50 },
+            { id: 'supervised-learning', name: 'Aprendizaje Supervisado', semester: 3, hours: 45 },
+            { id: 'unsupervised-learning', name: 'Aprendizaje No Supervisado', semester: 3, hours: 40 },
+            { id: 'sklearn', name: 'Scikit-Learn', semester: 3, hours: 35 },
+            { id: 'model-evaluation', name: 'Evaluación de Modelos', semester: 3, hours: 30 },
+            { id: 'feature-engineering', name: 'Feature Engineering', semester: 3, hours: 35 },
+            { id: 'time-series', name: 'Series Temporales', semester: 3, hours: 40 },
+            
+            // Semestre 4
+            { id: 'deep-learning', name: 'Deep Learning', semester: 4, hours: 50 },
+            { id: 'neural-networks', name: 'Redes Neuronales', semester: 4, hours: 45 },
+            { id: 'tensorflow-keras', name: 'TensorFlow & Keras', semester: 4, hours: 40 },
+            { id: 'computer-vision', name: 'Visión por Computadora', semester: 4, hours: 35 },
+            { id: 'nlp', name: 'Procesamiento de Lenguaje Natural', semester: 4, hours: 40 },
+            { id: 'recommendation-systems', name: 'Sistemas de Recomendación', semester: 4, hours: 30 },
+            { id: 'ab-testing', name: 'A/B Testing', semester: 4, hours: 25 },
+            
+            // Semestre 5
+            { id: 'big-data', name: 'Big Data Fundamentals', semester: 5, hours: 45 },
+            { id: 'spark', name: 'Apache Spark', semester: 5, hours: 40 },
+            { id: 'hadoop', name: 'Hadoop Ecosystem', semester: 5, hours: 35 },
+            { id: 'aws-data', name: 'AWS para Data Science', semester: 5, hours: 40 },
+            { id: 'docker-kubernetes', name: 'Docker & Kubernetes', semester: 5, hours: 35 },
+            { id: 'mlops', name: 'MLOps', semester: 5, hours: 40 },
+            { id: 'data-engineering', name: 'Ingeniería de Datos', semester: 5, hours: 45 },
+            
+            // Semestre 6
+            { id: 'business-intelligence', name: 'Business Intelligence', semester: 6, hours: 40 },
+            { id: 'tableau-powerbi', name: 'Tableau & Power BI', semester: 6, hours: 35 },
+            { id: 'data-storytelling', name: 'Data Storytelling', semester: 6, hours: 30 },
+            { id: 'ethics-ai', name: 'Ética en IA', semester: 6, hours: 25 },
+            { id: 'capstone-project', name: 'Proyecto Final', semester: 6, hours: 80 },
+            { id: 'career-prep', name: 'Preparación Profesional', semester: 6, hours: 30 },
+            { id: 'portfolio-building', name: 'Construcción de Portfolio', semester: 6, hours: 40 }
+        ];
+
+        let courseProgress = {};
+
+        async function loadCourses() {
+            await authManager.waitForReady();
+
+            if (!authManager.isAuthenticated()) {
+                window.location.href = '../login.html';
+                return;
+            }
+
+            // Obtener progreso del usuario
+            const progress = await authManager.getSubjectProgress();
+            
+            progress.forEach(p => {
+                courseProgress[p.subject_id] = {
+                    percentage: p.progress_percentage || 0,
+                    completed: p.completed || false
+                };
+            });
+
+            renderCourses();
+            updateStats();
+
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
+        }
+
+        function renderCourses(filterText = '') {
+            const grid = document.getElementById('courses-grid');
+            grid.innerHTML = '';
+
+            let currentSemester = 0;
+            let filteredCourses = allCourses;
+
+            if (filterText) {
+                filteredCourses = allCourses.filter(course => 
+                    course.name.toLowerCase().includes(filterText.toLowerCase())
+                );
+            }
+
+            filteredCourses.forEach(course => {
+                // Añadir divisor de semestre
+                if (course.semester !== currentSemester) {
+                    currentSemester = course.semester;
+                    grid.innerHTML += `
+                        <div class="semester-divider">
+                            <div class="semester-title">📖 Semestre ${currentSemester}</div>
+                        </div>
+                    `;
+                }
+
+                const progress = courseProgress[course.id];
+                const percentage = progress?.percentage || 0;
+                const completed = progress?.completed || false;
+
+                let status = 'not-started';
+                let statusText = '🔓 No iniciado';
+                let statusClass = 'status-not-started';
+
+                if (completed) {
+                    status = 'completed';
+                    statusText = '✅ Completado';
+                    statusClass = 'status-completed';
+                } else if (percentage > 0) {
+                    status = 'in-progress';
+                    statusText = '📚 En progreso';
+                    statusClass = 'status-in-progress';
+                }
+
+                grid.innerHTML += `
+                    <div class="course-card" onclick="openCourse('${course.id}', '${course.name}')">
+                        <div class="course-info">
+                            <div class="course-name">${course.name}</div>
+                            <div class="course-meta">
+                                <div class="course-meta-item">
+                                    <span>⏱️</span>
+                                    <span>${course.hours} horas</span>
+                                </div>
+                                <div class="course-meta-item">
+                                    <span>📖</span>
+                                    <span>Semestre ${course.semester}</span>
+                                </div>
+                                <div class="course-status ${statusClass}">${statusText}</div>
+                            </div>
+                        </div>
+                        <div class="course-progress">
+                            <div class="progress-percent">${percentage}%</div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar-fill" style="width: ${percentage}%"></div>
+                            </div>
+                        </div>
+                        <div class="course-arrow">→</div>
+                    </div>
+                `;
+            });
+
+            if (filteredCourses.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🔍</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--dark-color); margin-bottom: 0.5rem;">
+                            No se encontraron materias
+                        </div>
+                        <div style="color: #666;">
+                            Intenta con otro término de búsqueda
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function updateStats() {
+            const totalCourses = allCourses.length;
+            const inProgress = Object.values(courseProgress).filter(p => p.percentage > 0 && !p.completed).length;
+            const completed = Object.values(courseProgress).filter(p => p.completed).length;
+            
+            const totalProgress = Object.values(courseProgress).reduce((sum, p) => sum + (p.percentage || 0), 0);
+            const overallProgress = totalCourses > 0 ? Math.round(totalProgress / totalCourses) : 0;
+
+            document.getElementById('total-courses').textContent = totalCourses;
+            document.getElementById('in-progress-courses').textContent = inProgress;
+            document.getElementById('completed-courses').textContent = completed;
+            document.getElementById('overall-progress').textContent = overallProgress + '%';
+        }
+
+        function filterCourses() {
+            const filterText = document.getElementById('search-input').value;
+            renderCourses(filterText);
+        }
+
+        function openCourse(courseId, courseName) {
+            // Redirigir a página de contenido del curso
+            window.location.href = `curso.html?id=${courseId}&name=${encodeURIComponent(courseName)}`;
+        }
+
+        window.addEventListener('DOMContentLoaded', loadCourses);
+    </script>
+</body>
+</html>
