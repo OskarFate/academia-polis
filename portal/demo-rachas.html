@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Sistema de Rachas - ACADEMIA DE LA POLIS</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #fce4ec 0%, white 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .demo-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .demo-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .demo-button {
+            width: 100%;
+            background: var(--gradient);
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 115, 115, 0.3);
+        }
+
+        .demo-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .stats-display {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .activity-log {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-top: 2rem;
+        }
+
+        .log-item {
+            padding: 1rem;
+            border-left: 4px solid var(--primary-color);
+            background: #f8f9fa;
+            margin-bottom: 0.5rem;
+            border-radius: 5px;
+        }
+
+        .log-time {
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <a href="estudiante.html" class="back-link">← Volver al Portal</a>
+        
+        <div class="demo-header">
+            <h1>🔥 Sistema de Rachas y Progreso</h1>
+            <p>Prueba todas las funcionalidades del sistema de seguimiento</p>
+        </div>
+
+        <div class="demo-grid">
+            <!-- Actividad Diaria -->
+            <div class="demo-card">
+                <div class="card-title">📚 Registrar Actividad</div>
+                <button class="demo-button" onclick="completeLesson()">
+                    ✅ Completar Lección (+30 min)
+                </button>
+                <button class="demo-button" onclick="completeExercise()">
+                    💪 Completar Ejercicio (+15 min)
+                </button>
+                <p style="color: #666; font-size: 0.9rem; margin-top: 1rem;">
+                    Registra actividad para aumentar tu racha y ganar XP
+                </p>
+            </div>
+
+            <!-- Evaluaciones -->
+            <div class="demo-card">
+                <div class="card-title">📝 Registrar Evaluación</div>
+                <div class="input-group">
+                    <label>Título</label>
+                    <input type="text" id="eval-title" placeholder="Ej: Examen Python Básico" value="Examen de Prueba">
+                </div>
+                <div class="input-group">
+                    <label>Puntaje (0-100)</label>
+                    <input type="number" id="eval-score" min="0" max="100" value="85">
+                </div>
+                <button class="demo-button" onclick="submitEvaluation()">
+                    📊 Registrar Evaluación
+                </button>
+            </div>
+
+            <!-- Estadísticas Actuales -->
+            <div class="demo-card">
+                <div class="card-title">📊 Estadísticas Actuales</div>
+                <div class="stats-display" id="current-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">🔥 Racha Actual:</span>
+                        <span class="stat-value">0 días</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">🏆 Mejor Racha:</span>
+                        <span class="stat-value">0 días</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">⭐ Nivel:</span>
+                        <span class="stat-value">1</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">✨ Experiencia:</span>
+                        <span class="stat-value">0 XP</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">📚 Lecciones:</span>
+                        <span class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">💪 Ejercicios:</span>
+                        <span class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">⏱️ Tiempo Total:</span>
+                        <span class="stat-value">0 min</span>
+                    </div>
+                </div>
+                <button class="demo-button" onclick="refreshStats()">
+                    🔄 Actualizar
+                </button>
+            </div>
+        </div>
+
+        <!-- Log de Actividades -->
+        <div class="activity-log">
+            <div class="card-title">📋 Registro de Actividades</div>
+            <div id="activity-log-content">
+                <p style="color: #666; text-align: center; padding: 2rem;">
+                    No hay actividades registradas aún
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        let activityLog = [];
+
+        async function init() {
+            await authManager.waitForReady();
+
+            if (!authManager.isAuthenticated()) {
+                window.location.href = '../login.html';
+                return;
+            }
+
+            await refreshStats();
+            loadActivityLog();
+        }
+
+        async function refreshStats() {
+            const stats = await authManager.getStudentStats();
+            
+            if (stats) {
+                const statsHTML = `
+                    <div class="stat-item">
+                        <span class="stat-label">🔥 Racha Actual:</span>
+                        <span class="stat-value">${stats.current_streak || 0} días</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">🏆 Mejor Racha:</span>
+                        <span class="stat-value">${stats.longest_streak || 0} días</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">⭐ Nivel:</span>
+                        <span class="stat-value">${stats.level || 1}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">✨ Experiencia:</span>
+                        <span class="stat-value">${stats.experience_points || 0} XP</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">📚 Lecciones:</span>
+                        <span class="stat-value">${stats.total_lessons_completed || 0}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">💪 Ejercicios:</span>
+                        <span class="stat-value">${stats.total_exercises_completed || 0}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">⏱️ Tiempo Total:</span>
+                        <span class="stat-value">${stats.total_time_minutes || 0} min</span>
+                    </div>
+                `;
+                
+                document.getElementById('current-stats').innerHTML = statsHTML;
+            }
+        }
+
+        async function completeLesson() {
+            const btn = event.target;
+            btn.disabled = true;
+            btn.textContent = 'Procesando...';
+
+            const result = await authManager.completeLesson('demo-subject', 'Materia de Demostración', 30);
+            
+            if (result.success) {
+                authManager.showNotification(result.message, 'success');
+                
+                // Añadir XP
+                const xpResult = await authManager.addExperience(50);
+                if (xpResult.leveledUp) {
+                    authManager.showNotification(`🎉 ¡Subiste al Nivel ${xpResult.newLevel}!`, 'success');
+                }
+
+                addToLog('✅ Lección completada (+30 min, +50 XP)');
+                await refreshStats();
+            } else {
+                authManager.showNotification('Error: ' + result.message, 'error');
+            }
+
+            btn.disabled = false;
+            btn.textContent = '✅ Completar Lección (+30 min)';
+        }
+
+        async function completeExercise() {
+            const btn = event.target;
+            btn.disabled = true;
+            btn.textContent = 'Procesando...';
+
+            const result = await authManager.completeExercise('demo-subject', 'Materia de Demostración', 15);
+            
+            if (result.success) {
+                authManager.showNotification(result.message, 'success');
+                
+                // Añadir XP
+                await authManager.addExperience(25);
+
+                addToLog('💪 Ejercicio completado (+15 min, +25 XP)');
+                await refreshStats();
+            } else {
+                authManager.showNotification('Error: ' + result.message, 'error');
+            }
+
+            btn.disabled = false;
+            btn.textContent = '💪 Completar Ejercicio (+15 min)';
+        }
+
+        async function submitEvaluation() {
+            const title = document.getElementById('eval-title').value;
+            const score = parseInt(document.getElementById('eval-score').value);
+
+            if (!title || isNaN(score)) {
+                authManager.showNotification('Por favor completa todos los campos', 'error');
+                return;
+            }
+
+            const btn = event.target;
+            btn.disabled = true;
+            btn.textContent = 'Procesando...';
+
+            const result = await authManager.submitEvaluation(
+                'demo-subject',
+                'Materia de Demostración',
+                'Examen',
+                title,
+                score,
+                100
+            );
+            
+            if (result.success) {
+                authManager.showNotification(result.message, result.passed ? 'success' : 'info');
+                
+                // Añadir XP si aprobó
+                if (result.passed) {
+                    const xpResult = await authManager.addExperience(100);
+                    if (xpResult.leveledUp) {
+                        authManager.showNotification(`🎉 ¡Subiste al Nivel ${xpResult.newLevel}!`, 'success');
+                    }
+                    addToLog(`📝 Evaluación registrada: ${title} (${score}/100) - ¡Aprobado! (+100 XP)`);
+                } else {
+                    addToLog(`📝 Evaluación registrada: ${title} (${score}/100) - Reprobado`);
+                }
+
+                await refreshStats();
+            } else {
+                authManager.showNotification('Error: ' + result.message, 'error');
+            }
+
+            btn.disabled = false;
+            btn.textContent = '📊 Registrar Evaluación';
+        }
+
+        function addToLog(message) {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('es-ES');
+            
+            activityLog.unshift({
+                time: timeStr,
+                message: message
+            });
+
+            // Mantener solo últimos 10
+            if (activityLog.length > 10) {
+                activityLog = activityLog.slice(0, 10);
+            }
+
+            updateLogDisplay();
+        }
+
+        function updateLogDisplay() {
+            const container = document.getElementById('activity-log-content');
+            
+            if (activityLog.length === 0) {
+                container.innerHTML = '<p style="color: #666; text-align: center; padding: 2rem;">No hay actividades registradas aún</p>';
+                return;
+            }
+
+            let html = '';
+            activityLog.forEach(log => {
+                html += `
+                    <div class="log-item">
+                        <div>${log.message}</div>
+                        <div class="log-time">${log.time}</div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function loadActivityLog() {
+            // Cargar del localStorage si existe
+            const saved = localStorage.getItem('activity_log');
+            if (saved) {
+                activityLog = JSON.parse(saved);
+                updateLogDisplay();
+            }
+        }
+
+        // Guardar log al salir
+        window.addEventListener('beforeunload', () => {
+            localStorage.setItem('activity_log', JSON.stringify(activityLog));
+        });
+
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

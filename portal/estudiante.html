@@ -8,7 +8,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         .portal-container {
-            min-height: 100vh;
+            m                            <div class="dropdown-divider"></div>
+                            <a href="perfil.html" class="dropdown-item">
+                                <span>👤</span> Mi Perfil
+                            </a>
+                            <a href="evaluaciones.html" class="dropdown-item">
+                                <span>📝</span> Mis Evaluaciones
+                            </a>
+                            <a href="progreso.html" class="dropdown-item">
+                                <span>📊</span> Mi Progreso
+                            </a>
+                            <a href="demo-rachas.html" class="dropdown-item">
+                                <span>🔥</span> Demo: Sistema de Rachas
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item danger" onclick="logout(); return false;">
+                                <span>🚪</span> Cerrar Sesión
+                            </a>vh;
             background: linear-gradient(135deg, var(--light-color) 0%, white 100%);
         }
 
@@ -613,6 +629,9 @@
             }
             
             console.log('Usuario autenticado:', authManager.currentUser.email);
+
+            // Verificar y actualizar racha
+            await authManager.checkAndUpdateStreak();
 
             // Cargar datos del usuario
             let profile = await authManager.getStudentProfile();

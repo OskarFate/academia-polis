@@ -356,6 +356,213 @@ class AuthManager {
             return [];
         }
     }
+
+    // Registrar lección completada (actualiza racha automáticamente)
+    async completeLesson(subjectId, subjectName, timeSpent = 30) {
+        if (!this.currentUser) return { success: false, message: 'No autenticado' };
+
+        try {
+            const today = new Date().toISOString().split('T')[0];
+
+            // Actualizar actividad diaria (trigger actualiza racha automáticamente)
+            const activityResult = await this.recordDailyActivity(1, timeSpent, 0);
+            
+            if (!activityResult.success) {
+                throw new Error('Error registrando actividad');
+            }
+
+            // Actualizar o crear progreso de la materia
+            const { data: existingProgress } = await supabase
+                .from('subject_progress')
+                .select('*')
+                .eq('user_id', this.currentUser.id)
+                .eq('subject_id', subjectId)
+                .single();
+
+            if (existingProgress) {
+                // Actualizar progreso existente
+                const newPercentage = Math.min(100, existingProgress.progress_percentage + 5);
+                await supabase
+                    .from('subject_progress')
+                    .update({ 
+                        progress_percentage: newPercentage,
+                        completed: newPercentage === 100,
+                        completed_at: newPercentage === 100 ? new Date().toISOString() : null
+                    })
+                    .eq('user_id', this.currentUser.id)
+                    .eq('subject_id', subjectId);
+            } else {
+                // Crear nuevo progreso
+                await supabase
+                    .from('subject_progress')
+                    .insert({
+                        user_id: this.currentUser.id,
+                        subject_id: subjectId,
+                        subject_name: subjectName,
+                        progress_percentage: 5
+                    });
+            }
+
+            return { success: true, message: '¡Lección completada! 🎉' };
+        } catch (error) {
+            console.error('Error completando lección:', error);
+            return { success: false, message: error.message };
+        }
+    }
+
+    // Registrar ejercicio completado
+    async completeExercise(subjectId, subjectName, timeSpent = 15) {
+        if (!this.currentUser) return { success: false, message: 'No autenticado' };
+
+        try {
+            const today = new Date().toISOString().split('T')[0];
+
+            // Actualizar actividad diaria
+            const activityResult = await this.recordDailyActivity(0, timeSpent, 1);
+            
+            if (!activityResult.success) {
+                throw new Error('Error registrando actividad');
+            }
+
+            return { success: true, message: '¡Ejercicio completado! ✅' };
+        } catch (error) {
+            console.error('Error completando ejercicio:', error);
+            return { success: false, message: error.message };
+        }
+    }
+
+    // Registrar evaluación
+    async submitEvaluation(subjectId, subjectName, evaluationType, title, score, maxScore = 100) {
+        if (!this.currentUser) return { success: false, message: 'No autenticado' };
+
+        try {
+            const passed = (score / maxScore) >= 0.6; // 60% para aprobar
+
+            const { error } = await supabase
+                .from('evaluations')
+                .insert({
+                    user_id: this.currentUser.id,
+                    subject_id: subjectId,
+                    subject_name: subjectName,
+                    evaluation_type: evaluationType,
+                    title: title,
+                    score: score,
+                    max_score: maxScore,
+                    passed: passed
+                });
+
+            if (error) throw error;
+
+            // Si aprobó, actualizar progreso de la materia
+            if (passed) {
+                const { data: progress } = await supabase
+                    .from('subject_progress')
+                    .select('*')
+                    .eq('user_id', this.currentUser.id)
+                    .eq('subject_id', subjectId)
+                    .single();
+
+                if (progress) {
+                    const newPercentage = Math.min(100, progress.progress_percentage + 10);
+                    await supabase
+                        .from('subject_progress')
+                        .update({ 
+                            progress_percentage: newPercentage,
+                            completed: newPercentage === 100,
+                            completed_at: newPercentage === 100 ? new Date().toISOString() : null
+                        })
+                        .eq('user_id', this.currentUser.id)
+                        .eq('subject_id', subjectId);
+                }
+            }
+
+            return { 
+                success: true, 
+                passed: passed,
+                message: passed ? '🎉 ¡Aprobado!' : '📚 Sigue estudiando, puedes mejorar' 
+            };
+        } catch (error) {
+            console.error('Error registrando evaluación:', error);
+            return { success: false, message: error.message };
+        }
+    }
+
+    // Verificar y actualizar racha (llamar al iniciar sesión)
+    async checkAndUpdateStreak() {
+        if (!this.currentUser) return;
+
+        try {
+            const today = new Date().toISOString().split('T')[0];
+            const stats = await this.getStudentStats();
+
+            if (!stats) return;
+
+            const lastActivityDate = stats.last_activity_date;
+            
+            if (!lastActivityDate) {
+                // Primera vez, no hacer nada
+                return;
+            }
+
+            const lastDate = new Date(lastActivityDate);
+            const todayDate = new Date(today);
+            const diffTime = todayDate - lastDate;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+            // Si han pasado más de 1 día, la racha se rompe
+            if (diffDays > 1) {
+                await supabase
+                    .from('student_stats')
+                    .update({ 
+                        current_streak: 0
+                    })
+                    .eq('user_id', this.currentUser.id);
+            }
+        } catch (error) {
+            console.error('Error verificando racha:', error);
+        }
+    }
+
+    // Calcular nivel basado en experiencia
+    calculateLevel(experiencePoints) {
+        // Nivel = raíz cuadrada de (XP / 100)
+        // Nivel 1: 0-100 XP
+        // Nivel 2: 100-400 XP
+        // Nivel 3: 400-900 XP, etc.
+        return Math.floor(Math.sqrt(experiencePoints / 100)) + 1;
+    }
+
+    // Añadir experiencia
+    async addExperience(amount) {
+        if (!this.currentUser) return { success: false };
+
+        try {
+            const stats = await this.getStudentStats();
+            if (!stats) return { success: false };
+
+            const newXP = stats.experience_points + amount;
+            const newLevel = this.calculateLevel(newXP);
+            const leveledUp = newLevel > stats.level;
+
+            await supabase
+                .from('student_stats')
+                .update({ 
+                    experience_points: newXP,
+                    level: newLevel
+                })
+                .eq('user_id', this.currentUser.id);
+
+            return { 
+                success: true, 
+                leveledUp: leveledUp,
+                newLevel: newLevel,
+                newXP: newXP
+            };
+        } catch (error) {
+            console.error('Error añadiendo experiencia:', error);
+            return { success: false };
+        }
+    }
 }
 
 // Inicializar AuthManager globalmente
