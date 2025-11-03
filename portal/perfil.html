@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - ACADEMIA DE LA POLIS</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #fce4ec 0%, white 100%);
+            min-height: 100vh;
+        }
+
+        .page-header {
+            background: var(--gradient);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .page-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(-5px);
+        }
+
+        .content-section {
+            padding: 3rem 0;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .profile-avatar-large {
+            width: 150px;
+            height: 150px;
+            background: var(--gradient);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            font-weight: 800;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 8px 20px rgba(229, 115, 115, 0.3);
+        }
+
+        .profile-name {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-email {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .change-avatar-btn {
+            background: var(--gradient);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .change-avatar-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 115, 115, 0.3);
+        }
+
+        .info-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 1rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .info-item {
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 15px;
+            transition: all 0.3s;
+        }
+
+        .info-item:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+        }
+
+        .info-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .info-value {
+            color: var(--dark-color);
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .info-value.highlight {
+            color: var(--primary-color);
+            font-size: 2rem;
+        }
+
+        .career-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+
+        .current-career {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #fce4ec 0%, #f8f9fa 100%);
+            border-radius: 15px;
+            margin-bottom: 1rem;
+        }
+
+        .career-info {
+            flex: 1;
+        }
+
+        .career-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .career-meta {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .danger-btn {
+            background: #ffebee;
+            color: #c62828;
+            padding: 0.8rem 1.5rem;
+            border: 2px solid #c62828;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .danger-btn:hover {
+            background: #c62828;
+            color: white;
+        }
+
+        .no-career {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+
+        .settings-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-info h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 0.3rem;
+        }
+
+        .setting-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .setting-action button {
+            background: var(--gradient);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .setting-action button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 115, 115, 0.3);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+        }
+
+        .modal-body {
+            margin-bottom: 1.5rem;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .modal-btn.cancel {
+            background: #f0f0f0;
+            color: #666;
+        }
+
+        .modal-btn.confirm {
+            background: #c62828;
+            color: white;
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.2rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-header">
+        <div class="container">
+            <div>
+                <h1>👤 Mi Perfil</h1>
+                <p style="margin-top: 0.5rem; opacity: 0.9;">Configuración y estadísticas de tu cuenta</p>
+            </div>
+            <a href="estudiante.html" class="back-btn">
+                ← Volver al Portal
+            </a>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <div class="container">
+            <div id="loading" class="loading">
+                🔄 Cargando perfil...
+            </div>
+            
+            <div id="profile-container" style="display: none;">
+                <!-- Profile Grid -->
+                <div class="profile-grid">
+                    <!-- Left Column: Avatar & Basic Info -->
+                    <div class="profile-card">
+                        <div class="profile-avatar-large" id="profile-avatar">?</div>
+                        <div class="profile-name" id="profile-name">Cargando...</div>
+                        <div class="profile-email" id="profile-email">email...</div>
+                        <button class="change-avatar-btn" onclick="changeAvatar()">
+                            📸 Cambiar Foto de Perfil
+                        </button>
+                    </div>
+
+                    <!-- Right Column: Stats -->
+                    <div class="info-section">
+                        <div class="section-title">📊 Estadísticas Generales</div>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <div class="info-label">Racha Actual</div>
+                                <div class="info-value highlight">🔥 <span id="stat-current-streak">0</span> días</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Mejor Racha</div>
+                                <div class="info-value">🏆 <span id="stat-longest-streak">0</span> días</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Nivel Actual</div>
+                                <div class="info-value">⭐ Nivel <span id="stat-level">1</span></div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Experiencia</div>
+                                <div class="info-value"><span id="stat-xp">0</span> XP</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Lecciones Completadas</div>
+                                <div class="info-value">📚 <span id="stat-lessons">0</span></div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Tiempo Total de Estudio</div>
+                                <div class="info-value">⏱️ <span id="stat-time">0</span> horas</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Current Career -->
+                <div class="career-section">
+                    <div class="section-title">🎓 Carrera Actual</div>
+                    <div id="career-content"></div>
+                </div>
+
+                <!-- Settings -->
+                <div class="settings-section">
+                    <div class="section-title">⚙️ Configuración</div>
+                    
+                    <div class="settings-item">
+                        <div class="setting-info">
+                            <h3>Nombre Completo</h3>
+                            <p>Actualiza tu nombre como aparece en el perfil</p>
+                        </div>
+                        <div class="setting-action">
+                            <button onclick="changeName()">Editar</button>
+                        </div>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="setting-info">
+                            <h3>Correo Electrónico</h3>
+                            <p id="current-email">email@ejemplo.com</p>
+                        </div>
+                        <div class="setting-action">
+                            <button onclick="changeEmail()">Cambiar</button>
+                        </div>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="setting-info">
+                            <h3>Contraseña</h3>
+                            <p>Actualiza tu contraseña de acceso</p>
+                        </div>
+                        <div class="setting-action">
+                            <button onclick="changePassword()">Cambiar</button>
+                        </div>
+                    </div>
+
+                    <div class="settings-item">
+                        <div class="setting-info">
+                            <h3>Eliminar Cuenta</h3>
+                            <p style="color: #c62828;">Esta acción es permanente y no se puede deshacer</p>
+                        </div>
+                        <div class="setting-action">
+                            <button style="background: #c62828;" onclick="deleteAccount()">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para cambiar nombre -->
+    <div id="modal-name" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">✏️ Cambiar Nombre</div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Nuevo Nombre Completo</label>
+                    <input type="text" id="new-name" placeholder="Tu nombre completo">
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" onclick="closeModal('modal-name')">Cancelar</button>
+                <button class="modal-btn confirm" style="background: var(--primary-color);" onclick="saveName()">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para renunciar carrera -->
+    <div id="modal-unenroll" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">⚠️ Renunciar a Carrera</div>
+            <div class="modal-body">
+                <p>¿Estás seguro de que quieres renunciar a esta carrera?</p>
+                <p><strong>Tu progreso se mantendrá guardado</strong>, pero deberás inscribirte nuevamente para acceder a las materias.</p>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" onclick="closeModal('modal-unenroll')">Cancelar</button>
+                <button class="modal-btn confirm" onclick="confirmUnenroll()">Sí, Renunciar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        let currentProfile = null;
+
+        async function loadProfile() {
+            await authManager.waitForReady();
+
+            if (!authManager.isAuthenticated()) {
+                window.location.href = '../login.html';
+                return;
+            }
+
+            const loading = document.getElementById('loading');
+            const container = document.getElementById('profile-container');
+
+            // Cargar perfil
+            currentProfile = await authManager.getStudentProfile();
+
+            const fullName = currentProfile?.full_name || 
+                           authManager.currentUser.user_metadata?.full_name || 
+                           authManager.currentUser.email.split('@')[0];
+            const email = currentProfile?.email || authManager.currentUser.email;
+            const firstLetter = fullName[0].toUpperCase();
+
+            // Actualizar info básica
+            document.getElementById('profile-avatar').textContent = firstLetter;
+            document.getElementById('profile-name').textContent = fullName;
+            document.getElementById('profile-email').textContent = email;
+            document.getElementById('current-email').textContent = email;
+
+            // Cargar estadísticas
+            const stats = await authManager.getStudentStats();
+            if (stats) {
+                document.getElementById('stat-current-streak').textContent = stats.current_streak || 0;
+                document.getElementById('stat-longest-streak').textContent = stats.longest_streak || 0;
+                document.getElementById('stat-level').textContent = stats.level || 1;
+                document.getElementById('stat-xp').textContent = stats.experience_points || 0;
+                document.getElementById('stat-lessons').textContent = stats.total_lessons_completed || 0;
+                document.getElementById('stat-time').textContent = Math.floor((stats.total_time_minutes || 0) / 60);
+            }
+
+            // Mostrar carrera actual
+            const careerContent = document.getElementById('career-content');
+            if (currentProfile && currentProfile.enrolled_career) {
+                const careerNames = {
+                    'data-analysis': 'Data Analysis & Python Mastery'
+                };
+                const careerName = careerNames[currentProfile.enrolled_career] || currentProfile.enrolled_career;
+                
+                careerContent.innerHTML = `
+                    <div class="current-career">
+                        <div class="career-info">
+                            <div class="career-name">${careerName}</div>
+                            <div class="career-meta">📅 Inscrito desde ${new Date(currentProfile.created_at).toLocaleDateString('es-ES')}</div>
+                        </div>
+                        <button class="danger-btn" onclick="unenrollCareer()">
+                            ❌ Renunciar
+                        </button>
+                    </div>
+                `;
+            } else {
+                careerContent.innerHTML = `
+                    <div class="no-career">
+                        <p>📚 No estás inscrito en ninguna carrera actualmente</p>
+                        <p><a href="estudiante.html" style="color: var(--primary-color); font-weight: 600;">← Volver al portal para inscribirte</a></p>
+                    </div>
+                `;
+            }
+
+            loading.style.display = 'none';
+            container.style.display = 'block';
+        }
+
+        function changeAvatar() {
+            authManager.showNotification('🚧 Función en desarrollo. Próximamente podrás subir tu foto de perfil.', 'info');
+        }
+
+        function changeName() {
+            document.getElementById('new-name').value = document.getElementById('profile-name').textContent;
+            openModal('modal-name');
+        }
+
+        async function saveName() {
+            const newName = document.getElementById('new-name').value.trim();
+            
+            if (!newName) {
+                authManager.showNotification('❌ El nombre no puede estar vacío', 'error');
+                return;
+            }
+
+            const supabase = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+            
+            const { error } = await supabase
+                .from('students')
+                .update({ full_name: newName })
+                .eq('user_id', authManager.currentUser.id);
+
+            if (error) {
+                authManager.showNotification('❌ Error al actualizar nombre', 'error');
+            } else {
+                authManager.showNotification('✅ Nombre actualizado correctamente', 'success');
+                document.getElementById('profile-name').textContent = newName;
+                document.getElementById('profile-avatar').textContent = newName[0].toUpperCase();
+                closeModal('modal-name');
+            }
+        }
+
+        function changeEmail() {
+            authManager.showNotification('🚧 Para cambiar tu email, contacta con soporte.', 'info');
+        }
+
+        function changePassword() {
+            authManager.showNotification('🚧 Próximamente podrás cambiar tu contraseña desde aquí.', 'info');
+        }
+
+        function unenrollCareer() {
+            openModal('modal-unenroll');
+        }
+
+        async function confirmUnenroll() {
+            const supabase = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+            
+            const { error } = await supabase
+                .from('students')
+                .update({ enrolled_career: null })
+                .eq('user_id', authManager.currentUser.id);
+
+            if (error) {
+                authManager.showNotification('❌ Error al renunciar a la carrera', 'error');
+            } else {
+                authManager.showNotification('✅ Has renunciado a la carrera', 'success');
+                closeModal('modal-unenroll');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+            }
+        }
+
+        function deleteAccount() {
+            if (confirm('⚠️ ADVERTENCIA: Esta acción eliminará permanentemente tu cuenta y todos tus datos.\n\n¿Estás ABSOLUTAMENTE seguro?')) {
+                authManager.showNotification('🚧 Contacta con soporte para eliminar tu cuenta.', 'info');
+            }
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('show');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
+
+        window.addEventListener('DOMContentLoaded', loadProfile);
+    </script>
+</body>
+</html>

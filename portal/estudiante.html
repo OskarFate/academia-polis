@@ -114,7 +114,7 @@
             z-index: 1000;
         }
 
-        .user-dropdown.show {
+        .user-menu-container:hover .user-dropdown {
             opacity: 1;
             visibility: visible;
             transform: translateY(0);
@@ -424,16 +424,20 @@
                     <p style="font-size: 0.85rem; opacity: 0.9; margin-top: 0.3rem;">"Saber para todos, poder para el pueblo."</p>
                 </div>
                 <div class="portal-user">
-                    <!-- Racha de días -->
-                    <div class="streak-display" id="streak-display" style="display: none;">
-                        <span class="streak-icon">🔥</span>
-                        <span class="streak-number" id="streak-number">0</span>
-                        <span class="streak-label">días</span>
-                    </div>
+                    <!-- Racha de días (clickeable) -->
+                    <a href="perfil.html" style="text-decoration: none; color: inherit;">
+                        <div class="streak-display" id="streak-display" style="display: none; cursor: pointer;">
+                            <span class="streak-icon">🔥</span>
+                            <span class="streak-number" id="streak-number">0</span>
+                            <span class="streak-label">días</span>
+                        </div>
+                    </a>
                     
                     <!-- Avatar con menú desplegable -->
                     <div class="user-menu-container">
-                        <div class="user-avatar" id="user-avatar" onclick="toggleUserMenu()">?</div>
+                        <a href="perfil.html" style="text-decoration: none;">
+                            <div class="user-avatar" id="user-avatar" style="cursor: pointer;">?</div>
+                        </a>
                         <div class="user-dropdown" id="user-dropdown">
                             <div class="dropdown-header">
                                 <div class="dropdown-avatar" id="dropdown-avatar">?</div>
@@ -443,14 +447,14 @@
                                 </div>
                             </div>
                             <div class="dropdown-divider"></div>
+                            <a href="perfil.html" class="dropdown-item">
+                                <span>�</span> Mi Perfil
+                            </a>
                             <a href="evaluaciones.html" class="dropdown-item">
-                                <span>📝</span> Mis Evaluaciones
+                                <span>�</span> Mis Evaluaciones
                             </a>
                             <a href="progreso.html" class="dropdown-item">
-                                <span>📊</span> Mi Progreso
-                            </a>
-                            <a href="#" class="dropdown-item" onclick="showStreakDetails(); return false;">
-                                <span>🔥</span> Racha y Estadísticas
+                                <span>�</span> Mi Progreso
                             </a>
                             <div class="dropdown-divider"></div>
                             <a href="#" class="dropdown-item danger" onclick="logout(); return false;">
@@ -594,36 +598,12 @@
             await checkAuth();
         });
 
-        // Toggle menú de usuario
-        function toggleUserMenu() {
-            const dropdown = document.getElementById('user-dropdown');
-            dropdown.classList.toggle('show');
-        }
 
-        // Cerrar menú al hacer click fuera
-        document.addEventListener('click', (e) => {
-            const dropdown = document.getElementById('user-dropdown');
-            const avatar = document.getElementById('user-avatar');
-            if (dropdown && !dropdown.contains(e.target) && e.target !== avatar) {
-                dropdown.classList.remove('show');
-            }
-        });
 
 
 
         // Mostrar detalles de racha
-        async function showStreakDetails() {
-            const stats = await authManager.getStudentStats();
-            if (stats) {
-                authManager.showNotification(
-                    `🔥 Racha actual: ${stats.current_streak} días\n` +
-                    `🏆 Mejor racha: ${stats.longest_streak} días\n` +
-                    `📚 Lecciones completadas: ${stats.total_lessons_completed}\n` +
-                    `⏱️ Tiempo total: ${Math.floor(stats.total_time_minutes / 60)} horas`,
-                    'info'
-                );
-            }
-        }
+
 
         async function checkAuth() {
             if (!authManager || !authManager.isAuthenticated()) {
