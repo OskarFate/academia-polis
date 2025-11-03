@@ -85,61 +85,117 @@
         }
 
         .subject-card {
-            background: #f8f9fa;
+            background: white;
             border-radius: 15px;
             padding: 1.5rem;
             transition: all 0.3s;
-            border-left: 4px solid var(--primary-color);
+            border-left: 5px solid var(--primary-color);
             cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
         }
 
         .subject-card:hover {
-            transform: translateX(5px);
-            background: #e8f5e9;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(229, 115, 115, 0.2);
+            border-left-color: #c62828;
         }
 
         .subject-card.completed {
-            background: #e8f5e9;
+            background: linear-gradient(135deg, #f1f8e9 0%, #e8f5e9 100%);
             border-left-color: #4caf50;
         }
 
+        .subject-card.completed:hover {
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.2);
+        }
+
         .subject-name {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             font-weight: 700;
             color: var(--dark-color);
-            margin-bottom: 0.5rem;
+            line-height: 1.4;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .subject-meta {
             display: flex;
+            flex-wrap: wrap;
             gap: 1rem;
             color: #666;
             font-size: 0.9rem;
         }
 
+        .subject-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-weight: 500;
+        }
+
         .subject-status {
-            display: inline-block;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.4rem 1rem;
+            border-radius: 25px;
             font-size: 0.85rem;
             font-weight: 600;
-            margin-top: 0.5rem;
+            margin-top: 0.3rem;
         }
 
         .status-available {
-            background: #e3f2fd;
-            color: #1976d2;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            color: #0d47a1;
+        }
+
+        .status-in-progress {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            color: #e65100;
         }
 
         .status-locked {
-            background: #ffebee;
-            color: #c62828;
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+            color: #880e4f;
         }
 
         .status-completed {
-            background: #e8f5e9;
-            color: #2e7d32;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            color: #1b5e20;
+        }
+
+        .subject-progress {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .progress-bar-mini {
+            flex: 1;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill-mini {
+            height: 100%;
+            background: linear-gradient(90deg, #4caf50 0%, #8bc34a 100%);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-percent-mini {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            min-width: 40px;
+            text-align: right;
         }
 
         .progress-summary {
@@ -333,8 +389,25 @@
             const completedCount = progress.filter(p => p.completed).length;
             const progressPercent = Math.round((completedCount / totalSubjects) * 100);
 
+            // Calcular semestre actual
+            let currentSemester = 1;
+            for (let sem = 1; sem <= 6; sem++) {
+                const semesterSubjects = curriculum[sem];
+                const completedInSemester = semesterSubjects.filter(subject => {
+                    const prog = progressMap[subject.id];
+                    return prog?.completed === true;
+                }).length;
+
+                if (completedInSemester < semesterSubjects.length) {
+                    currentSemester = sem;
+                    break;
+                }
+                if (sem === 6) currentSemester = 6;
+            }
+
             document.getElementById('completed-subjects').textContent = completedCount;
             document.getElementById('progress-percent').textContent = progressPercent + '%';
+            document.getElementById('current-semester').textContent = currentSemester;
 
             // Renderizar cada semestre
             for (let semester = 1; semester <= 6; semester++) {
@@ -346,12 +419,34 @@
                     const isCompleted = subjectProgress?.completed;
                     const percentage = subjectProgress?.progress_percentage || 0;
 
-                    const statusClass = isCompleted ? 'completed' : '';
-                    const statusLabel = isCompleted ? 
-                        '<span class="subject-status status-completed">✅ Completada</span>' :
-                        percentage > 0 ?
-                        `<span class="subject-status status-available">📚 En progreso (${percentage}%)</span>` :
-                        '<span class="subject-status status-available">🔓 Disponible</span>';
+                    const statusClass = isCompleted ? 'completed' : percentage > 0 ? 'in-progress' : '';
+                    
+                    let statusLabel = '';
+                    let statusInfo = '';
+                    
+                    if (isCompleted) {
+                        statusLabel = '<span class="subject-status status-completed">✅ Completada</span>';
+                    } else if (percentage > 0) {
+                        statusLabel = '<span class="subject-status status-in-progress">📚 En progreso</span>';
+                        statusInfo = `
+                            <div class="subject-progress">
+                                <div class="progress-bar-mini">
+                                    <div class="progress-bar-fill-mini" style="width: ${percentage}%"></div>
+                                </div>
+                                <div class="progress-percent-mini">${percentage}%</div>
+                            </div>
+                        `;
+                    } else {
+                        statusLabel = '<span class="subject-status status-available">🔓 No iniciado</span>';
+                        statusInfo = `
+                            <div class="subject-progress">
+                                <div class="progress-bar-mini">
+                                    <div class="progress-bar-fill-mini" style="width: 0%"></div>
+                                </div>
+                                <div class="progress-percent-mini">0%</div>
+                            </div>
+                        `;
+                    }
 
                     // Obtener icono de la materia
                     const subjectIcon = subject.icon || '📚';
@@ -360,10 +455,17 @@
                         <div class="subject-card ${statusClass}" onclick="openSubject('${subject.id}', '${subject.name}')">
                             <div class="subject-name">${subjectIcon} ${subject.name}</div>
                             <div class="subject-meta">
-                                <span>⏱️ ${subject.hours}h</span>
-                                <span>📖 ${semester}° Semestre</span>
+                                <div class="subject-meta-item">
+                                    <span>⏱️</span>
+                                    <span>${subject.hours} horas</span>
+                                </div>
+                                <div class="subject-meta-item">
+                                    <span>📖</span>
+                                    <span>Semestre ${semester}</span>
+                                </div>
                             </div>
                             ${statusLabel}
+                            ${statusInfo}
                         </div>
                     `;
                 });
