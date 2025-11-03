@@ -93,6 +93,24 @@
             background: linear-gradient(135deg, #ffffff 0%, #fce4ec 100%);
         }
 
+        .course-card.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+            border-left-color: #999;
+            background: #f5f5f5;
+        }
+
+        .course-card.locked:hover {
+            transform: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            background: #f5f5f5;
+        }
+
+        .course-card.locked .course-name,
+        .course-card.locked .course-meta {
+            color: #999;
+        }
+
         .course-info {
             flex: 1;
         }
@@ -168,6 +186,11 @@
         .status-not-started {
             background: #fff3e0;
             color: #f57c00;
+        }
+
+        .status-locked {
+            background: #eeeeee;
+            color: #999;
         }
 
         .course-arrow {
@@ -382,26 +405,65 @@
             document.getElementById('content').style.display = 'block';
         }
 
+        function getCurrentSemester() {
+            // Calcular el semestre actual basado en las materias completadas
+            const semesterCourses = {};
+            
+            // Agrupar cursos por semestre
+            allCourses.forEach(course => {
+                if (!semesterCourses[course.semester]) {
+                    semesterCourses[course.semester] = [];
+                }
+                semesterCourses[course.semester].push(course);
+            });
+
+            // Verificar qué semestres están completados
+            for (let semester = 1; semester <= 6; semester++) {
+                const coursesInSemester = semesterCourses[semester] || [];
+                const completedInSemester = coursesInSemester.filter(course => {
+                    const progress = courseProgress[course.id];
+                    return progress?.completed === true;
+                }).length;
+
+                // Si no ha completado todas las materias del semestre, ese es el semestre actual
+                if (completedInSemester < coursesInSemester.length) {
+                    return semester;
+                }
+            }
+
+            // Si completó todo, está en el último semestre
+            return 6;
+        }
+
         function renderCourses(filterText = '') {
             const grid = document.getElementById('courses-grid');
             grid.innerHTML = '';
 
             let currentSemester = 0;
             let filteredCourses = allCourses;
+            const unlockedSemester = getCurrentSemester();
 
             if (filterText) {
                 filteredCourses = allCourses.filter(course => 
                     course.name.toLowerCase().includes(filterText.toLowerCase())
                 );
+            } else {
+                // Si no hay búsqueda, solo mostrar hasta el semestre desbloqueado
+                filteredCourses = allCourses.filter(course => course.semester <= unlockedSemester);
             }
 
             filteredCourses.forEach(course => {
                 // Añadir divisor de semestre
                 if (course.semester !== currentSemester) {
                     currentSemester = course.semester;
+                    const isLocked = course.semester > unlockedSemester;
+                    
                     grid.innerHTML += `
                         <div class="semester-divider">
-                            <div class="semester-title">📖 Semestre ${currentSemester}</div>
+                            <div class="semester-title">
+                                ${isLocked ? '�' : '�📖'} Semestre ${currentSemester}
+                                ${isLocked ? ' <span style="font-size: 0.9rem; font-weight: 400; opacity: 0.8;">(Completa el semestre anterior)</span>' : ''}
+                            </div>
                         </div>
                     `;
                 }
@@ -409,12 +471,17 @@
                 const progress = courseProgress[course.id];
                 const percentage = progress?.percentage || 0;
                 const completed = progress?.completed || false;
+                const isLocked = course.semester > unlockedSemester;
 
                 let status = 'not-started';
                 let statusText = '🔓 No iniciado';
                 let statusClass = 'status-not-started';
 
-                if (completed) {
+                if (isLocked) {
+                    status = 'locked';
+                    statusText = '🔒 Bloqueado';
+                    statusClass = 'status-locked';
+                } else if (completed) {
                     status = 'completed';
                     statusText = '✅ Completado';
                     statusClass = 'status-completed';
@@ -424,8 +491,11 @@
                     statusClass = 'status-in-progress';
                 }
 
+                const cardClass = isLocked ? 'course-card locked' : 'course-card';
+                const clickAction = isLocked ? '' : `onclick="openCourse('${course.id}', '${course.name}')"`;
+
                 grid.innerHTML += `
-                    <div class="course-card" onclick="openCourse('${course.id}', '${course.name}')">
+                    <div class="${cardClass}" ${clickAction}>
                         <div class="course-info">
                             <div class="course-name">${course.name}</div>
                             <div class="course-meta">
@@ -441,12 +511,14 @@
                             </div>
                         </div>
                         <div class="course-progress">
-                            <div class="progress-percent">${percentage}%</div>
+                            <div class="progress-percent">${isLocked ? '🔒' : percentage + '%'}</div>
+                            ${!isLocked ? `
                             <div class="progress-bar-container">
                                 <div class="progress-bar-fill" style="width: ${percentage}%"></div>
                             </div>
+                            ` : ''}
                         </div>
-                        <div class="course-arrow">→</div>
+                        <div class="course-arrow">${isLocked ? '🔒' : '→'}</div>
                     </div>
                 `;
             });
@@ -467,7 +539,10 @@
         }
 
         function updateStats() {
-            const totalCourses = allCourses.length;
+            const unlockedSemester = getCurrentSemester();
+            const availableCourses = allCourses.filter(c => c.semester <= unlockedSemester);
+            
+            const totalCourses = availableCourses.length;
             const inProgress = Object.values(courseProgress).filter(p => p.percentage > 0 && !p.completed).length;
             const completed = Object.values(courseProgress).filter(p => p.completed).length;
             
